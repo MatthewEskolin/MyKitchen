@@ -1,0 +1,30 @@
+﻿@model MyKitchen.Data.FoodItem
+
+
+<form asp-action="SaveNewFood" method="post">
+
+
+    <p>
+
+
+
+        <label asp-for="Cost">Food Cost:</label>
+        <input asp-for="Cost" />
+
+    </p>
+    <p>
+        <label asp-for="FoddDescription">Description:</label>
+        <input asp-for="FoddDescription" />
+
+    </p>
+    <p>
+        <label asp-for="FoodItemName">Name:</label>
+        <input asp-for="FoodItemName" />
+
+        
+    </p>
+
+    <button type="submit">Save New Food</button>
+
+
+</form>

@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "My Kitchen";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to MyKitchen</h1>
+    <p>What are some of your favorite things to eat?</p>
+
+
+    <a asp-action="NewGroceryTrip">Plan new Grocery Trip</a>
+</div>
+<div class="alert-danger">
+    Alert Danger!
+    <br /><br />
+    <p>
+        Request Time: @DateTime.Now.ToString("HH:mm:ss")
+    </p>
+
+   
+</div>
