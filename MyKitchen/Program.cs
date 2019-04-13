@@ -15,7 +15,7 @@ namespace MyKitchen
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
-        }//test
+        }//testeer
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
