@@ -15,7 +15,8 @@ namespace MyKitchen.Controllers
         {
             //Let's store in the database the time we last cooked our own meal, and track how many meals we cooked overtime
 
-
+            var newVariable = 5;
+            ViewBag.BagItem1 = "Browser Link Change Test";
             return View();
         }
 
