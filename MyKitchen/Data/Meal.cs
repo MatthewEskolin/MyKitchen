@@ -11,7 +11,9 @@ namespace MyKitchen.Data
         public int MealID { get; set; }
         public string Comments { get; set; }
 
-       
+        public List<FoodItem> FoodItems { get; set; }
+
+
 
 
         
