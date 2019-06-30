@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace MyKitchen.Data
 {
@@ -9,10 +12,13 @@ namespace MyKitchen.Data
     public class FoodItem
     {
 
+        [Key]
+        public int FoodItemID {get; set;}
         public string FoodItemName { get; set; }
 
         public string FoddDescription { get; set; }
 
+        [Column(TypeName = "decimal(10,2)")]
         public decimal Cost { get; set; }
 
 

@@ -17,6 +17,7 @@
               integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="/>
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/mvc-grid.css" />
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
@@ -74,7 +75,21 @@
         </script>
     </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/mvc-grid.js" asp-append-version="true"></script>
 
-    @RenderSection("Scripts", required: false)
+
+
+    @RenderSection("Scripts", required: true)
+   <script type="text/javascript">
+            [].forEach.call(document.getElementsByClassName('mvc-grid'), function (element) {
+               new MvcGrid(element);
+           });
+
+   </script>
+    
+
+
+
+   
 </body>
 </html>
