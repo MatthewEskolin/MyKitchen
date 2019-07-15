@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyKitchen.Data;
 using MyKitchen.Models;
@@ -17,6 +18,9 @@ namespace MyKitchen.Controllers
         ApplicationDbContext ctx { get; set; }
         public HomeController(ApplicationDbContext pctx)
         {
+            var errorarray = new int[4];
+          //  var runtimerror = errorarray[34];
+
             ctx = pctx;
         }
         public IActionResult Index()
@@ -45,10 +49,11 @@ namespace MyKitchen.Controllers
 
 
         [HttpGet]
-        public IActionResult SelectFoodItem()
+        public IActionResult SelectFoodItem(int id)
         {
 
-            return View();
+            var item = ctx.FoodItems.FirstOrDefault(x => x.FoodItemID == id);
+            return View(item);
 
         }
 

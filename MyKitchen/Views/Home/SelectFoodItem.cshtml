@@ -1,0 +1,84 @@
+﻿@using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal
+@model MyKitchen.Data.FoodItem
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+
+
+<form>
+
+
+    @* @Html.EditorForModel() *@
+    
+    
+
+    <br />
+    <p>
+        Food Item Name:
+        @Html.EditorFor(x => x.FoodItemName)
+    </p> 
+    <p>
+        Food Description:
+        @Html.EditorFor(x => x.FoddDescription)
+    </p>    
+        Food Cost:
+        @Html.EditorFor(x => x.Cost)
+    <p>
+        <input type="submit" name="save" value="Save" formaction="/Home/Index" formmethod="post" />
+    </p>
+    <p>
+        <input type="submit" name="cancel" value="Cancel" formaction="/Home/Index" formmethod="post" /> 
+    </p>
+    @*<p>
+
+
+
+            <label asp-for="Cost">Food Cost:</label>
+            <input asp-for="Cost" />
+
+        </p>
+        <p>
+            <label asp-for="FoddDescription">Description:</label>
+            <input asp-for="FoddDescription" />
+
+        </p>
+        <p>
+            <label asp-for="FoodItemName">Name:</label>
+            <input asp-for="FoodItemName" />
+
+
+        </p>
+
+        <button type="submit">Save</button>
+        <button type="submit">Cancel</button>*@
+
+</form>
+
+@section Scripts
+{
+
+
+    <script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $("#save").click(function () {
+            $("form").attr("action", "/Home/SaveFoodItem");
+        });
+
+        $("#cancel").click(function () {
+            document.href = @Url.Action("Index","Home");
+
+            //$("form").attr("action", "/Home/CancelForm");
+        });
+
+    });
+
+    </script>
+
+}
