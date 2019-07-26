@@ -14,6 +14,7 @@ using MyKitchen.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Protocols;
+using MyKitchen.Models;
 
 namespace MyKitchen
 {
@@ -43,6 +44,8 @@ namespace MyKitchen
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddTransient<IFoodItemRepository, EFFoodItemRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
