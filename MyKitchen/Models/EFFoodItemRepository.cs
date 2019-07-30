@@ -15,5 +15,31 @@ namespace MyKitchen.Models
         }
 
         public IQueryable<FoodItem> FoodItems => context.FoodItems;
+        public Task<int> Add(FoodItem foodItem)
+        {
+            context.FoodItems.Add(foodItem);
+            return context.SaveChangesAsync();
+        }
+
+        public Task<FoodItem> Find(int id)
+        {
+            return context.FoodItems.FindAsync(id);
+        }
+
+        public Task SaveChangesAsync()
+        {
+            return context.SaveChangesAsync();
+        }
+
+        public void Update(FoodItem foodItem)
+        {
+            context.FoodItems.Update(foodItem);
+            context.SaveChanges();
+        }
+
+        public void Remove(FoodItem foodItem)
+        {
+            context.FoodItems.Remove(foodItem);
+        }
     }
 }

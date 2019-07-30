@@ -6,22 +6,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyKitchen.Data;
+using MyKitchen.Models;
 
 namespace MyKitchen.Controllers
 {
     public class FoodItemsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IFoodItemRepository repository;
+        public int PageSize = 10;
 
-        public FoodItemsController(ApplicationDbContext context)
+        public FoodItemsController(IFoodItemRepository repo)
         {
-            _context = context;
+            repository = repo;
         }
 
         // GET: FoodItems
         public async Task<IActionResult> Index()
         {
-            return View(await _context.FoodItems.ToListAsync());
+            return View(await repository.FoodItems.ToListAsync());
         }
 
         // GET: FoodItems/Details/5
@@ -32,7 +34,7 @@ namespace MyKitchen.Controllers
                 return NotFound();
             }
 
-            var foodItem = await _context.FoodItems
+            var foodItem = await repository.FoodItems
                 .FirstOrDefaultAsync(m => m.FoodItemID == id);
             if (foodItem == null)
             {
@@ -57,8 +59,7 @@ namespace MyKitchen.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(foodItem);
-                await _context.SaveChangesAsync();
+                await repository.Add(foodItem);
                 return RedirectToAction(nameof(Index));
             }
             return View(foodItem);
@@ -72,7 +73,7 @@ namespace MyKitchen.Controllers
                 return NotFound();
             }
 
-            var foodItem = await _context.FoodItems.FindAsync(id);
+            var foodItem = await repository.Find(id.Value);
             if (foodItem == null)
             {
                 return NotFound();
@@ -96,8 +97,8 @@ namespace MyKitchen.Controllers
             {
                 try
                 {
-                    _context.Update(foodItem);
-                    await _context.SaveChangesAsync();
+                    repository.Update(foodItem);
+                    await repository.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,7 +124,7 @@ namespace MyKitchen.Controllers
                 return NotFound();
             }
 
-            var foodItem = await _context.FoodItems
+            var foodItem = await repository.FoodItems
                 .FirstOrDefaultAsync(m => m.FoodItemID == id);
             if (foodItem == null)
             {
@@ -138,15 +139,15 @@ namespace MyKitchen.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var foodItem = await _context.FoodItems.FindAsync(id);
-            _context.FoodItems.Remove(foodItem);
-            await _context.SaveChangesAsync();
+            var foodItem = await repository.Find(id);
+            repository.Remove(foodItem);
+            await repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool FoodItemExists(int id)
         {
-            return _context.FoodItems.Any(e => e.FoodItemID == id);
+            return repository.FoodItems.Any(e => e.FoodItemID == id);
         }
     }
 }
