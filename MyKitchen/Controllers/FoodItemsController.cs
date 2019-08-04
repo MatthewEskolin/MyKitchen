@@ -21,9 +21,16 @@ namespace MyKitchen.Controllers
         }
 
         // GET: FoodItems
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int currentPage = 1)
         {
-            return View(await repository.FoodItems.ToListAsync());
+            var viewModel = new FoodItemIndexViewModel()
+            {
+                FoodItems = repository.FoodItems.OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
+                PagingInfo = new PagingInfo { CurrentPage = currentPage,ItemsPerPage = PageSize, TotalItems = repository.FoodItems.Count() }
+            };
+
+
+            return View(viewModel);
         }
 
         // GET: FoodItems/Details/5

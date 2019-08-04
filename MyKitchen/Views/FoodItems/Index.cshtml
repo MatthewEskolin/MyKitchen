@@ -1,4 +1,5 @@
-﻿@model IEnumerable<MyKitchen.Data.FoodItem>
+﻿@model FoodItemIndexViewModel
+
 
 @{
     ViewData["Title"] = "Index";
@@ -9,23 +10,31 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+
+
+<div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary"
+     page-class-selected="btn-primary" class="btn-group pull-right m-1">
+</div>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FoodItemName)
+                @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().FoodItemName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FoddDescription)
+                @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().FoddDescription)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cost)
+                @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().Cost)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.FoodItems) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.FoodItemName)

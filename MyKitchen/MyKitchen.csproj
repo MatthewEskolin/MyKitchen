@@ -8,6 +8,21 @@
     <ApplicationInsightsAnnotationResourceId>/subscriptions/c76345d3-e114-4861-91af-d0e8ea4d45cb/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/MyKitchen</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Views\Home\**" />
+    <Compile Remove="Views\Shared\MvcGrid\**" />
+    <Content Remove="Views\Home\**" />
+    <Content Remove="Views\Shared\MvcGrid\**" />
+    <EmbeddedResource Remove="Views\Home\**" />
+    <EmbeddedResource Remove="Views\Shared\MvcGrid\**" />
+    <None Remove="Views\Home\**" />
+    <None Remove="Views\Shared\MvcGrid\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\HomeController.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.1" />
@@ -21,6 +36,11 @@
 
   <ItemGroup>
     <WCFMetadata Include="Connected Services" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Pages\" />
   </ItemGroup>
 
 </Project>
