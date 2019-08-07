@@ -41,5 +41,10 @@ namespace MyKitchen.Models
         {
             context.FoodItems.Remove(foodItem);
         }
+
+        public FoodItem GetRandomItem()
+        {
+            return context.FoodItems.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+        }
     }
 }

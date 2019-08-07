@@ -16,7 +16,7 @@ namespace MyKitchen.Data
         public int FoodItemID {get; set;}
         public string FoodItemName { get; set; }
 
-        public string FoddDescription { get; set; }
+        public string FoodDescription { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]
         public decimal Cost { get; set; }

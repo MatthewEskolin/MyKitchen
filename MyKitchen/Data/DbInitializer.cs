@@ -20,11 +20,11 @@ namespace MyKitchen.Data
 
             var seedFoodItems = new FoodItem[]
             {
-                new FoodItem() {Cost = 0.00M, FoddDescription = "Romaine Lettuce", FoodItemName = "Romaine Lettuce"},
-                new FoodItem() {Cost = 0.00M, FoddDescription = "Baked Beans", FoodItemName = "Canned Baked Beans"},
-                new FoodItem() {Cost = 0.00M, FoddDescription = "Cage Free Egg", FoodItemName = "Egg - Scrambled"},
+                new FoodItem() {Cost = 0.00M, FoodDescription = "Romaine Lettuce", FoodItemName = "Romaine Lettuce"},
+                new FoodItem() {Cost = 0.00M, FoodDescription = "Baked Beans", FoodItemName = "Canned Baked Beans"},
+                new FoodItem() {Cost = 0.00M, FoodDescription = "Cage Free Egg", FoodItemName = "Egg - Scrambled"},
                 new FoodItem()
-                    {Cost = 0.00M, FoddDescription = "Cage Free Egg", FoodItemName = "Little Sizzlers Sausage"}
+                    {Cost = 0.00M, FoodDescription = "Cage Free Egg", FoodItemName = "Little Sizzlers Sausage"}
 
 
             };

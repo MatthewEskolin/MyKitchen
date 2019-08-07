@@ -15,5 +15,6 @@ namespace MyKitchen.Models
         Task SaveChangesAsync();
         void Update(FoodItem foodItem);
         void Remove(FoodItem foodItem);
+        FoodItem  GetRandomItem();
     }
 }
