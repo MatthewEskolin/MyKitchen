@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace MyKitchen.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
-    {
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>    {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
 
@@ -27,4 +27,10 @@ namespace MyKitchen.Data
 
 
     }
+
+    // Add profile data for application users by adding properties to the ApplicationUser class
+    public class ApplicationUser : IdentityUser
+    {
+    }
+
 }

@@ -5,4 +5,6 @@
 ROADMAP/BACKLOG
 --------------
 [1]#Create a User system - with the ability to login from facebook 
+	[Task]- figure out how to override the login page
+
 [2]#Create an Administration Tool?

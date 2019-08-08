@@ -2,16 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using MyKitchen.Data;
 using MyKitchen.Models;
 
 namespace MyKitchen.Controllers
 {
+    [Authorize]
     public class FoodItemsController : Controller
     {
+
         private readonly IFoodItemRepository repository;
         public int PageSize = 10;
 
