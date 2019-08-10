@@ -1,4 +1,5 @@
 ﻿#Consider building ability to associate 'food items' to a resturant
+	-drag and drop 
 #Consider adding the ability to add ingredients to food items
 #consider adding the ability to create meals from multiple food items
 
@@ -7,4 +8,25 @@ ROADMAP/BACKLOG
 [1]#Create a User system - with the ability to login from facebook 
 	[Task]- figure out how to override the login page
 
+[1.1] - allow users to create an ideal food plan - using a calendar to do planning - the calendar should plan out every meal 
+	  - let's try using a asp.net calendar library
+	  
+
+
+
+
 [2]#Create an Administration Tool?
+
+
+
+
+
+
+
+
+
+
+
+TOOLS AND NOTES-
+How to set app secrets
+dotnet user-secrets set Authentication:Facebook:AppSecret <secret> --project MyKitchen
