@@ -1,0 +1,21 @@
+﻿
+ROADMAP/BACKLOG
+--------------
+
+[1] Add a meal builder to allow mixing Food Items to create Meals.
+
+[2] - allow users to create an ideal food plan - using a calendar to do planning - the calendar should plan out every meal 
+	  - let's try using a asp.net calendar library
+	  
+TOOLS AND NOTES-
+How to set app secrets
+dotnet user-secrets set Authentication:Facebook:AppSecret <secret> --project MyKitchen
+
+COMPLETED ITEMS
+--------------
+
+
+[1]#Create a User system - with the ability to login from facebook 
+	[Task]- figure out how to override the login page
+---------
+

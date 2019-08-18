@@ -1,0 +1,43 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "What Should I Eat?";
+}
+
+@* Two Components that will interact (Left side is the current meal) - Right side is a list of our food items - *@
+
+@*
+
+My Meals
++Create New Meal
+=Meal 1 [Edit]
+-Meal 2 [Edit] 
+-Meal 3 [Edit]
+
+
+Search Food Items
+-List of Food Items
+-Item 1 [add to meal]
+-Item 2 [add to meal]
+-Item 3 [add to meal]
+
+*@
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            @Html.PartialAsync("_MealList")
+        </div>
+        <div class="col">
+            @Html.PartialAsync("_FoodItemList")
+        </div>
+    </div>    
+</div>
+My Meals
+
+
+
+
+
+

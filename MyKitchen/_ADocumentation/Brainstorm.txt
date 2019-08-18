@@ -1,0 +1,20 @@
+﻿#8/11/2019
+
+-right now the tool is not useful to me because it doesn't have enough data about the kinds of things I might want to eat
+-I don't necessarily like the idea that you can click through multiple perdictions - the tool should not overwhelm the user with too many options
+-associate food item with resturant? OK
+-[1] associate food item with MEAL - this is very important because if the meal feels incomplete we won't be modivated to eat it.
+	--full meals--
+	need to be able to add multiple food itmes together to CREATE A MEAL. we can name meals whatever we want - let's create a very simple admnistration to manage meals...
+
+-[2] what about creating a way to track how often we eat at a resturant vs cooking at home? 
+
+#Consider building ability to associate 'food items' to a resturant
+	-drag and drop 
+#Consider adding the ability to add ingredients to food items
+#consider adding the ability to create meals from multiple food items
+[2]#Create an Administration Tool?
+
+
+
+
