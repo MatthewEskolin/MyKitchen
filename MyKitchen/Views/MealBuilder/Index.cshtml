@@ -1,4 +1,7 @@
-﻿@*
+﻿@model MealBuilderIndexViewModel
+
+
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
@@ -27,14 +30,15 @@ Search Food Items
 <div class="container">
     <div class="row">
         <div class="col">
-            @Html.PartialAsync("_MealList")
+            Meal List
+            @await Html.PartialAsync("_MealList")
         </div>
         <div class="col">
-            @Html.PartialAsync("_FoodItemList")
+            Food Item List
+            @await Html.PartialAsync("_FoodItemList")
         </div>
     </div>    
 </div>
-My Meals
 
 
 

@@ -1,4 +1,6 @@
-﻿@*
+﻿@model MealBuilderIndexViewModel
+
+@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
@@ -12,7 +14,17 @@
         <th scope="col">Edit</th>
     </thead>
     <tbody>
-        
+    @foreach(var item in Model.Meals)
+    {
+        <tr>
+            <td>
+                Image Here
+            </td>
+            <td>
+
+            </td>
+        </tr>
+    }
     </tbody>
 </table>
 

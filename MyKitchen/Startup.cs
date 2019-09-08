@@ -14,6 +14,7 @@ using MyKitchen.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Protocols;
+using MyKitchen.Controllers;
 using MyKitchen.Models;
 
 namespace MyKitchen
@@ -60,6 +61,7 @@ namespace MyKitchen
 
             services.AddTransient<IFoodItemRepository, EFFoodItemRepository>();
             services.AddTransient<IFoodReccomendationService, FoodRecommendationService>();
+            services.AddTransient<IMealRepository,EfMealRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

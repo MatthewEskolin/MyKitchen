@@ -46,5 +46,10 @@ namespace MyKitchen.Models
         {
             return context.FoodItems.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
         }
+
+        public IEnumerable<FoodItem> GetFoodItems()
+        {
+            return FoodItems.AsEnumerable();
+        }
     }
 }

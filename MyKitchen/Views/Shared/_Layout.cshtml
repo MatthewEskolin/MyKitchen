@@ -35,8 +35,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="FoodItems" asp-action="Index">Food Items</a>
                         </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="MealBuilder" asp-action="Index">Meals</a>
+                        </li>
                     </ul>
                 </div>
+                
+                
+                
+
             </div>
         </nav>
     </header>
@@ -76,16 +84,6 @@
 
 
     @RenderSection("Scripts", required: false)
-   <script type="text/javascript">
-            [].forEach.call(document.getElementsByClassName('mvc-grid'), function (element) {
-               new MvcGrid(element);
-           });
-
-   </script>
-    
-
-
-
    
 </body>
 </html>
