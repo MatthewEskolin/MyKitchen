@@ -15,13 +15,6 @@ namespace MyKitchen.Models
 
     public class MealBuilderIndexViewModel
     {
-        //FoodItemList
-        public IEnumerable<FoodItem> FoodItems { get; set; }
-
-        public PagingInfo FoodItemPagingInfo { get; set; }
-
-
-
         //MealList
         public PagingInfo MealListPagingInfo { get; set; }
 
