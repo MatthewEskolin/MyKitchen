@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyKitchen.Data;
 
 namespace MyKitchen.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190921155905_MealItems")]
+    partial class MealItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,27 +232,6 @@ namespace MyKitchen.Data.Migrations
                     b.ToTable("Meals");
                 });
 
-            modelBuilder.Entity("MyKitchen.Data.MealFoodItems", b =>
-                {
-                    b.Property<int>("MealFoodItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("FoodAddedDate");
-
-                    b.Property<int>("FoodItemId");
-
-                    b.Property<int>("MealId");
-
-                    b.HasKey("MealFoodItemId");
-
-                    b.HasIndex("FoodItemId");
-
-                    b.HasIndex("MealId");
-
-                    b.ToTable("MealFoodItems");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -301,19 +282,6 @@ namespace MyKitchen.Data.Migrations
                     b.HasOne("MyKitchen.Data.Meal")
                         .WithMany("FoodItems")
                         .HasForeignKey("MealID");
-                });
-
-            modelBuilder.Entity("MyKitchen.Data.MealFoodItems", b =>
-                {
-                    b.HasOne("MyKitchen.Data.FoodItem", "FoodItems")
-                        .WithMany()
-                        .HasForeignKey("FoodItemId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyKitchen.Data.Meal", "Meals")
-                        .WithMany()
-                        .HasForeignKey("MealId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

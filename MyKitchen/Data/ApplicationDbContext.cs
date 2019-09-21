@@ -22,7 +22,7 @@ namespace MyKitchen.Data
 
         public DbSet<LastCookedMeal> LastCookedMeal { get; set; }
 
-
+        public DbSet<MealFoodItems> MealFoodItems { get; set; }
         public DbSet<FoodItem> FoodItems { get; set; }
 
 

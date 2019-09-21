@@ -17,10 +17,16 @@ namespace MyKitchen.Models
         }
 
 
-        public Task<int> Add(Meal foodItem)
+        public Task<int> Add(Meal meal)
         {
+            context.Meals.Add(meal);
 
-            throw new NotImplementedException();
+            foreach (var foodItem in meal.FoodItems)
+            {
+                //add itmes to meal
+            }
+
+            return context.SaveChangesAsync();
         }
 
         public Task<Meal> Find(int id)
