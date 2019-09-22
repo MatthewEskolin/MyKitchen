@@ -4,6 +4,8 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
+
+
 <h2>My Meals</h2>
 <table class="table table-dark">
     <thead>
@@ -27,7 +29,7 @@
                 Tasty
             </td>
             <td>
-
+                <a asp-action="SelectFoodItemsForMeal" asp-route-mealId="@item.MealID">Select</a>
             </td>
         </tr>
     }

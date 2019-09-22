@@ -21,9 +21,13 @@ namespace MyKitchen.Models
         {
             context.Meals.Add(meal);
 
-            foreach (var foodItem in meal.FoodItems)
+            if (meal.FoodItems != null)
             {
-                //add itmes to meal
+                //add meal items
+                foreach (var foodItem in meal.FoodItems)
+                {
+                    //add items to meal
+                }
             }
 
             return context.SaveChangesAsync();
@@ -36,7 +40,7 @@ namespace MyKitchen.Models
 
         public Task SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            return context.SaveChangesAsync();
         }
 
         public void Update(Meal foodItem)
@@ -67,6 +71,13 @@ namespace MyKitchen.Models
         public int Count()
         {
             return context.Meals.Count();
+        }
+
+        public Meal GetMealById(int mealId)
+        {
+            var meal = context.Meals.FirstOrDefault(x => x.MealID == mealId);
+            return meal;
+
         }
     }
 }

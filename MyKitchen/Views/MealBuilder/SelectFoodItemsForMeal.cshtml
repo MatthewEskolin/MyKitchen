@@ -1,0 +1,36 @@
+﻿@model  MealBuilderSelectFoodItemsViewModel
+
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().FoodItemName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().FoodDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().Cost)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.FoodItems) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FoodItemName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FoodDescription)
+            </td>
+            <td>
+                <a asp-action="AddToMeal" asp-route-mealId="@Model.TheMeal.MealID" asp-route-id="@item.FoodItemID">Add To Meal</a> |
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+

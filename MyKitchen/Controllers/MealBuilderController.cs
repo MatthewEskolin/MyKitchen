@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyKitchen.Data;
 using MyKitchen.Models;
@@ -51,16 +52,44 @@ namespace MyKitchen.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SaveNewMeal(Meal newMeal)
+        public async Task<IActionResult> SaveNewMeal(MealBuilderCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
-                await mealRepository.Add(newMeal);
+                await mealRepository.Add(model.Meal);
 
             }
 
             return RedirectToAction("Index");
 
+        }
+
+        public IActionResult SelectFoodItemsForMeal(int mealId,int currentPage = 1)
+        {
+
+            var PageSize = 10;
+
+            var meal = mealRepository.GetMealById(mealId);
+            var viewModel = new MealBuilderSelectFoodItemsViewModel()
+            {
+                FoodItems = foodItemRepository.FoodItems.OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
+                PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = foodItemRepository.FoodItems.Count() },
+                TheMeal = meal
+                
+            };
+
+            return View(viewModel);
+        }
+
+        public IActionResult AddToMeal(MealBuilderSelectFoodItemsViewModel model,int mealId,int id)
+        {
+            var meal = mealRepository.GetMealById(mealId);
+            FoodItem foodItem = foodItemRepository.Find(id).GetAwaiter().GetResult();
+            meal.AddFoodItem(foodItem);
+            mealRepository.SaveChangesAsync();
+
+
+            return RedirectToAction("SelectFoodItemsForMeal",new { mealId = meal.MealID} );
         }
     }
 }

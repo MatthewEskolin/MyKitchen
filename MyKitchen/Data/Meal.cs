@@ -16,11 +16,21 @@ namespace MyKitchen.Data
         public string MealName { get; set; }
         public List<FoodItem> FoodItems { get; set; }
 
-
+        public Meal()
+        {
+            FoodItems = new List<FoodItem>();
+        }
         public void AddFoodItem(FoodItem itemToAdd)
         {
+            
             FoodItems.Add(itemToAdd);
+
+            
+
+
         }
+
+
 
 
     }

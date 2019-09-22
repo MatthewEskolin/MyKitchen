@@ -16,5 +16,6 @@ namespace MyKitchen.Controllers
         Meal GetRandomItem();
         IEnumerable<Meal> GetMeals();
         int Count();
+        Meal GetMealById(int mealId);
     }
 }
