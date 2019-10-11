@@ -25,6 +25,12 @@ namespace MyKitchen.Data
         public DbSet<MealFoodItems> MealFoodItems { get; set; }
         public DbSet<FoodItem> FoodItems { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<MealFoodItems>(x => { x.HasIndex(y => new {y.FoodItemId, y.MealId}).IsUnique(); });
+
+        }
 
     }
 

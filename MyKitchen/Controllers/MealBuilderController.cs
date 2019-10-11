@@ -85,10 +85,18 @@ namespace MyKitchen.Controllers
         {
             var meal = mealRepository.GetMealById(mealId);
             FoodItem foodItem = foodItemRepository.Find(id).GetAwaiter().GetResult();
-            meal.AddFoodItem(foodItem);
-            mealRepository.SaveChangesAsync();
 
+            if (meal.ContainsFoodItem(foodItem.FoodItemID))
+            {
+                ModelState.AddModelError(string.Empty,"This Food Item has already been added to this meal");
+            }
+            else
+            {
+                meal.AddFoodItemToMeal(foodItem.FoodItemID);
+                mealRepository.SaveChangesAsync();
+            }
 
+            ViewBag["SystemMessage"] = "Food Item Added to Meal.";
             return RedirectToAction("SelectFoodItemsForMeal",new { mealId = meal.MealID} );
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -63,8 +64,10 @@ namespace MyKitchen
             services.AddTransient<IFoodReccomendationService, FoodRecommendationService>();
             services.AddTransient<IMealRepository,EfMealRepository>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddFluentValidation();
 
+
+  
             services.AddAuthentication().AddFacebook(options =>
             {
                 options.AppId = Configuration["Authentication:Facebook:AppId"];

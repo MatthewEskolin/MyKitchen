@@ -14,25 +14,26 @@ namespace MyKitchen.Data
         public string Comments { get; set; }
 
         public string MealName { get; set; }
-        public List<FoodItem> FoodItems { get; set; }
+        public ICollection<MealFoodItems> MealFoodItems { get; set; }
 
         public Meal()
         {
-            FoodItems = new List<FoodItem>();
+          //  FoodItems = new List<FoodItem>();
         }
-        public void AddFoodItem(FoodItem itemToAdd)
+        public void AddFoodItemToMeal(int foodItemId)
         {
-            
-            FoodItems.Add(itemToAdd);
+            var newItem = new MealFoodItems
+            {
+                FoodAddedDate = DateTime.Now, MealId = this.MealID, FoodItemId = foodItemId
+            };
 
-            
-
-
+            MealFoodItems.Add(newItem);
         }
 
-
-
-
+        public bool ContainsFoodItem(int foodItemId)
+        {
+            return this.MealFoodItems.Any(x => x.FoodItemId == foodItemId);
+        }
     }
 
     public class MealFoodItems
