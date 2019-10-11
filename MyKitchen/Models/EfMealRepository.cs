@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using MyKitchen.Controllers;
 using MyKitchen.Data;
 
@@ -21,10 +23,10 @@ namespace MyKitchen.Models
         {
             context.Meals.Add(meal);
 
-            if (meal.FoodItems != null)
+            if (meal.MealFoodItems != null)
             {
                 //add meal items
-                foreach (var foodItem in meal.FoodItems)
+                foreach (var foodItem in meal.MealFoodItems)
                 {
                     //add items to meal
                 }
@@ -35,6 +37,10 @@ namespace MyKitchen.Models
 
         public Task<Meal> Find(int id)
         {
+            var meal = new Meal();
+
+            IIncludableQueryable<Meal, FoodItem> wackyEntity = context.Meals.Include(x => x.MealFoodItems).ThenInclude(x => x.FoodItems);
+            
             throw new NotImplementedException();
         }
 
@@ -75,7 +81,7 @@ namespace MyKitchen.Models
 
         public Meal GetMealById(int mealId)
         {
-            var meal = context.Meals.FirstOrDefault(x => x.MealID == mealId);
+            var meal = context.Meals.Where(x => x.MealID == mealId).Include(x => x.MealFoodItems).FirstOrDefault();
             return meal;
 
         }
