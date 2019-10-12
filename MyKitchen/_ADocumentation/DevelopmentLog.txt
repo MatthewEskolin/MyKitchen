@@ -10,7 +10,18 @@ ROADMAP/BACKLOG
 
 [2] - allow users to create an ideal food plan - using a calendar to do planning - the calendar should plan out every meal 
 	  - let's try using a asp.net calendar library
-	  
+	 
+	 
+[3] - create a dropdown with different satiety profiles (carb heavy) (mexican) (chinese) (salad heavy) (sweet)
+-- tags 
+
+[4] - track latest meal to help --- 
+
+[5] - can we build this as a progressive web app with it's own website in azure?
+
+
+
+
 TOOLS AND NOTES-
 How to set app secrets
 dotnet user-secrets set Authentication:Facebook:AppSecret <secret> --project MyKitchen

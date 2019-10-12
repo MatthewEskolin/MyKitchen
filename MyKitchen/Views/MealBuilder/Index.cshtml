@@ -28,19 +28,18 @@ Search Food Items
 *@
 
 
-<h1>My Meals</h1>
+<h1>Meals</h1>
     <p>
         <a asp-action="Create">Create New Meal</a>
     </p>
-k
-<div class="container">
+            @await Html.PartialAsync("_MealList")
+@*<div class="container">
     <div class="row">
         <div class="col">
             Meal List
-            @await Html.PartialAsync("_MealList")
         </div>
     </div>    
-</div>
+</div>*@
 
 
 

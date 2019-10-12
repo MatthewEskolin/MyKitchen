@@ -1,26 +1,20 @@
 ﻿@model MealBuilderIndexViewModel
 
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-
-
-
-<h2>My Meals</h2>
-<table class="table table-dark">
+<table class="table table-light">
     <thead>
+
     @* Should be a plate or a takeout bag if the meal is takeout *@
-        <th scope="col">Characteristic IMAGE </th>
-        <th scope="col">Meal Name</th>
-        <th scope="col">Satiety Profile</th>
-        <th scope="col">Edit</th>
+    <th scope="col"></th>
+    <th scope="col">Name</th>
+    <th scope="col">Satiety Profile</th>
+    <th scope="col">Edit</th>
     </thead>
     <tbody>
     @foreach(var item in Model.Meals)
     {
         <tr>
             <td>
-                Image Here
+                <img src="images/plate-with-orange-pattern.svg" style="width: 150px;"/>
             </td>
             <td>
                 @item.MealName
