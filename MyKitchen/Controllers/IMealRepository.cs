@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using MyKitchen.Data;
 
 namespace MyKitchen.Controllers
@@ -9,13 +10,16 @@ namespace MyKitchen.Controllers
     {
         Task<int> Add(Meal foodItem);
 
-        Task<Meal> Find(int id);
+        Task<Meal> FindAsync(int id);
+        Meal Find(int mealId);
+
         Task SaveChangesAsync();
+
+        int SaveChanges();
         void Update(Meal foodItem);
         void Remove(Meal foodItem);
         Meal GetRandomItem();
         IEnumerable<Meal> GetMeals();
         int Count();
-        Meal GetMealById(int mealId);
     }
 }

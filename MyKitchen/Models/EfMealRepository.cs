@@ -35,7 +35,7 @@ namespace MyKitchen.Models
             return context.SaveChangesAsync();
         }
 
-        public Task<Meal> Find(int id)
+        public Task<Meal> FindAsync(int id)
         {
             var meal = new Meal();
 
@@ -44,9 +44,23 @@ namespace MyKitchen.Models
             throw new NotImplementedException();
         }
 
+        public Meal Find(int id)
+        {
+
+            IIncludableQueryable<Meal, FoodItem> wackyEntity = context.Meals.Include(x => x.MealFoodItems).ThenInclude(x => x.FoodItems);
+
+            return wackyEntity.FirstOrDefault(x => x.MealID == id);
+
+        }
+
         public Task SaveChangesAsync()
         {
             return context.SaveChangesAsync();
+        }
+
+        public int SaveChanges()
+        {
+            return context.SaveChanges();
         }
 
         public void Update(Meal foodItem)

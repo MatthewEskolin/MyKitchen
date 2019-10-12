@@ -1,8 +1,11 @@
 ﻿@model  MealBuilderSelectFoodItemsViewModel
 
-    <div asp-validation-summary="All">
-        <span>Please correct the following errors</span>
-    </div>
+@ViewBag.Message
+
+<div asp-validation-summary="All">
+    <span>Please correct the following errors</span>
+</div>
+
 <table class="table">
     <thead>
     <tr>
@@ -28,11 +31,11 @@
                 @Html.DisplayFor(modelItem => item.FoodDescription)
             </td>
             <td>
-                <a asp-action="AddToMeal" asp-route-mealId="@Model.TheMeal.MealID" asp-route-id="@item.FoodItemID">Add To Meal</a> |
+                <a asp-action="AddToMeal" asp-route-currentPage="@Model.PagingInfo.CurrentPage" asp-route-mealId="@Model.TheMeal.MealID" asp-route-id="@item.FoodItemID">Add To Meal</a> |
             </td>
         </tr>
     }
     </tbody>
 </table>
-
+<a asp-action="MealDetails" asp-route-mealId="@Model.TheMeal.MealID">Back To Meal</a>
 

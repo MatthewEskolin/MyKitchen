@@ -69,7 +69,7 @@ namespace MyKitchen.Controllers
 
             var PageSize = 10;
 
-            var meal = mealRepository.GetMealById(mealId);
+            var meal = mealRepository.Find(mealId);
             var viewModel = new MealBuilderSelectFoodItemsViewModel()
             {
                 FoodItems = foodItemRepository.FoodItems.OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
@@ -81,9 +81,9 @@ namespace MyKitchen.Controllers
             return View(viewModel);
         }
 
-        public IActionResult AddToMeal(MealBuilderSelectFoodItemsViewModel model,int mealId,int id)
+        public IActionResult AddToMeal(int currentPage,int mealId,int id)
         {
-            var meal = mealRepository.GetMealById(mealId);
+            var meal = mealRepository.Find(mealId);
             FoodItem foodItem = foodItemRepository.Find(id).GetAwaiter().GetResult();
 
             if (meal.ContainsFoodItem(foodItem.FoodItemID))
@@ -93,11 +93,31 @@ namespace MyKitchen.Controllers
             else
             {
                 meal.AddFoodItemToMeal(foodItem.FoodItemID);
-                mealRepository.SaveChangesAsync();
+                mealRepository.SaveChanges();
+                ViewBag.Message =  "Food Item Added to Meal.";
             }
 
-            ViewBag["SystemMessage"] = "Food Item Added to Meal.";
-            return RedirectToAction("SelectFoodItemsForMeal",new { mealId = meal.MealID} );
+            var PageSize = 10;
+
+            var viewModel = new MealBuilderSelectFoodItemsViewModel()
+            {
+                FoodItems = foodItemRepository.FoodItems.OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
+                PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = foodItemRepository.FoodItems.Count() },
+                TheMeal = meal
+
+            };
+
+            return View("SelectFoodItemsForMeal", viewModel);
+        }
+
+        public IActionResult MealDetails(int mealID)
+        {
+            var meal = mealRepository.Find(mealID);
+            var viewModel = new MealBuilderMealDetails_VM();
+            viewModel.Meal = meal;
+
+            return View(viewModel);
+
         }
     }
 }

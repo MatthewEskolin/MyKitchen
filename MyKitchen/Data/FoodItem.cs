@@ -14,11 +14,14 @@ namespace MyKitchen.Data
 
         [Key]
         public int FoodItemID {get; set;}
+
+        [Display(Name="Name")]
         public string FoodItemName { get; set; }
 
+        [Display(Name="Restaurant")]
         public string ResturantName { get; set; }
 
-
+        [Display(Name="Details")]
         public string FoodDescription { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]

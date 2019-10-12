@@ -29,7 +29,9 @@
                 Tasty
             </td>
             <td>
-                <a asp-action="SelectFoodItemsForMeal" asp-route-mealId="@item.MealID">Select</a>
+                <a style="display: none;" asp-action="SelectFoodItemsForMeal" asp-route-mealId="@item.MealID">Select</a>
+                <a asp-action="MealDetails" asp-route-mealId="@item.MealID">Select</a>
+
             </td>
         </tr>
     }
