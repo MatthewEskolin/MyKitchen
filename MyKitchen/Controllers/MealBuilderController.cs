@@ -119,5 +119,26 @@ namespace MyKitchen.Controllers
             return View(viewModel);
 
         }
+
+        public IActionResult DeleteMeal(int mealid)
+        {
+            var meal = mealRepository.Find(mealid);
+            mealRepository.Remove(meal);
+            mealRepository.SaveChanges();
+
+            //TempData[""]
+            var viewModel1 = new MealBuilderIndexViewModel()
+            {
+                Meals = mealRepository.GetMeals(),
+                MealListPagingInfo = new PagingInfo() { CurrentPage = 1, ItemsPerPage = 15, TotalItems = mealRepository.Count() }
+            };
+
+            return View("Index",viewModel1);
+        }
+
+        public IActionResult Edit()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -24,5 +24,6 @@
 <div>
     @Html.ActionLink("Add To Queue", "Edit", new {/* id = Model.PrimaryKey */}) |
     @Html.ActionLink("Add More Food", "SelectFoodItemsForMeal", new {mealId = Model.Meal.MealID}) |
+    @Html.ActionLink("Delete Meal", "DeleteMeal", new {mealId = Model.Meal.MealID}) |
     <a asp-action="Index">Back to List</a>
 </div>

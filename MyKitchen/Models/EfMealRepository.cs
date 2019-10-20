@@ -70,7 +70,7 @@ namespace MyKitchen.Models
 
         public void Remove(Meal foodItem)
         {
-            throw new NotImplementedException();
+            context.Remove(foodItem);
         }
 
         public Meal GetRandomItem()
