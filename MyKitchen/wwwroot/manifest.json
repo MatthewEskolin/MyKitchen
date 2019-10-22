@@ -1,7 +1,8 @@
 {
-  "name": "Awesome Application",
-  "short_name": "Awesome",
-  "description": "The most awesome application in the world",
+  "name": "Let's Eat",
+  "short_name": "Let's Eat",
+  "description": "This App helps you decide what to eat",
+  "theme_color": "blue",
   "icons": [
     {
       "src": "/icons/android-chrome-192x192.png",

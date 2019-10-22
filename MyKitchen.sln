@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.28621.142
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyKitchen", "MyKitchen\MyKitchen.csproj", "{EFEC2DE8-DFC2-4BB6-94D6-D7BB8E3AC2C5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebEssentials.AspNetCore.Pwa", "..\..\..\Downloads\WebEssentials.AspNetCore.ServiceWorker-master\WebEssentials.AspNetCore.ServiceWorker-master\src\WebEssentials.AspNetCore.Pwa.csproj", "{4A774CEE-F3CC-4BA9-8BB8-64BEC6E767B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebEssentials.AspNetCore.Pwa", "MyKitchen\Dependencies\WebEssentials.AspNetCore.Pwa.csproj", "{3D01BEFB-8CCA-455B-8D68-3F3F950C17F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{EFEC2DE8-DFC2-4BB6-94D6-D7BB8E3AC2C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFEC2DE8-DFC2-4BB6-94D6-D7BB8E3AC2C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFEC2DE8-DFC2-4BB6-94D6-D7BB8E3AC2C5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4A774CEE-F3CC-4BA9-8BB8-64BEC6E767B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4A774CEE-F3CC-4BA9-8BB8-64BEC6E767B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4A774CEE-F3CC-4BA9-8BB8-64BEC6E767B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4A774CEE-F3CC-4BA9-8BB8-64BEC6E767B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D01BEFB-8CCA-455B-8D68-3F3F950C17F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D01BEFB-8CCA-455B-8D68-3F3F950C17F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D01BEFB-8CCA-455B-8D68-3F3F950C17F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D01BEFB-8CCA-455B-8D68-3F3F950C17F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -36,11 +36,6 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Downloads\WebEssentials.AspNetCore.ServiceWorker-master\WebEssentials.AspNetCore.ServiceWorker-master\src\WebEssentials.AspNetCore.Pwa.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
