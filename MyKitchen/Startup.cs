@@ -66,6 +66,7 @@ namespace MyKitchen
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddFluentValidation();
 
+            services.AddProgressiveWebApp();
 
   
             services.AddAuthentication().AddFacebook(options =>

@@ -17,7 +17,6 @@
               integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="/>
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/mvc-grid.css" />
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
@@ -49,7 +48,6 @@
         </nav>
     </header>
     <div class="container">
-        <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
