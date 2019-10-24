@@ -107,6 +107,9 @@ namespace WebEssentials.AspNetCore.Pwa
         /// </summary>
         public int ServiceWorkerCacheControlMaxAge { get; set; }
 
+        /// <summary>
+        /// Unknown
+        /// </summary>
         public int WebManifestCacheControlMaxAge { get; set; }
 
         /// <summary>

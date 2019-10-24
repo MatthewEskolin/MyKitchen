@@ -20,12 +20,6 @@ namespace MyKitchen.Models
         IEnumerable<FoodItem> GetFoodItems();
     }
 
-    public class WhatShouldIEatRepository<TEntity> where TEntity : class
-    {
-        internal ApplicationDbContext context;
-        internal DbSet<TEntity> dbSet;
-
-    } 
 
     
 }

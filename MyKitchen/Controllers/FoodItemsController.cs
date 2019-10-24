@@ -27,7 +27,7 @@ namespace MyKitchen.Controllers
         }
 
         // GET: FoodItems
-        public async Task<IActionResult> Index(int currentPage = 1)
+        public IActionResult Index(int currentPage = 1)
         {
             var viewModel = new FoodItemIndexViewModel()
             {
