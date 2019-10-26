@@ -25,10 +25,12 @@ namespace MyKitchen.Data
         public DbSet<MealFoodItems> MealFoodItems { get; set; }
         public DbSet<FoodItem> FoodItems { get; set; }
 
+        public DbSet<FoodGroup> FoodGroups { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.Entity<MealFoodItems>(x => { x.HasIndex(y => new {y.FoodItemId, y.MealId}).IsUnique(); });
+            builder.Entity<FoodItem>().HasOne(x => x.FoodGroup).WithMany(y => y.FoodItem);
 
         }
 

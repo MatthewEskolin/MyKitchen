@@ -15,6 +15,12 @@ namespace MyKitchen.Data
         [Key]
         public int FoodItemID {get; set;}
 
+
+        [ForeignKey("FoodGroup")]
+        [Display(Name="Food Group")]
+        public int? FoodGroupID { get; set; }
+
+
         [Display(Name="Name")]
         public string FoodItemName { get; set; }
 
@@ -27,7 +33,7 @@ namespace MyKitchen.Data
         [Column(TypeName = "decimal(10,2)")]
         public decimal Cost { get; set; }
 
-
+        public FoodGroup FoodGroup { get; set; }
 
 
     }

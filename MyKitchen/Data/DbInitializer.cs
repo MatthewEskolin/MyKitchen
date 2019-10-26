@@ -11,7 +11,40 @@ namespace MyKitchen.Data
         public static void Initialize(ApplicationDbContext context)
         {
             context.Database.Migrate();
+            InitializeFoodItems(context);
+            InitializeFoodGroups(context);
 
+
+        }
+
+        private static void InitializeFoodGroups(ApplicationDbContext context)
+        {
+            if (context.FoodGroups.Any())
+            {
+                return;//DB has been seeded.
+            }
+
+            var seedFoodGroups = new FoodGroup[]
+            {
+                new FoodGroup(){Name = "Vegetables"},
+                new FoodGroup(){Name = "Fruits"},
+                new FoodGroup(){Name = "Grains"},
+                new FoodGroup(){Name = "Protein"},
+                new FoodGroup(){Name = "Dairy"},
+                new FoodGroup(){Name = "Oils"},
+                new FoodGroup(){Name = "Other Calories"}
+            };
+
+            foreach (var item in seedFoodGroups)
+            {
+                context.FoodGroups.Add(item);
+            }
+
+            context.SaveChanges();
+        }
+
+        private static void InitializeFoodItems(ApplicationDbContext context)
+        {
             if (context.FoodItems.Any())
             {
                 return; // DB has been seeded
@@ -35,7 +68,6 @@ namespace MyKitchen.Data
             }
 
             context.SaveChanges();
-
         }
     }
 }

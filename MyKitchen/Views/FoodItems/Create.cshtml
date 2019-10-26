@@ -4,9 +4,8 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
 
-<h4>FoodItem</h4>
+<h4>Add New Food</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -27,6 +26,11 @@
                 <input asp-for="Cost" class="form-control" />
                 <span asp-validation-for="Cost" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                @*<selct asp-for="FoodGroupID" asp-items="@(new SelectList(Model.food))"*@
+
+
+            </div>            
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

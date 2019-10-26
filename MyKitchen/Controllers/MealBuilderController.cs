@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyKitchen.Data;
 using MyKitchen.Models;
 using System.Threading.Tasks;
+using MyKitchen.Models.Meals;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

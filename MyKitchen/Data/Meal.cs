@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,27 +33,6 @@ namespace MyKitchen.Data
         {
             return this.MealFoodItems.Any(x => x.FoodItemId == foodItemId);
         }
-    }
-
-    public class MealFoodItems
-    {
-
-        [Key]
-        [Column(Order = 0)]
-        public int MealFoodItemId { get; set; }
-
-        [ForeignKey("FoodItems")]
-        public int FoodItemId { get; set; }
-
-        [ForeignKey("Meals")]
-        public int MealId { get; set; }
-
-        public DateTime FoodAddedDate { get; set; }
-
-        public virtual Meal Meals { get; set; }
-
-        public virtual FoodItem FoodItems { get; set; }
-
     }
 
     public  class MealFactory

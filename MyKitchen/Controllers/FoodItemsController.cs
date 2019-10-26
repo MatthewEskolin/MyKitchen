@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using MyKitchen.Data;
 using MyKitchen.Models;
+using MyKitchen.Models.FoodItems;
 
 namespace MyKitchen.Controllers
 {
@@ -19,10 +14,14 @@ namespace MyKitchen.Controllers
     {
 
         private readonly IFoodItemRepository repository;
+        private ApplicationDbContext ctx { get; set; }
+
+        
         public int PageSize = 10;
 
-        public FoodItemsController(IFoodItemRepository repo)
+        public FoodItemsController(IFoodItemRepository repo,ApplicationDbContext context)
         {
+            ctx = context;
             repository = repo;
         }
 
@@ -32,7 +31,8 @@ namespace MyKitchen.Controllers
             var viewModel = new FoodItemIndexViewModel()
             {
                 FoodItems = repository.FoodItems.OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
-                PagingInfo = new PagingInfo { CurrentPage = currentPage,ItemsPerPage = PageSize, TotalItems = repository.FoodItems.Count() }
+                PagingInfo = new PagingInfo { CurrentPage = currentPage,ItemsPerPage = PageSize, TotalItems = repository.FoodItems.Count() },
+   
             };
 
 
@@ -60,6 +60,13 @@ namespace MyKitchen.Controllers
         // GET: FoodItems/Create
         public IActionResult Create()
         {
+            var viewModel = new FoodItemCreateViewModel()
+            {
+                FoodItem = new FoodItem(),
+                FoodGroups = ctx.FoodGroups.AsEnumerable()
+
+            };
+
             return View();
         }
 
