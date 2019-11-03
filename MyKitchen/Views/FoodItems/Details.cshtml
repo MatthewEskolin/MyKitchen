@@ -1,4 +1,4 @@
-﻿@model MyKitchen.Data.FoodItem
+﻿@model MyKitchen.Models.FoodItems.FoodItemDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -11,26 +11,29 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FoodItemName)
+            @Html.DisplayNameFor(model => model.FoodItem.FoodItemName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FoodItemName)
+            @Html.DisplayFor(model => model.FoodItem.FoodItemName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FoodDescription)
+            @Html.DisplayNameFor(model => model.FoodItem.FoodDescription)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FoodDescription)
+            @Html.DisplayFor(model => model.FoodItem.FoodDescription)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cost)
+            @Html.DisplayNameFor(model => model.FoodItem.Cost)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cost)
+            @Html.DisplayFor(model => model.FoodItem.Cost)
+        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FoodItem.FoodGroupID)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.FoodItemID">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.FoodItem.FoodItemID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

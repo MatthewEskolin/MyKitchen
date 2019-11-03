@@ -8,7 +8,6 @@ namespace MyKitchen.Models.FoodItems
         public IEnumerable<FoodItem> FoodItems { get; set; }
         public PagingInfo PagingInfo { get; set; }
 
-        public IEnumerable<FoodGroup> FoodGroups { get; set; }
 
 
     }

@@ -182,6 +182,32 @@ namespace MyKitchen.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("MyKitchen.Data.Calendar.Events", b =>
+                {
+                    b.Property<int>("EventID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime>("End");
+
+                    b.Property<bool>("IsFullDay");
+
+                    b.Property<DateTime>("Start");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ThemeColor");
+
+                    b.HasKey("EventID");
+
+                    b.ToTable("Events");
+                });
+
             modelBuilder.Entity("MyKitchen.Data.FoodGroup", b =>
                 {
                     b.Property<int>("FoodGroupID")

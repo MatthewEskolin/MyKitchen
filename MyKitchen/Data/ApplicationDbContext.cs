@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MyKitchen.Data.Calendar;
 
 namespace MyKitchen.Data
 {
@@ -25,6 +26,9 @@ namespace MyKitchen.Data
         public DbSet<MealFoodItems> MealFoodItems { get; set; }
         public DbSet<FoodItem> FoodItems { get; set; }
 
+        public DbSet<Events> Events { get; set; }
+
+
         public DbSet<FoodGroup> FoodGroups { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -33,6 +37,10 @@ namespace MyKitchen.Data
             builder.Entity<FoodItem>().HasOne(x => x.FoodGroup).WithMany(y => y.FoodItem);
 
         }
+
+
+
+
 
     }
 

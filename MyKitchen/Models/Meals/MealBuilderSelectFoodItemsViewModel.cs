@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MyKitchen.Data;
 
-namespace MyKitchen.Models
+namespace MyKitchen.Models.Meals
 {
     public class MealBuilderSelectFoodItemsViewModel
     {

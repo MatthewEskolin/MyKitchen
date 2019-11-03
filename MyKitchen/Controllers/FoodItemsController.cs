@@ -54,7 +54,12 @@ namespace MyKitchen.Controllers
                 return NotFound();
             }
 
-            return View(foodItem);
+            var viewModel = new FoodItemDetailsViewModel()
+            {
+                FoodItem = foodItem
+            };
+
+            return View(viewModel);
         }
 
         // GET: FoodItems/Create
@@ -67,7 +72,7 @@ namespace MyKitchen.Controllers
 
             };
 
-            return View();
+            return View(viewModel);
         }
 
         // POST: FoodItems/Create
@@ -75,14 +80,22 @@ namespace MyKitchen.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FoodItemID,FoodItemName,FoddDescription,Cost")] FoodItem foodItem)
+        public async Task<IActionResult> Create([Bind("FoodItemID,FoodItemName,FoddDescription,Cost,FoodGroupID")] FoodItem foodItem)
         {
             if (ModelState.IsValid)
             {
                 await repository.Add(foodItem);
                 return RedirectToAction(nameof(Index));
             }
-            return View(foodItem);
+
+            var viewModel = new FoodItemCreateViewModel()
+            {
+                FoodGroups = ctx.FoodGroups.AsEnumerable(),
+                FoodItem = new FoodItem()
+            };
+
+
+            return View(viewModel);
         }
 
         // GET: FoodItems/Edit/5
@@ -98,7 +111,14 @@ namespace MyKitchen.Controllers
             {
                 return NotFound();
             }
-            return View(foodItem);
+
+            var viewModel = new FoodItemEditViewModel()
+            {
+                FoodGroups = ctx.FoodGroups.AsEnumerable(),
+                FoodItem = foodItem
+            };
+
+            return View(viewModel);
         }
 
         // POST: FoodItems/Edit/5
@@ -133,7 +153,18 @@ namespace MyKitchen.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(foodItem);
+
+
+            var viewModel = new FoodItemEditViewModel()
+            {
+                FoodItem = foodItem,
+                FoodGroups = ctx.FoodGroups
+            };
+
+
+
+
+            return View(viewModel);
         }
 
         // GET: FoodItems/Delete/5

@@ -1,4 +1,4 @@
-﻿@model MyKitchen.Data.FoodItem
+﻿@model MyKitchen.Models.FoodItems.FoodItemCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -12,22 +12,25 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="FoodItemName" class="control-label"></label>
-                <input asp-for="FoodItemName" class="form-control" />
-                <span asp-validation-for="FoodItemName" class="text-danger"></span>
+                <label asp-for="FoodItem.FoodItemName" class="control-label"></label>
+                <input asp-for="FoodItem.FoodItemName" class="form-control" />
+                <span asp-validation-for="FoodItem.FoodItemName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FoodDescription" class="control-label"></label>
-                <input asp-for="FoodDescription" class="form-control" />
-                <span asp-validation-for="FoodDescription" class="text-danger"></span>
+                <label asp-for="FoodItem.FoodDescription" class="control-label"></label>
+                <input asp-for="FoodItem.FoodDescription" class="form-control" />
+                <span asp-validation-for="FoodItem.FoodDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Cost" class="control-label"></label>
-                <input asp-for="Cost" class="form-control" />
-                <span asp-validation-for="Cost" class="text-danger"></span>
+                <label asp-for="FoodItem.Cost" class="control-label"></label>
+                <input asp-for="FoodItem.Cost" class="form-control" />
+                <span asp-validation-for="FoodItem.Cost" class="text-danger"></span>
             </div>
             <div class="form-group">
-                @*<selct asp-for="FoodGroupID" asp-items="@(new SelectList(Model.food))"*@
+                <label asp-for="FoodItem.FoodGroupID" class="control-label"></label><br />
+                <select asp-for="FoodItem.FoodGroupID" asp-items="@(new SelectList(Model.FoodGroups, "FoodGroupID", "Name"))">
+                    <option value="">Select</option>
+                </select>
 
 
             </div>            

@@ -8,43 +8,43 @@ namespace MyKitchen.Models
 {
     public class EFFoodItemRepository:IFoodItemRepository
     {
-        private ApplicationDbContext context;
+        private readonly ApplicationDbContext _context;
         public EFFoodItemRepository(ApplicationDbContext ctx)
         {
-            context = ctx;
+            _context = ctx;
         }
 
-        public IQueryable<FoodItem> FoodItems => context.FoodItems;
+        public IQueryable<FoodItem> FoodItems => _context.FoodItems;
         public Task<int> Add(FoodItem foodItem)
         {
-            context.FoodItems.Add(foodItem);
-            return context.SaveChangesAsync();
+            _context.FoodItems.Add(foodItem);
+            return _context.SaveChangesAsync();
         }
 
         public Task<FoodItem> Find(int id)
         {
-            return context.FoodItems.FindAsync(id);
+            return _context.FoodItems.FindAsync(id);
         }
 
         public Task SaveChangesAsync()
         {
-            return context.SaveChangesAsync();
+            return _context.SaveChangesAsync();
         }
 
         public void Update(FoodItem foodItem)
         {
-            context.FoodItems.Update(foodItem);
-            context.SaveChanges();
+            _context.FoodItems.Update(foodItem);
+            _context.SaveChanges();
         }
 
         public void Remove(FoodItem foodItem)
         {
-            context.FoodItems.Remove(foodItem);
+            _context.FoodItems.Remove(foodItem);
         }
 
         public FoodItem GetRandomItem()
         {
-            return context.FoodItems.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+            return _context.FoodItems.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
         }
 
         public IEnumerable<FoodItem> GetFoodItems()

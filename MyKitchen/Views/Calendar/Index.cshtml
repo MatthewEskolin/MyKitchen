@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+<div id="calendar">
+</div>
+
+
+<link rel="stylesheet" type="text/css" href="/lib/fullcalendar/core/main.min.css"/>
+<link rel="stylesheet" type="text/css" href="/lib/fullcalendar/daygrid/main.min.css"/>
+
+@section Scripts
+{
+
+    <script src="/lib/fullcalendar/core/main.min.js"></script>
+    <script src="/lib/fullcalendar/daygrid/main.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            var events = [];
+
+            $.ajax({
+                type: "GET",
+                url: "/calendar/GetEvents",
+                success: function(data) {
+
+                    $.each(data,
+                        function(i, v) {
+                            events.push({
+                                title: v.subject,
+                                description: v.Description,
+                                start: v.Start,//moment(v.Start),
+                                end: v.End != null ? v.End : null,
+                                color: v.ThemeColor,
+                                allDay:v.IsFullDay
+                            });
+                        });
+
+                    GenerateCalender(events);
+                },
+                error: function(error) {
+                    alert('failed' + error);
+                }
+            });
+
+
+            function GenerateCalender(events) {
+
+                    var calendarEl = document.getElementById('calendar');
+
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        plugins: [ 'dayGrid' ]
+                    });
+
+                    calendar.render();
+
+                //Version 4 Initialization
+                //document.addEventListener('DOMContentLoaded', function() {
+                //});
+
+
+
+                
+
+
+                //OLD 3.x.x API!
+
+                //$("#calendar").FullCalendar('destroy');
+                //$('#calender').FullCalendar({
+                //    contentHeight: 400,
+                //    defaultDate: new Date(),
+                //    timeFormat: 'h(mm)a',
+                //    header: {
+                //        left: 'prev,next today',
+                //        center: 'title',
+                //        right: 'month,basicWeek,basicDay,agenda'
+                //    },
+                //    eventLimit: true,
+                //    eventColor: 'blue',
+                //    events: events
+
+                //});
+
+
+
+
+            }
+        });
+
+
+    </script>    
+
+}
