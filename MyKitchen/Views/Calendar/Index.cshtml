@@ -53,8 +53,17 @@
                     var calendarEl = document.getElementById('calendar');
 
                     var calendar = new FullCalendar.Calendar(calendarEl, {
-                        plugins: [ 'dayGrid' ]
+                        plugins: ['dayGrid'],
+                        dateClick: function() {
+                            alert('a day has been clicked!');
+                        }
                     });
+
+
+                calendar.on('dateClick', function (info) {
+                    alert(info.dateStr);
+                    });
+
 
                     calendar.render();
 
