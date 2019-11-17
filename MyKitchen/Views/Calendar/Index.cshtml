@@ -5,6 +5,7 @@
 }
 
 <h1>Index</h1>
+<h1 id="h1draggable" class="draggable-event">DRAG ME</h1>
 <div id="calendar">
 </div>
 
@@ -17,6 +18,7 @@
 
     <script src="/lib/fullcalendar/core/main.min.js"></script>
     <script src="/lib/fullcalendar/daygrid/main.min.js"></script>
+    <script src="/lib/fullcalendar/interaction/main.min.js"></script>
 
     <script type="text/javascript">
 
@@ -33,8 +35,8 @@
                             events.push({
                                 title: v.subject,
                                 description: v.Description,
-                                start: v.Start,//moment(v.Start),
-                                end: v.End != null ? v.End : null,
+                                start: v.start,//moment(v.Start),
+                                end: v.end != null ? v.end : null,
                                 color: v.ThemeColor,
                                 allDay:v.IsFullDay
                             });
@@ -50,10 +52,21 @@
 
             function GenerateCalender(events) {
 
-                    var calendarEl = document.getElementById('calendar');
+                var calendarEl = document.getElementById('calendar');
+                var draggableEL = document.getElementById('h1draggable');
+                var Draggable = FullCalendarInteraction.Draggable;
+
+
+
+
+                
 
                     var calendar = new FullCalendar.Calendar(calendarEl, {
-                        plugins: ['dayGrid'],
+                        plugins: ['dayGrid','interaction'],
+                        events: events,
+                        editable: true,
+                        droppable:true,
+                        
                         dateClick: function() {
                             alert('a day has been clicked!');
                         }
@@ -65,7 +78,10 @@
                     });
 
 
-                    calendar.render();
+                calendar.render();
+
+               new Draggable(draggableEL); 
+
 
                 //Version 4 Initialization
                 //document.addEventListener('DOMContentLoaded', function() {

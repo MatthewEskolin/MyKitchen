@@ -3,11 +3,13 @@ ROADMAP/BACKLOG
 --------------
 
 
-10/24/2019
+10/24/2019 - 11/17/2019
 -Let's add a Search to food Items
 -Add Food Group To Food Item Dropdown
 
+[1] 
 
+[1] I would like to start writing about this product on IndieHackers. We need to create a product URL for this.
 
 [1][id = 1] Add a meal builder to allow mixing Food Items to create Meals.
 	[1.1]

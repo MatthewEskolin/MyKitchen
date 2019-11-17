@@ -16,5 +16,12 @@
 [2]#Create an Administration Tool?
 
 
+11/17/2019
+
+IDEA - The Calendar should utilize a "Suggestions" box based on the other meals that are on the calendar - and the suggestions should possibly change based on meal we have selected
+IDEA - We should have a trainer where the app asks us - (have you eaten this in the last week? last month? last year?) - to figure out what items you like to eat!
+
+
+
 
 
