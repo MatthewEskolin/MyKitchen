@@ -6,6 +6,9 @@
 
 <h1>Index</h1>
 <h1 id="h1draggable" class="draggable-event">DRAG ME</h1>
+<div id="itemContainer">
+
+</div>
 <div id="calendar">
 </div>
 
@@ -50,22 +53,41 @@
             });
 
 
+            $.ajax({
+                type: "GET",
+                url: "/calendar/GetAvailableItems",
+                success: function(data) {
+
+                    $.each(data,
+                        function (i, v) {
+                            //for each item create a new div box;
+                            $("#itemContainer").append("<div>" + v.itemName + "</div>");
+
+                        });
+
+                },
+                error: function(error) {
+                    alert('failed' + error);
+                }
+            });
+
+
+
+
             function GenerateCalender(events) {
 
                 var calendarEl = document.getElementById('calendar');
                 var draggableEL = document.getElementById('h1draggable');
                 var Draggable = FullCalendarInteraction.Draggable;
 
-
-
-
-                
-
                     var calendar = new FullCalendar.Calendar(calendarEl, {
                         plugins: ['dayGrid','interaction'],
                         events: events,
                         editable: true,
-                        droppable:true,
+                        droppable: true,
+                        fixedWeekCount: false,
+                        height: 600,
+
                         
                         dateClick: function() {
                             alert('a day has been clicked!');

@@ -12,10 +12,6 @@ namespace MyKitchen.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
 
-
-        
-
-
         }
 
 
@@ -28,7 +24,7 @@ namespace MyKitchen.Data
 
         public DbSet<Events> Events { get; set; }
 
-
+        public DbQuery<vwsMealsAndFoodItems> vwsMealsAndFoodItems { get; set; }
         public DbSet<FoodGroup> FoodGroups { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -36,12 +32,11 @@ namespace MyKitchen.Data
             builder.Entity<MealFoodItems>(x => { x.HasIndex(y => new {y.FoodItemId, y.MealId}).IsUnique(); });
             builder.Entity<FoodItem>().HasOne(x => x.FoodGroup).WithMany(y => y.FoodItem);
 
+            builder.Query<vwsMealsAndFoodItems>(x =>
+            {
+                x.ToView("vwsMealsAndFoodItems");
+            });
         }
-
-
-
-
-
     }
 
     // Add profile data for application users by adding properties to the ApplicationUser class

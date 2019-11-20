@@ -29,6 +29,26 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\HomeController.cs" />
+    <Compile Remove="Data\Migrations\20190921155905_MealItems.cs" />
+    <Compile Remove="Data\Migrations\20190921155905_MealItems.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190921160155_MealFoodItems.cs" />
+    <Compile Remove="Data\Migrations\20190921160155_MealFoodItems.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190923201524_changecollection.cs" />
+    <Compile Remove="Data\Migrations\20190923201524_changecollection.Designer.cs" />
+    <Compile Remove="Data\Migrations\20191010214134_builder.cs" />
+    <Compile Remove="Data\Migrations\20191010214134_builder.Designer.cs" />
+    <Compile Remove="Data\Migrations\20191024205231_foodgroups.cs" />
+    <Compile Remove="Data\Migrations\20191024205231_foodgroups.Designer.cs" />
+    <Compile Remove="Data\Migrations\20191027190226_StartCalendar.cs" />
+    <Compile Remove="Data\Migrations\20191027190226_StartCalendar.Designer.cs" />
+    <Compile Remove="Data\Migrations\20191027190339_events.cs" />
+    <Compile Remove="Data\Migrations\20191027190339_events.Designer.cs" />
+    <Compile Remove="Data\Migrations\20191119205302_createViews.cs" />
+    <Compile Remove="Data\Migrations\20191119205302_createViews.Designer.cs" />
+    <Compile Remove="Data\Migrations\20191119213140_createviews2.cs" />
+    <Compile Remove="Data\Migrations\20191119213140_createviews2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20191119213312_fixviews.cs" />
+    <Compile Remove="Data\Migrations\20191119213312_fixviews.Designer.cs" />
   </ItemGroup>
 
 

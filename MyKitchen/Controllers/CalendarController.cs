@@ -10,6 +10,10 @@ namespace MyKitchen.Controllers
 {
     public class CalendarController : Controller
     {
+        //allow food items or meals to be added to the calendar
+
+
+
         private ApplicationDbContext ctx { get; set; }
 
 
@@ -19,7 +23,6 @@ namespace MyKitchen.Controllers
         {
             ctx = context;
         }
-
 
 
         public IActionResult Index()
@@ -32,5 +35,18 @@ namespace MyKitchen.Controllers
             var events = ctx.Events.ToList();
             return new JsonResult(events);
         }
+
+        public JsonResult GetAvailableItems()
+        {
+            var items = ctx.vwsMealsAndFoodItems.ToList();
+            return new JsonResult(items);
+        }
+
+
+        //public JsonResult Get
+
+
+
+
     }
 }

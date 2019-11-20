@@ -10,8 +10,8 @@ using MyKitchen.Data;
 namespace MyKitchen.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191027190226_StartCalendar")]
-    partial class StartCalendar
+    [Migration("20191120212826_consolidated_from_mig1")]
+    partial class consolidated_from_mig1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -182,6 +182,32 @@ namespace MyKitchen.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("MyKitchen.Data.Calendar.Events", b =>
+                {
+                    b.Property<int>("EventID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime>("End");
+
+                    b.Property<bool>("IsFullDay");
+
+                    b.Property<DateTime>("Start");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ThemeColor");
+
+                    b.HasKey("EventID");
+
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("MyKitchen.Data.FoodGroup", b =>
