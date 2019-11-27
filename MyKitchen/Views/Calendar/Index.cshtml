@@ -32,26 +32,25 @@
                 type: "GET",
                 url: "/calendar/GetEvents",
                 success: function(data) {
-
+                    GenerateCalender(events);
+                    return;
                     $.each(data,
                         function(i, v) {
                             events.push({
                                 title: v.subject,
                                 description: v.Description,
-                                start: v.start,//moment(v.Start),
+                                start: v.start, //moment(v.Start),
                                 end: v.end != null ? v.end : null,
                                 color: v.ThemeColor,
-                                allDay:v.IsFullDay
+                                allDay: v.IsFullDay
                             });
                         });
 
-                    GenerateCalender(events);
                 },
                 error: function(error) {
                     alert('failed' + error);
                 }
             });
-
 
             $.ajax({
                 type: "GET",
@@ -59,9 +58,9 @@
                 success: function(data) {
 
                     $.each(data,
-                        function (i, v) {
+                        function(i, v) {
                             //for each item create a new div box;
-                            $("#itemContainer").append("<div>" + v.itemName + "</div>");
+                            $("#itemContainer") .append("<div class='draggableitem' data-event='{\"title\":\"" + v.itemName + "\"}'>" + v.itemName + " </div>");
 
                         });
 
@@ -72,46 +71,56 @@
             });
 
 
-
-
             function GenerateCalender(events) {
 
                 var calendarEl = document.getElementById('calendar');
-                var draggableEL = document.getElementById('h1draggable');
+                var draggableEL = document.getElementById('itemContainer');
                 var Draggable = FullCalendarInteraction.Draggable;
 
-                    var calendar = new FullCalendar.Calendar(calendarEl, {
-                        plugins: ['dayGrid','interaction'],
+                var calendar = new FullCalendar.Calendar(calendarEl,
+                    {
+                        plugins: ['dayGrid', 'interaction'],
                         events: events,
                         editable: true,
                         droppable: true,
                         fixedWeekCount: false,
                         height: 600,
 
-                        
+
                         dateClick: function() {
                             alert('a day has been clicked!');
                         }
                     });
 
 
-                calendar.on('dateClick', function (info) {
-                    alert(info.dateStr);
+                calendar.on('dateClick',
+                    function(info) {
+                        alert(info.dateStr);
                     });
 
 
                 calendar.render();
 
-               new Draggable(draggableEL); 
+                // ReSharper disable once ConstructorCallNotUsed
+                new Draggable(draggableEL,
+                    {
+                        //eventData: function(eventEl) {
+                        //    return {
+                        //    title: eventEl.innerText,
+                        //        duration: '01:00'
+
+                        //    }
+
+
+                        //},
+                        itemSelector: '.draggableitem'
+
+                    });
 
 
                 //Version 4 Initialization
                 //document.addEventListener('DOMContentLoaded', function() {
                 //});
-
-
-
-                
 
 
                 //OLD 3.x.x API!
@@ -133,12 +142,10 @@
                 //});
 
 
-
-
             }
         });
 
 
-    </script>    
+    </script>
 
 }
