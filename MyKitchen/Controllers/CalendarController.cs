@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using MyKitchen.Data;
-using Newtonsoft.Json;
 
 namespace MyKitchen.Controllers
 {
@@ -40,6 +36,15 @@ namespace MyKitchen.Controllers
         {
             var items = ctx.vwsMealsAndFoodItems.ToList();
             return new JsonResult(items);
+        }
+
+        [HttpPost]
+        public JsonResult SaveNewEvent()
+        {
+            return new JsonResult(true);
+
+            return new JsonResult(false);
+
         }
 
 

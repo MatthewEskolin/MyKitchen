@@ -7,7 +7,8 @@ ROADMAP/BACKLOG
 -Let's add a Search to food Items
 -Add Food Group To Food Item Dropdown
 
-[1] 
+[1] I would like to have dropping items on to the calendar save the new event to the database...
+
 
 [1] I would like to start writing about this product on IndieHackers. We need to create a product URL for this.
 

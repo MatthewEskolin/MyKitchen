@@ -28,6 +28,7 @@
         $(document).ready(function() {
             var events = [];
 
+            //Get Events
             $.ajax({
                 type: "GET",
                 url: "/calendar/GetEvents",
@@ -52,6 +53,7 @@
                 }
             });
 
+            //Get Available Items
             $.ajax({
                 type: "GET",
                 url: "/calendar/GetAvailableItems",
@@ -70,7 +72,7 @@
                 }
             });
 
-
+            //Create Calender
             function GenerateCalender(events) {
 
                 var calendarEl = document.getElementById('calendar');
@@ -86,17 +88,36 @@
                         fixedWeekCount: false,
                         height: 600,
 
+                        //DOC SAVE
+                        //dateClick: function() {
+                        //    alert('a day has been clicked!');
+                        //}
 
-                        dateClick: function() {
-                            alert('a day has been clicked!');
+                        eventReceive: function(info) {
+                                $.ajax({
+                                    url: '/calendar/SaveNewEvent',
+                                    data: 'title="Test"',
+                                    type: "POST",
+                                    success: function (json) {
+                                        console.log("SaveNewEvent returned");
+                                    },
+                                    failure: function(json) {
+                                        console.log("SaveNewEvent failed.")
+                                    }
+                                });
                         }
                     });
 
+                //DOC SAVE               
+                //calendar.on('dateClick',
+                //    function(info) {
+                //        alert(info.dateStr);
+                //    });
 
-                calendar.on('dateClick',
-                    function(info) {
-                        alert(info.dateStr);
-                    });
+
+
+
+
 
 
                 calendar.render();
@@ -104,42 +125,10 @@
                 // ReSharper disable once ConstructorCallNotUsed
                 new Draggable(draggableEL,
                     {
-                        //eventData: function(eventEl) {
-                        //    return {
-                        //    title: eventEl.innerText,
-                        //        duration: '01:00'
-
-                        //    }
-
-
-                        //},
                         itemSelector: '.draggableitem'
 
                     });
 
-
-                //Version 4 Initialization
-                //document.addEventListener('DOMContentLoaded', function() {
-                //});
-
-
-                //OLD 3.x.x API!
-
-                //$("#calendar").FullCalendar('destroy');
-                //$('#calender').FullCalendar({
-                //    contentHeight: 400,
-                //    defaultDate: new Date(),
-                //    timeFormat: 'h(mm)a',
-                //    header: {
-                //        left: 'prev,next today',
-                //        center: 'title',
-                //        right: 'month,basicWeek,basicDay,agenda'
-                //    },
-                //    eventLimit: true,
-                //    eventColor: 'blue',
-                //    events: events
-
-                //});
 
 
             }
