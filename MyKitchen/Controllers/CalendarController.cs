@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using MyKitchen.Data;
+using MyKitchen.Data.Calendar;
 
 namespace MyKitchen.Controllers
 {
@@ -38,9 +39,15 @@ namespace MyKitchen.Controllers
             return new JsonResult(items);
         }
 
+
+
         [HttpPost]
-        public JsonResult SaveNewEvent()
+        public JsonResult SaveNewEvent([FromBody] Events event1)
         {
+
+            //Save new Event to DB
+
+
             return new JsonResult(true);
 
             return new JsonResult(false);

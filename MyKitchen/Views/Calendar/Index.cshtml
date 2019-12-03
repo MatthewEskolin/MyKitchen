@@ -62,7 +62,11 @@
                     $.each(data,
                         function(i, v) {
                             //for each item create a new div box;
-                            $("#itemContainer") .append("<div class='draggableitem' data-event='{\"title\":\"" + v.itemName + "\"}'>" + v.itemName + " </div>");
+                            $("#itemContainer").append("<div class='draggableitem' data-event='{\"title\":\"" +
+                                v.itemName +
+                                "\"}'>" +
+                                v.itemName +
+                                " </div>");
 
                         });
 
@@ -94,17 +98,27 @@
                         //}
 
                         eventReceive: function(info) {
-                                $.ajax({
-                                    url: '/calendar/SaveNewEvent',
-                                    data: 'title="Test"',
-                                    type: "POST",
-                                    success: function (json) {
-                                        console.log("SaveNewEvent returned");
-                                    },
-                                    failure: function(json) {
-                                        console.log("SaveNewEvent failed.")
-                                    }
-                                });
+                            $.ajax({
+                                url: '/calendar/SaveNewEvent',
+                                 data: JSON.stringify({
+                                    Subject: info.event.title,
+                                    Start: info.event.start
+                                }),
+                           //data: {
+                           //         Subject: info.event.title,
+                           //         Start: info.event.start
+                           //     },
+                                type: "POST",
+                                //contentType: 'application/x-www-form-urlencoded',
+                                contentType: 'application/json; charset=utf-8',
+                                //contentType:'json',
+                                success: function(json) {
+                                    console.log("SaveNewEvent returned");
+                                },
+                                failure: function(json) {
+                                    console.log("SaveNewEvent failed.");
+                                }
+                            });
                         }
                     });
 
@@ -115,11 +129,6 @@
                 //    });
 
 
-
-
-
-
-
                 calendar.render();
 
                 // ReSharper disable once ConstructorCallNotUsed
@@ -128,7 +137,6 @@
                         itemSelector: '.draggableitem'
 
                     });
-
 
 
             }
