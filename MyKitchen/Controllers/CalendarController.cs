@@ -46,7 +46,8 @@ namespace MyKitchen.Controllers
         {
 
             //Save new Event to DB
-
+            ctx.Events.Add(event1);
+            ctx.SaveChanges();
 
             return new JsonResult(true);
 
@@ -54,8 +55,18 @@ namespace MyKitchen.Controllers
 
         }
 
+        [HttpPost]
+        public JsonResult UpdateEvent([FromBody] Events event1)
+        {
+            if(event1.EventID < 1) {  return new JsonResult(false);}
 
-        //public JsonResult Get
+            var updateEvent = ctx.Events.FirstOrDefault(x => x.EventID == event1.EventID);
+            updateEvent.Start = event1.Start;
+            ctx.SaveChanges();
+
+            return new JsonResult(true);
+        }
+
 
 
 

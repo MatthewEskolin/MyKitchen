@@ -4,8 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
-<h1 id="h1draggable" class="draggable-event">DRAG ME</h1>
+<h3>Calender</h3>
+<h1 id="h1draggable" class="draggable-event"></h1>
 <div id="itemContainer">
 
 </div>
@@ -33,19 +33,23 @@
                 type: "GET",
                 url: "/calendar/GetEvents",
                 success: function(data) {
-                    GenerateCalender(events);
-                    return;
+                    //return;
                     $.each(data,
-                        function(i, v) {
-                            events.push({
+                        function (i, v) {
+
+                            var newEvent = {
                                 title: v.subject,
                                 description: v.Description,
                                 start: v.start, //moment(v.Start),
                                 end: v.end != null ? v.end : null,
                                 color: v.ThemeColor,
-                                allDay: v.IsFullDay
-                            });
+                                allDay: v.IsFullDay,
+                                eventID: v.eventID
+                            }
+                            events.push(newEvent);
+
                         });
+                    GenerateCalender(events);
 
                 },
                 error: function(error) {
@@ -91,23 +95,41 @@
                         droppable: true,
                         fixedWeekCount: false,
                         height: 600,
+                        displayEventTime: false,
 
                         //DOC SAVE
                         //dateClick: function() {
                         //    alert('a day has been clicked!');
                         //}
+                        eventDrop: function(info) {
+                            $.ajax({
+                                url: '/calendar/UpdateEvent',
+                                data: JSON.stringify({
+                                    Subject: info.event.title,
+                                    Start: info.event.start,
+                                    IsFullDay: "true",
+                                    EventID: info.event.extendedProps.eventID
+                                }),
+                                type: "POST",
+                                contentType: 'application/json; charset=utf-8',
+                                success: function(json) {
+                                    console.log("Update Event returned");
+                                },
+                                failure: function(json) {
+                                    console.log("Update Event failed.");
+                                }
 
+                            });
+
+                        },
                         eventReceive: function(info) {
                             $.ajax({
                                 url: '/calendar/SaveNewEvent',
-                                 data: JSON.stringify({
+                                data: JSON.stringify({
                                     Subject: info.event.title,
-                                    Start: info.event.start
+                                    Start: info.event.start,
+                                    IsFullDay: "true"
                                 }),
-                           //data: {
-                           //         Subject: info.event.title,
-                           //         Start: info.event.start
-                           //     },
                                 type: "POST",
                                 //contentType: 'application/x-www-form-urlencoded',
                                 contentType: 'application/json; charset=utf-8',
