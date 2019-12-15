@@ -24,5 +24,14 @@ namespace MyKitchen.Controllers
             var viewModel = new DisplayCurrentPredictionViewModel() {FoodEntityName = FoodRecService.GetNextRecommendation()};
             return View(viewModel);
         }
+
+
+        public IActionResult ShowItem()
+        {
+
+            var viewModel = new DisplayCurrentPredictionViewModel() { FoodEntityName = FoodRecService.GetNextRecommendation() };
+            return PartialView(viewModel);
+        }
+
     }
 }

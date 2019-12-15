@@ -1,22 +1,30 @@
-﻿using MyKitchen.Models;
+﻿using System;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using MyKitchen.Data;
+using MyKitchen.Models;
 
 namespace MyKitchen
 {
     public class FoodRecommendationService:IFoodReccomendationService
     {
-        private IFoodItemRepository repo;
-        public FoodRecommendationService(IFoodItemRepository prepo)
+        private ApplicationDbContext ctx;
+        public FoodRecommendationService(ApplicationDbContext pctx)
         {
-            repo = prepo;
-
+            ctx = pctx;
         }
 
         public string ServiceName { get; set; }
         public string GetNextRecommendation()
         {
-            //get random item
-            var foodItem = repo.GetRandomItem();
-            return foodItem.FoodItemName;
+            IQueryable<vwsMealsAndFoodItems> items = ctx.vwsMealsAndFoodItems.AsQueryable();//.     return _context.FoodItems.OrderBy(x => Guid.NewGuid()).FirstOrDefault(); ToList();
+            var rec = SelectRandItem(items);
+            return rec.ItemName;
+        }
+
+        private T SelectRandItem<T>(IQueryable<T> queryable)
+        {
+            return queryable.OrderBy(x => Guid.NewGuid()).FirstOrDefault();
         }
     }
 }

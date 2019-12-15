@@ -7,10 +7,37 @@
          ViewData["Title"] = "What Should I Eat?";
 }
 
-<h1>I should Eat</h1>
-
-<h2>@Model.FoodEntityName</h2>
 
 <form method="post">
-    <button asp-controller="WhatShouldIEat" asp-action="DisplayCurrentPrediction">Try Again</button>
+   
+    
+
+    <div class="text-center">
+        <h1>I should Eat...</h1>
+      
+        <div id="ShowItemContainer">
+        </div>
+        
+        <input type="button" id="btnTryAgain" class="btn-primary" value="Try Again"/>
+        <button id="btnAccept" class="btn-primary" asp-controller="WhatShouldIEat" asp-action="DisplayCurrentPrediction">Sounds Good</button>
+    </div>
 </form>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            $("#btnTryAgain").click(loadNextItem);
+            loadNextItem();
+        });
+
+
+        function loadNextItem() {
+            $('#ShowItemContainer').load("/WhatShouldIEat/ShowItem", function(txt, status, xhr) { });
+        }
+
+    </script>
+    
+
+}

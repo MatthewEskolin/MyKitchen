@@ -46,3 +46,6 @@ COMPLETED ITEMS
 
 
 
+12/13/2019
+-work to make an ajax call when getting the next perdiction, so we don't have to reload the entire page.
+
