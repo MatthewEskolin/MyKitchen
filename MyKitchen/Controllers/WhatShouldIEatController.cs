@@ -33,5 +33,9 @@ namespace MyKitchen.Controllers
             return PartialView(viewModel);
         }
 
+        public IActionResult FoodAccepted()
+        {
+            return View();
+        }
     }
 }

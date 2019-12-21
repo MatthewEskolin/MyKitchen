@@ -23,5 +23,18 @@ IDEA - We should have a trainer where the app asks us - (have you eaten this in 
 
 
 
+12/15/2019
+can we build this out so that each user sees their own environment?
+can the app encourage users to start cooking? what about food meditations? can we develop different themes to honour the sources of our food?
+-> prayers to the earth in thanksgiving for our food...
+--->Farmers
+-->Butchers
+-->Delivery Drivers
+-->all the hands it passed through to reach the user
+
+
+
+
+
 
 

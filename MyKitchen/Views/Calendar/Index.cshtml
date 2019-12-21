@@ -9,6 +9,9 @@
 <div id="itemContainer">
 
 </div>
+
+<div style="clear: both;"></div>
+
 <div id="calendar">
 </div>
 
@@ -57,7 +60,7 @@
                 }
             });
 
-            //Get Available Items
+            //Get Available Food Items & Meals
             $.ajax({
                 type: "GET",
                 url: "/calendar/GetAvailableItems",
@@ -79,6 +82,7 @@
                     alert('failed' + error);
                 }
             });
+
 
             //Create Calender
             function GenerateCalender(events) {

@@ -49,3 +49,16 @@ COMPLETED ITEMS
 12/13/2019
 -work to make an ajax call when getting the next perdiction, so we don't have to reload the entire page.
 
+
+12/15/2019
+--Let's clean up the general style and add some information to the homepage
+
+--Let's Eat -> Enjoy and be well..[inject a spiritual quote about food...]
+
+-->I'm ready to eat again button ->
+
+
+
+12/15/2019
+--> can we create a search for items tool on the calendar page? so we have access to all foods!
+

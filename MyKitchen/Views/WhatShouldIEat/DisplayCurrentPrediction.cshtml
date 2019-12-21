@@ -13,13 +13,14 @@
     
 
     <div class="text-center">
-        <h1>I should Eat...</h1>
+        <h6>I Should Eat...</h6>
       
         <div id="ShowItemContainer">
         </div>
-        
-        <input type="button" id="btnTryAgain" class="btn-primary" value="Try Again"/>
-        <button id="btnAccept" class="btn-primary" asp-controller="WhatShouldIEat" asp-action="DisplayCurrentPrediction">Sounds Good</button>
+        <div>
+            <input type="button" id="btnTryAgain" class="btn-primary wseButton" value="Try Again"/>
+            <button id="btnAccept" class="btn-primary wseButton" asp-controller="WhatShouldIEat" asp-action="FoodAccepted">Let's Eat this</button>
+        </div>
     </div>
 </form>
 
