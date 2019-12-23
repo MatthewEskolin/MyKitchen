@@ -51,7 +51,6 @@ namespace MyKitchen.Controllers
 
             return new JsonResult(true);
 
-            return new JsonResult(false);
 
         }
 
