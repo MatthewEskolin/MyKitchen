@@ -23,7 +23,7 @@ namespace MyKitchen.Models
 
         public Task<FoodItem> Find(int id)
         {
-            return _context.FoodItems.FindAsync(id);
+            return _context.FoodItems.FindAsync(id).AsTask();
         }
 
         public Task SaveChangesAsync()

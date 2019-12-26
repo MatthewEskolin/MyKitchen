@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <DocumentationFile></DocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageTags>asp.net, performance, speed, cache, caching</PackageTags>

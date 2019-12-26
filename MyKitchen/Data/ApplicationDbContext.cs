@@ -24,7 +24,7 @@ namespace MyKitchen.Data
 
         public DbSet<Events> Events { get; set; }
 
-        public DbQuery<vwsMealsAndFoodItems> vwsMealsAndFoodItems { get; set; }
+        public DbSet<vwsMealsAndFoodItems> vwsMealsAndFoodItems { get; set; }
         public DbSet<FoodGroup> FoodGroups { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -32,10 +32,12 @@ namespace MyKitchen.Data
             builder.Entity<MealFoodItems>(x => { x.HasIndex(y => new {y.FoodItemId, y.MealId}).IsUnique(); });
             builder.Entity<FoodItem>().HasOne(x => x.FoodGroup).WithMany(y => y.FoodItem);
 
-            builder.Query<vwsMealsAndFoodItems>(x =>
-            {
-                x.ToView("vwsMealsAndFoodItems");
-            });
+            builder.Entity<vwsMealsAndFoodItems>().HasNoKey();
+
+            //is toview no longer required
+            //builder.Entity<vwsMealsAndFoodItems>().HasNoKey().ToView("vwsMealsAndFoodItems");
+
+
         }
     }
 

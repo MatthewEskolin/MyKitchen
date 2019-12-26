@@ -55,7 +55,7 @@ namespace MyKitchen.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateEvent([FromBody] Events event1)
+        public JsonResult UpdateEvent([FromBody]Events event1)
         {
             if(event1.EventID < 1) {  return new JsonResult(false);}
 

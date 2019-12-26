@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using MyKitchen.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Protocols;
+using Microsoft.Extensions.Hosting;
 using MyKitchen.Controllers;
 using MyKitchen.Models;
 
@@ -44,7 +44,7 @@ namespace MyKitchen
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, Microsoft.AspNetCore.Identity.IdentityRole>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
+                .AddDefaultUI()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -64,7 +64,12 @@ namespace MyKitchen
             services.AddTransient<IFoodReccomendationService, FoodRecommendationService>();
             services.AddTransient<IMealRepository,EfMealRepository>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddFluentValidation();
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddFluentValidation().AddNewtonsoftJson();
+
+
+            services.Configure<MvcOptions>(options => { options.EnableEndpointRouting = false; });
 
             services.AddProgressiveWebApp();
 
@@ -77,7 +82,7 @@ namespace MyKitchen
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -97,6 +102,8 @@ namespace MyKitchen
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            //TODO can we research how this works with removing endpionts?
 
             app.UseMvc(routes =>
             {
