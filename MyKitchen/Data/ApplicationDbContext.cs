@@ -4,11 +4,13 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MyKitchen.Controllers;
 using MyKitchen.Data.Calendar;
 
 namespace MyKitchen.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>    {
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser> , IMyKitchenDataContext
+    {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
 

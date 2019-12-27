@@ -1,25 +1,53 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyKitchen.Data;
+using MyKitchen.Data.Calendar;
 using MyKitchen.Models;
 using MyKitchen.Models.FoodItems;
 
 namespace MyKitchen.Controllers
 {
+
+    //TODO this is experiment to facilitate unit testing based on https://www.jerriepelser.com/blog/resolve-dbcontext-as-interface-in-aspnet5-ioc-container/
+    public interface IMyKitchenDataContext
+    {
+         DbSet<Meal> Meals { get; set; }
+
+         DbSet<LastCookedMeal> LastCookedMeal { get; set; }
+
+         DbSet<MealFoodItems> MealFoodItems { get; set; }
+         DbSet<FoodItem> FoodItems { get; set; }
+
+         DbSet<Events> Events { get; set; }
+
+         DbSet<vwsMealsAndFoodItems> vwsMealsAndFoodItems { get; set; }
+         DbSet<FoodGroup> FoodGroups { get; set; }
+
+         int SaveChanges();
+
+         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+
+
+    }
+
+
+
+
     [Authorize]
     public class FoodItemsController : Controller
     {
 
         private readonly IFoodItemRepository repository;
-        private ApplicationDbContext ctx { get; set; }
+        private IMyKitchenDataContext ctx { get; set; }
 
         
         public int PageSize = 10;
 
-        public FoodItemsController(IFoodItemRepository repo,ApplicationDbContext context)
+        public FoodItemsController(IFoodItemRepository repo, IMyKitchenDataContext context)
         {
             ctx = context;
             repository = repo;

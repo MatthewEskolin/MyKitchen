@@ -1,7 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.ObjectPool;
+using Moq;
+using MyKitchen.Controllers;
 using MyKitchen.Data;
+using MyKitchen.Models;
+using MyKitchen.Models.FoodItems;
 using Xunit;
 
 namespace MyKitchen.Tests
@@ -26,8 +32,30 @@ namespace MyKitchen.Tests
         [ClassData(typeof(FoodItemTestData))]
         public void IndexActionModelIsComplete(FoodItem[] foodItems)
         {
+            //arrange
+            var mock = new Mock<IFoodItemRepository>();
+            var dbmock = new Mock<IMyKitchenDataContext>();
+            mock.SetupGet(x => x.FoodItems).Returns(foodItems.AsQueryable());
+
+            var dbset = MockDbSetFactory.Create<FoodItem>(foodItems);
+            dbmock.SetupGet(x => x.FoodItems).Returns(dbset.Object);
+            var controller = new FoodItemsController(mock.Object, dbmock.Object);
 
 
+            //act
+            var model = (controller.Index() as ViewResult)?.ViewData.Model as FoodItemIndexViewModel;
+            var modelenum = model.FoodItems;
+
+            //assert
+            Assert.Equal(modelenum,mock.Object.FoodItems.AsEnumerable(),Comparer.Get<FoodItem>((p1,p2) => p1.FoodItemName == p2.FoodItemName));
+
+        }
+
+        [Fact]
+        public void RepositoryPropertyCalledTwice()
+        {
+            //arrange
+            var mock = new Mock<IFoodItemRepository>();
 
         }
 

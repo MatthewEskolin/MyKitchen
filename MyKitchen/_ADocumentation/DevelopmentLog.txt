@@ -62,3 +62,6 @@ COMPLETED ITEMS
 12/15/2019
 --> can we create a search for items tool on the calendar page? so we have access to all foods!
 
+12/27/2019
+--> [BUG] what is going on with "Food Group" not being saved to the database..
+
