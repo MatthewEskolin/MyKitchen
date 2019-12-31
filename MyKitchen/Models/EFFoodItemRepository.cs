@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using MyKitchen.Data;
 
 namespace MyKitchen.Models
@@ -14,7 +15,7 @@ namespace MyKitchen.Models
             _context = ctx;
         }
 
-        public IQueryable<FoodItem> FoodItems => _context.FoodItems;
+        public IQueryable<FoodItem> FoodItems => _context.FoodItems.Include(x => x.FoodGroup);
         public Task<int> Add(FoodItem foodItem)
         {
             _context.FoodItems.Add(foodItem);

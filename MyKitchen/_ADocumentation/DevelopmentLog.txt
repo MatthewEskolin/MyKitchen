@@ -65,3 +65,7 @@ COMPLETED ITEMS
 12/27/2019
 --> [BUG] what is going on with "Food Group" not being saved to the database..
 
+12/31/2019
+[task] add ability to delete an event from the calendar
+
+
