@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using MyKitchen.Data;
 using MyKitchen.Data.Calendar;
@@ -65,6 +66,21 @@ namespace MyKitchen.Controllers
 
             return new JsonResult(true);
         }
+
+
+        [HttpPost]
+        public JsonResult ClearMonth([FromBody] int month)
+        {
+            var smonth = month + 1;
+
+            List<Events> monthEvents = ctx.Events.Where(x => x.Start.Month == smonth).ToList();
+            ctx.Events.RemoveRange(monthEvents);
+            ctx.SaveChanges();
+
+            return new JsonResult(true);
+        }
+
+
 
 
 

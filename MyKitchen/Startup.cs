@@ -77,7 +77,8 @@ namespace MyKitchen
 
             services.Configure<MvcOptions>(options => { options.EnableEndpointRouting = false; });
 
-            services.AddProgressiveWebApp();
+            //todo re-enable service worker once we figure out how to have this not interfere with debugging..
+            //services.AddProgressiveWebApp();
 
   
             services.AddAuthentication().AddFacebook(options =>
