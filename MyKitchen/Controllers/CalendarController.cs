@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using MyKitchen.Data;
@@ -32,6 +33,43 @@ namespace MyKitchen.Controllers
         {
             var events = ctx.Events.ToList();
             return new JsonResult(events);
+        }
+
+        public JsonResult GetEventsFeed()
+        {
+            var events = ctx.Events.ToList().Select(FullCalendarEvent.FromEvent);
+            return new JsonResult(events);
+        }
+
+
+        public class FullCalendarEvent
+        {
+            //mirroring fullcalendar object properties
+            public string  title { get; set; }
+            public string description { get; set; }
+            public DateTime start { get; set; }
+            public DateTime? end { get; set; }
+            public string color { get; set; }
+            public bool allDay { get; set; }
+            public int eventID { get; set; }
+
+            public static FullCalendarEvent FromEvent(Events evt)
+            {
+                var fullCalendarEvent = new FullCalendarEvent
+                {
+                    title = evt.Subject,
+                    description = evt.Description,
+                    start = evt.Start,
+                    end = evt?.End,
+                    color = evt.ThemeColor,
+                    eventID = evt.EventID,
+                    allDay = evt.IsFullDay
+
+                };
+
+                return fullCalendarEvent;
+            }
+
         }
 
         public JsonResult GetAvailableItems()
@@ -68,10 +106,15 @@ namespace MyKitchen.Controllers
         }
 
 
-        [HttpPost]
-        public JsonResult ClearMonth([FromBody] int month)
+        public class CalendarCommand
         {
-            var smonth = month + 1;
+            public int Month { get; set; }
+        }
+
+        [HttpPost]
+        public JsonResult ClearMonth([FromBody]  CalendarCommand cmd)
+        {
+            var smonth = cmd.Month + 1;
 
             List<Events> monthEvents = ctx.Events.Where(x => x.Start.Month == smonth).ToList();
             ctx.Events.RemoveRange(monthEvents);

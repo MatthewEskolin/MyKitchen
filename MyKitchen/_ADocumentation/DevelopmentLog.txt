@@ -69,3 +69,11 @@ COMPLETED ITEMS
 [task] add ability to delete an event from the calendar
 
 
+02/09/2020 - jan went fast right? working on setting up an event source using
+https://fullcalendar.io/docs/event-object
+
+Lunar Abundance Kundalini Yoga and Gong Bath
+instead of using getevents - this will allow events to be more dynamically sourced into the calendar!
+I Broke the calendar with the latest updates -> createcalendar needs to pass events array to fix!
+
+

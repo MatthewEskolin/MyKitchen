@@ -25,41 +25,62 @@
     <script src="/lib/fullcalendar/core/main.min.js"></script>
     <script src="/lib/fullcalendar/daygrid/main.min.js"></script>
     <script src="/lib/fullcalendar/interaction/main.min.js"></script>
+    @*<script src="/lib/superagent/superagent.js"></script>*@
 
     <script type="text/javascript">
+
+        //event fetching function
+        //import { req } from 'superagent';
+
+
+        var eventSources = [
+            {
+                url: "/calendar/GetEventsFeed",
+                method: 'GET',
+                failure: function() {
+                    alert('could not load items');
+                },
+                color: 'blue',
+                textColor:'black'
+            }
+        ];
+        
         var theCalendar = null;
+
 
         $(document).ready(function() {
             var events = [];
 
-            //Get Events - calls GenerateCalender
-            $.ajax({
-                type: "GET",
-                url: "/calendar/GetEvents",
-                success: function(data) {
-                    //return;
-                    $.each(data,
-                        function(i, v) {
+            GenerateCalender(eventSources);
 
-                            var newEvent = {
-                                title: v.subject,
-                                description: v.Description,
-                                start: v.start, //moment(v.Start),
-                                end: v.end != null ? v.end : null,
-                                color: v.ThemeColor,
-                                allDay: v.IsFullDay,
-                                eventID: v.eventID
-                            }
-                            events.push(newEvent);
+            ////Get Events - calls GenerateCalender
+            //$.ajax({
+            //    type: "GET",
+            //    url: "/calendar/GetEvents",
+            //    success: function(data) {
+            //        //return;
+            //        $.each(data,
+            //            function(i, v) {
 
-                        });
-                    GenerateCalender(events);
+            //                var newEvent = {
+            //                    title: v.subject,
+            //                    description: v.Description,
+            //                    start: v.start, //moment(v.Start),
+            //                    end: v.end != null ? v.end : null,
+            //                    color: v.ThemeColor,
+            //                    allDay: v.IsFullDay,
+            //                    eventID: v.eventID
+            //                }
+            //                events.push(newEvent);
 
-                },
-                error: function(error) {
-                    alert('failed' + error);
-                }
-            });
+            //            });
+            //        //GenerateCalender(events);
+
+            //    },
+            //    error: function(error) {
+            //        alert('failed' + error);
+            //    }
+            //});
 
             //Get Available Food Items & Meals
             $.ajax({
@@ -81,78 +102,13 @@
                 },
 
 
-
-
-                error: function (error) {
+                error: function(error) {
                     alert('failed' + error);
                 }
             });
 
-            //Old Method
-            function REMOVEGenerateCalender(events) {
-                var calendarEl = document.getElementById('calendar');
-
-                var calendar = new FullCalendar.Calendar(calendarEl, {
-                    plugins: [ 'dayGrid'  ],
-                    header: {
-                        //TODO need to include location of the custom button see below
-                        left: 'dayGridMonth,timeGridWeek,timeGridDay custom1',
-                        center: 'title',
-                        right: 'custom2 prevYear,prev,next,nextYear'
-                    },
-                    footer: {
-                        left: 'custom1,custom2',
-                        center: '',
-                        right: 'prev,next'
-                    },
-                    customButtons: {
-                        custom1: {
-                            text: 'custom 1',
-                            click: function() {
-                                alert('clicked custom button 1!');
-                            }
-                        },
-                        custom2: {
-                            text: 'custom 2',
-                            click: function() {
-                                alert('clicked custom button 2!');
-                            }
-                        }
-                    }
-                });
-
-                calendar.render();
-
-            }
-
-
-            function getEventsInCurrentMonth() {
-
-
-                return null;
-                //var eventSource = theCalendar.getEventSources();
-
-
-                //$('#calendar').fullCalendar('clientEvents',function(event){
-                //    /*Gets the events of the current month in an array*/
-                //    if (event.start.getMonth() == $('#calendar').fullCalendar('getDate').getMonth()) {
-                //        return true;
-                //    }
-                //    else {   
-                //        return false;
-                //    };
-                //});
-            }
-
-
-            function accesscalendar() {
-
-                theCalendar.next();
-
-
-            }
             //Create Calender
-            function GenerateCalender(events) {
+            function GenerateCalender(eventSources) {
 
                 var calendarEl = document.getElementById('calendar');
                 var draggableEL = document.getElementById('itemContainer');
@@ -161,7 +117,8 @@
                 theCalendar = new FullCalendar.Calendar(calendarEl,
                     {
                         plugins: ['dayGrid', 'interaction'],
-                        events: events,
+                        eventSources: eventSources,
+                        //events: events,
                         editable: true,
                         droppable: true,
                         fixedWeekCount: false,
@@ -174,7 +131,7 @@
                         //    right: 'custom2 prevYear,prev,next,nextYear'
                         //},
                         footer: {
-                            left:'custom1'
+                            left: 'custom1'
                         },
 
                         //DOC SAVE
@@ -226,29 +183,30 @@
                         customButtons: {
                             custom1: {
                                 text: 'Clear Month',
-                                click: function (whatisthis) {
+                                click: function(whatisthis) {
 
                                     var curMonth = theCalendar.getDate().getMonth();
 
 
+                                        //call ajax to remove all events in the current month
+                                        $.ajax({
+                                            url: '/calendar/ClearMonth',
+                                            data: JSON.stringify({
+                                                Month: curMonth
 
-                                    //call ajax to remove all events in the current month
-                                    $.ajax({
-                                        url: '/calendar/ClearMonth',
-                                        data: JSON.stringify({
-                                            Month: curMonth
+                                            }),
+                                            type: "POST",
+                                            contentType: 'application/json; charset=utf-8',
+                                            success: function(json) {
+                                                console.log("Clear month returned");
+                                                theCalendar.getEventSources()[0].refetch();
 
-                                        }),
-                                        type: "POST",
-                                        contentType: 'application/json; charset=utf-8',
-                                        success: function(json) {
-                                            console.log("Clear month returned");
-                                        },
-                                        failure: function(json) {
-                                            console.log("Clear month failed")
-                                        }
+                                            },
+                                            failure: function(json) {
+                                                console.log("Clear month failed")
+                                            }
 
-                                    });
+                                        });
 
 
                                     //reload calendar from db
@@ -274,7 +232,7 @@
                 new Draggable(draggableEL,
                     {
                         itemSelector: '.draggableitem',
-                        longPressDelay:200
+                        longPressDelay: 200
 
                     });
 
