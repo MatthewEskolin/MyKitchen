@@ -17,7 +17,11 @@ namespace MyKitchen
     {
         public static void Main(string[] args)
         {
-            var host = CreateWebHostBuilder(args).Build();
+            var host = CreateWebHostBuilder(args).ConfigureLogging(x =>
+            {
+                x.ClearProviders();
+                x.AddApplicationInsights();
+            }).Build();
 
             using (var scope = host.Services.CreateScope())
             {

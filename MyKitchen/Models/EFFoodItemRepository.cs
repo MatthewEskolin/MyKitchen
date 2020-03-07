@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using MyKitchen.Data;
 
 namespace MyKitchen.Models
@@ -10,9 +11,11 @@ namespace MyKitchen.Models
     public class EFFoodItemRepository:IFoodItemRepository
     {
         private readonly ApplicationDbContext _context;
-        public EFFoodItemRepository(ApplicationDbContext ctx)
+        private readonly ILogger _logger;
+        public EFFoodItemRepository(ApplicationDbContext ctx,ILogger<EFFoodItemRepository> logger)
         {
             _context = ctx;
+            _logger = logger;
         }
 
         public IQueryable<FoodItem> FoodItems => _context.FoodItems.Include(x => x.FoodGroup);
@@ -20,10 +23,17 @@ namespace MyKitchen.Models
         {
             _context.FoodItems.Add(foodItem);
             return _context.SaveChangesAsync();
+            _logger.LogError("ERROR TEST - added item");
         }
 
         public Task<FoodItem> Find(int id)
         {
+            _logger.LogTrace("TRACE TEST - search for item");
+            _logger.LogDebug("DEUB TEST - search for item");
+            _logger.LogInformation("Information TEST - search for item");
+            _logger.LogWarning("WARNING TEST - search for item");
+            _logger.LogError("ERROR TEST - search for item");
+            _logger.LogCritical("CRITICAL TEST - search for item");
             return _context.FoodItems.FindAsync(id).AsTask();
         }
 

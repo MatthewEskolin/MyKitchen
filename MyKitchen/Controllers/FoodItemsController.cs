@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using MyKitchen.Data;
 using MyKitchen.Models;
 using MyKitchen.Models.FoodItems;
@@ -19,13 +20,16 @@ namespace MyKitchen.Controllers
 
         private IFoodItemRepository repository { get; set; }
         private IMyKitchenDataContext ctx { get; set; }
+        private readonly ILogger _logger;
+
         
         public int PageSize = 10;
 
-        public FoodItemsController(IFoodItemRepository repo, IMyKitchenDataContext context)
+        public FoodItemsController(IFoodItemRepository repo, IMyKitchenDataContext context,ILogger<FoodItemsController> logger)
         {
             ctx = context;
             repository = repo;
+            _logger = logger;
         }
 
         // GET: FoodItems

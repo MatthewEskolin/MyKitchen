@@ -77,3 +77,5 @@ instead of using getevents - this will allow events to be more dynamically sourc
 I Broke the calendar with the latest updates -> createcalendar needs to pass events array to fix!
 
 
+03/01/2020
+-work on improving logging by using System Diagnostic Tracing
