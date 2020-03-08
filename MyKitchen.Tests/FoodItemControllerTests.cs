@@ -20,9 +20,12 @@ namespace MyKitchen.Tests
             var dbmock = new Mock<IMyKitchenDataContext>();
             mock.SetupGet(x => x.FoodItems).Returns(foodItems.AsQueryable());
 
+            var mockLogger = new Mock<Microsoft.Extensions.Logging.ILogger<FoodItemsController>>();
+
+
             var dbset = MockDbSetFactory.Create<FoodItem>(foodItems);
             dbmock.SetupGet(x => x.FoodItems).Returns(dbset.Object);
-            var controller = new FoodItemsController(mock.Object, dbmock.Object);
+            var controller = new FoodItemsController(mock.Object, dbmock.Object,mockLogger.Object);
 
 
             //act
@@ -43,7 +46,10 @@ namespace MyKitchen.Tests
             var mock = new Mock<IFoodItemRepository>();
             var dbmock = new Mock<IMyKitchenDataContext>();
             mock.SetupGet(x => x.FoodItems).Returns(new[] { new FoodItem {FoodItemName = "test 1"} }.AsQueryable);
-            var controller = new FoodItemsController(mock.Object, dbmock.Object);
+
+            var mockLogger = new Mock<Microsoft.Extensions.Logging.ILogger<FoodItemsController>>();
+
+            var controller = new FoodItemsController(mock.Object, dbmock.Object,mockLogger.Object);
 
             //act
             var result = controller.Index();
@@ -69,7 +75,10 @@ namespace MyKitchen.Tests
                 new FoodItem() {FoodDescription = "FI5"},
             }.AsQueryable);
 
-            var controller = new FoodItemsController(mock.Object, dbmock.Object) {PageSize = 2};
+            var mockLogger = new Mock<Microsoft.Extensions.Logging.ILogger<FoodItemsController>>();
+
+
+            var controller = new FoodItemsController(mock.Object, dbmock.Object,mockLogger.Object) {PageSize = 2};
 
 
             //act

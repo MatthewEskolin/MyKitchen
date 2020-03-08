@@ -47,6 +47,9 @@ namespace MyKitchen
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddApplicationInsightsTelemetry();
+                            
+
 
             //does this override scoped lifetime of dbcontext above? GetService will return a scoped instance -> I would think not
             services.AddTransient<IMyKitchenDataContext>(provider => provider.GetService<ApplicationDbContext>());

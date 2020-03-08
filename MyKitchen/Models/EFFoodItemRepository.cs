@@ -22,8 +22,8 @@ namespace MyKitchen.Models
         public Task<int> Add(FoodItem foodItem)
         {
             _context.FoodItems.Add(foodItem);
-            return _context.SaveChangesAsync();
             _logger.LogError("ERROR TEST - added item");
+            return _context.SaveChangesAsync();
         }
 
         public Task<FoodItem> Find(int id)
