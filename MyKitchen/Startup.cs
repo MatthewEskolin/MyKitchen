@@ -82,11 +82,25 @@ namespace MyKitchen
             //services.AddProgressiveWebApp();
 
   
-            services.AddAuthentication().AddFacebook(options =>
+            services.AddAuthentication()
+            .AddFacebook(options =>
             {
                 options.AppId = Configuration["Authentication:Facebook:AppId"];
                 options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            })
+            .AddGoogle(options => {
+                options.ClientId = Configuration["Authentication:Google:ClientId"];
+                options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
+            
+            
+            
+            ;
+
+            // services.AddAuthentication().AddGoogle(options =>
+            // jkkjkjjkj)
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

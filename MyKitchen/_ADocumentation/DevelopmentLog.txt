@@ -79,3 +79,6 @@ I Broke the calendar with the latest updates -> createcalendar needs to pass eve
 
 03/01/2020
 -work on improving logging by using System Diagnostic Tracing
+
+03/28/2020
+-work on creating a MVP by adding user accounts -> let's start by creating a social loging from google.
