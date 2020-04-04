@@ -70,6 +70,7 @@ namespace MyKitchen
             services.AddTransient<IFoodItemRepository, EFFoodItemRepository>();
             services.AddTransient<IFoodReccomendationService, FoodRecommendationService>();
             services.AddTransient<IMealRepository,EfMealRepository>();
+            services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)

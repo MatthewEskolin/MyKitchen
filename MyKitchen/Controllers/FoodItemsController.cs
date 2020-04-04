@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using MyKitchen.Data;
 using MyKitchen.Models;
 using MyKitchen.Models.FoodItems;
-
+using System.Security.Claims;
 namespace MyKitchen.Controllers
 {
 
@@ -25,7 +25,7 @@ namespace MyKitchen.Controllers
         
         public int PageSize = 10;
 
-        public FoodItemsController(IFoodItemRepository repo, IMyKitchenDataContext context,ILogger<FoodItemsController> logger)
+        public FoodItemsController(IFoodItemRepository repo, IMyKitchenDataContext context,ILogger<FoodItemsController> logger,IHttpContextAccessor )
         {
             ctx = context;
             repository = repo;
