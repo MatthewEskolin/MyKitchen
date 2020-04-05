@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
 using MyKitchen.Data;
-using MyKitchen.Models;
 
-namespace MyKitchen
+    namespace MyKitchen
 {
     public class FoodRecommendationService:IFoodReccomendationService
     {

@@ -8,6 +8,7 @@ using MyKitchen.Data;
 using MyKitchen.Models;
 using MyKitchen.Models.FoodItems;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 namespace MyKitchen.Controllers
 {
 
@@ -20,13 +21,15 @@ namespace MyKitchen.Controllers
 
         private IFoodItemRepository repository { get; set; }
         private IMyKitchenDataContext ctx { get; set; }
+        private IHttpContextAccessor CurrentUser {get; set;}
         private readonly ILogger _logger;
-
-        
         public int PageSize = 10;
 
-        public FoodItemsController(IFoodItemRepository repo, IMyKitchenDataContext context,ILogger<FoodItemsController> logger,IHttpContextAccessor )
+        public FoodItemsController(IFoodItemRepository repo, IMyKitchenDataContext context,ILogger<FoodItemsController> logger,IHttpContextAccessor contextAccess = null)
         {
+            CurrentUser = contextAccess;
+            
+
             ctx = context;
             repository = repo;
             _logger = logger;
