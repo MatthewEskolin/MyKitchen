@@ -18,6 +18,7 @@ namespace MyKitchen.Models
         void Remove(FoodItem foodItem);
         FoodItem  GetRandomItem();
         IEnumerable<FoodItem> GetFoodItems();
+        void AddFoodItemForUser(ApplicationUser user, FoodItem foodItem);
     }
 
 

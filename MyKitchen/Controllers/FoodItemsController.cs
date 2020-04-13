@@ -9,6 +9,8 @@ using MyKitchen.Models;
 using MyKitchen.Models.FoodItems;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using MyKitchen.BL;
+
 namespace MyKitchen.Controllers
 {
 
@@ -21,15 +23,14 @@ namespace MyKitchen.Controllers
 
         private IFoodItemRepository repository { get; set; }
         private IMyKitchenDataContext ctx { get; set; }
-        private IHttpContextAccessor CurrentUser {get; set;}
+        private UserInfo CurrentUser {get; set;}
         private readonly ILogger _logger;
         public int PageSize = 10;
 
-        public FoodItemsController(IFoodItemRepository repo, IMyKitchenDataContext context,ILogger<FoodItemsController> logger,IHttpContextAccessor contextAccess = null)
+        public FoodItemsController(IFoodItemRepository repo, IMyKitchenDataContext context,ILogger<FoodItemsController> logger,UserInfo user = null)
         {
-            CurrentUser = contextAccess;
+            CurrentUser = user;
             
-
             ctx = context;
             repository = repo;
             _logger = logger;
@@ -148,6 +149,8 @@ namespace MyKitchen.Controllers
                 try
                 {
                     repository.Update(foodItem);
+
+                    repository.AddFoodItemForUser(CurrentUser.User,foodItem);
                     await repository.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

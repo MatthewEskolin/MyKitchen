@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using MyKitchen.Controllers;
 using MyKitchen.Models;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
+using MyKitchen.BL;
 
 namespace MyKitchen
 {
@@ -71,6 +72,8 @@ namespace MyKitchen
             services.AddTransient<IFoodReccomendationService, FoodRecommendationService>();
             services.AddTransient<IMealRepository,EfMealRepository>();
             services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
+            services.AddTransient<UserInfo>();
+
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)

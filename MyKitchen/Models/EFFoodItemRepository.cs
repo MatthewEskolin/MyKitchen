@@ -62,5 +62,16 @@ namespace MyKitchen.Models
         {
             return FoodItems.AsEnumerable();
         }
+
+        public void AddFoodItemForUser(ApplicationUser user, FoodItem foodItem)
+        {
+            var userFoodItem = new MyKitchen.Data.UserFoodItem();
+            userFoodItem.FoodItemID = foodItem.FoodItemID;
+            userFoodItem.AppUser = user;
+
+            _context.UserFoodItems.Add(userFoodItem);
+            _context.SaveChangesAsync();
+
+        }
     }
 }
