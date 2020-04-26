@@ -62,12 +62,18 @@ namespace MyKitchen.Tests
             mock.VerifyGet(x => x.FoodItems,Times.AtMost(2));
 
         }
-
+#region
         [Fact]
         public void Can_Paginate()
         {
+
+            //unit tests are not supposed to rely on DB
+
             //arrange
             //arrange
+            var testPageSize = 2;
+            var testPageIndex = 3;
+
             var mock = new Mock<IFoodItemRepository>();
             var dbmock = new Mock<IMyKitchenDataContext>();
             mock.SetupGet(x => x.FoodItems).Returns(new[]
@@ -76,25 +82,27 @@ namespace MyKitchen.Tests
                 new FoodItem() {FoodDescription = "FI2"},
                 new FoodItem() {FoodDescription = "FI3"},
                 new FoodItem() {FoodDescription = "FI4"},
+
+                //These should appear on Page 3
                 new FoodItem() {FoodDescription = "FI5"},
+                new FoodItem() {FoodDescription = "FI6"},
             }.AsQueryable);
 
             var mockLogger = new Mock<Microsoft.Extensions.Logging.ILogger<FoodItemsController>>();
-
-
-            var controller = new FoodItemsController(mock.Object, dbmock.Object,mockLogger.Object) {PageSize = 2};
-
+            var controller = new FoodItemsController(mock.Object, dbmock.Object,mockLogger.Object) {PageSize = testPageSize};
 
             //act
-            var result = (controller.Index(3) as ViewResult)?.ViewData.Model as FoodItemIndexViewModel;
+            var result = (controller.Index(testPageIndex) as ViewResult)?.ViewData.Model as FoodItemIndexViewModel;
 
             //assert
             FoodItem[] foodItemArray = result.FoodItems.ToArray();
             Assert.True(foodItemArray.Length == 2);
-            Assert.Equal("FI4", foodItemArray[0].FoodDescription);
-            Assert.Equal("FI5", foodItemArray[1].FoodDescription);
+            Assert.Equal("FI5", foodItemArray[0].FoodDescription);
+            Assert.Equal("FI6", foodItemArray[1].FoodDescription);
 
         }
 
     }
+
+    #endregion
 }
