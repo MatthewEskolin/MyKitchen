@@ -22,9 +22,21 @@ namespace MyKitchen.Models
         public Task<int> Add(FoodItem foodItem)
         {
             _context.FoodItems.Add(foodItem);
-            _logger.LogError("ERROR TEST - added item");
+            _logger.LogInformation($"added food item {foodItem.FoodItemName}");
             return _context.SaveChangesAsync();
         }
+
+        public async Task<int> AddFoodForUser(ApplicationUser user, FoodItem foodItem)
+        {
+            var userFoodItem = new MyKitchen.Data.UserFoodItem();
+            userFoodItem.FoodItemID = foodItem.FoodItemID;
+            userFoodItem.AppUser = user;
+
+            _context.UserFoodItems.Add(userFoodItem);
+            return await _context.SaveChangesAsync();
+        }
+
+
 
         public Task<FoodItem> Find(int id)
         {
@@ -63,15 +75,9 @@ namespace MyKitchen.Models
             return FoodItems.AsEnumerable();
         }
 
-        public void AddFoodItemForUser(ApplicationUser user, FoodItem foodItem)
-        {
-            var userFoodItem = new MyKitchen.Data.UserFoodItem();
-            userFoodItem.FoodItemID = foodItem.FoodItemID;
-            userFoodItem.AppUser = user;
+      
 
-            _context.UserFoodItems.Add(userFoodItem);
-            _context.SaveChangesAsync();
 
-        }
+
     }
 }

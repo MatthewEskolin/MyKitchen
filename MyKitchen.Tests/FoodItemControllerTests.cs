@@ -11,31 +11,35 @@ namespace MyKitchen.Tests
 {
     public class FoodItemControllerTests
     {
-        [Theory]
-        [ClassData(typeof(FoodItemTestData))]
-        public void IndexActionModelIsComplete(FoodItem[] foodItems)
-        {
-            //arrange
-            var mock = new Mock<IFoodItemRepository>();
-            var dbmock = new Mock<IMyKitchenDataContext>();
-            mock.SetupGet(x => x.FoodItems).Returns(foodItems.AsQueryable());
+        //BEGIN CODE EXAMPLE
+        //Below is an example of how to use test data in an xUnit Test         
 
-            var mockLogger = new Mock<Microsoft.Extensions.Logging.ILogger<FoodItemsController>>();
+        // [Theory(Skip="Example For Test Data Class - not a valid test")]
+        // [ClassData(typeof(FoodItemTestData))]
+        // public void IndexActionModelIsComplete(FoodItem[] foodItems)
+        // {
+        //     //arrange
+        //     var mock = new Mock<IFoodItemRepository>();
+        //     var dbmock = new Mock<IMyKitchenDataContext>();
+        //     mock.SetupGet(x => x.FoodItems).Returns(foodItems.AsQueryable());
 
-
-            var dbset = MockDbSetFactory.Create<FoodItem>(foodItems);
-            dbmock.SetupGet(x => x.FoodItems).Returns(dbset.Object);
-            var controller = new FoodItemsController(mock.Object, dbmock.Object,mockLogger.Object);
+        //     var mockLogger = new Mock<Microsoft.Extensions.Logging.ILogger<FoodItemsController>>();
 
 
-            //act
-            var model = (controller.Index() as ViewResult)?.ViewData.Model as FoodItemIndexViewModel;
-            var modelenum = model.FoodItems;
+        //     var dbset = MockDbSetFactory.Create<FoodItem>(foodItems);
+        //     dbmock.SetupGet(x => x.FoodItems).Returns(dbset.Object);
+        //     var controller = new FoodItemsController(mock.Object, dbmock.Object,mockLogger.Object);
 
-            //assert
-            Assert.Equal(modelenum,mock.Object.FoodItems.AsEnumerable(),Comparer.Get<FoodItem>((p1,p2) => p1.FoodItemName == p2.FoodItemName));
 
-        }
+        //     //act
+        //     var model = (controller.Index() as ViewResult)?.ViewData.Model as FoodItemIndexViewModel;
+        //     var modelenum = model.FoodItems;
+
+        //     //assert
+        //     Assert.Equal(modelenum,mock.Object.FoodItems.AsEnumerable(),Comparer.Get<FoodItem>((p1,p2) => p1.FoodItemName == p2.FoodItemName));
+
+        // }
+        // END CODE EXAMPLE
 
         [Fact]
         public void RepositoryPropertyCalledTwice()

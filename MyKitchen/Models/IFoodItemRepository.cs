@@ -5,12 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyKitchen.Data;
 
+
 namespace MyKitchen.Models
 {
     public interface IFoodItemRepository
     {
         IQueryable<FoodItem> FoodItems { get; }
         Task<int> Add(FoodItem foodItem);
+        //Adds item for a specific user
+        Task<int> AddFoodForUser(ApplicationUser user, FoodItem foodItem);
 
         Task<FoodItem> Find(int id);
         Task SaveChangesAsync();
@@ -18,7 +21,6 @@ namespace MyKitchen.Models
         void Remove(FoodItem foodItem);
         FoodItem  GetRandomItem();
         IEnumerable<FoodItem> GetFoodItems();
-        void AddFoodItemForUser(ApplicationUser user, FoodItem foodItem);
     }
 
 

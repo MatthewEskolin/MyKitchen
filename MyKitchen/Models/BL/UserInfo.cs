@@ -12,8 +12,9 @@ namespace MyKitchen.BL
 
             public ApplicationUser User {get; set;}
 
-            public UserInfo(IHttpContextAccessor contextAccessor){
+            public UserInfo(IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager){
 
+                manager = userManager;
                 User = manager.GetUserAsync(contextAccessor.HttpContext.User).GetAwaiter().GetResult();
 
         }

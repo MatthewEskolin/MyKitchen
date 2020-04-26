@@ -96,6 +96,7 @@ namespace MyKitchen.Controllers
             if (ModelState.IsValid)
             {
                 await repository.Add(foodItem);
+                await repository.AddFoodForUser(CurrentUser.User,foodItem);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -149,8 +150,6 @@ namespace MyKitchen.Controllers
                 try
                 {
                     repository.Update(foodItem);
-
-                    repository.AddFoodItemForUser(CurrentUser.User,foodItem);
                     await repository.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
