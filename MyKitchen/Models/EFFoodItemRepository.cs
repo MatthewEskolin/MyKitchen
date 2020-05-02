@@ -54,6 +54,11 @@ namespace MyKitchen.Models
             return _context.SaveChangesAsync();
         }
 
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
         public void Update(FoodItem foodItem)
         {
             _context.FoodItems.Update(foodItem);

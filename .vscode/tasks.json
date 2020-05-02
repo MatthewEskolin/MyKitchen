@@ -14,6 +14,17 @@
             "problemMatcher": "$msCompile"
         },
         {
+                        "label": "build-all",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/MyKitchen.sln"
+            ],
+            "problemMatcher": "$msCompile"
+
+        },
+        {
             "label": "publish",
             "command": "dotnet",
             "type": "process",

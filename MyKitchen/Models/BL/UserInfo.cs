@@ -15,6 +15,7 @@ namespace MyKitchen.BL
             public UserInfo(IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager){
 
                 manager = userManager;
+                manager.GetUserAsync(new ClaimsPrincipal(){us})
                 User = manager.GetUserAsync(contextAccessor.HttpContext.User).GetAwaiter().GetResult();
 
         }
