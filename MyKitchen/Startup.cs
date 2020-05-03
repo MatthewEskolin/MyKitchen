@@ -17,15 +17,12 @@ using MyKitchen.BL;
 namespace MyKitchen
 {
 
-
-
-
     public class Startup
     {
         public Startup(IConfiguration configuration)
         {
-           
-                Configuration = configuration;
+
+            Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -41,18 +38,15 @@ namespace MyKitchen
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer( Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddIdentity<ApplicationUser, Microsoft.AspNetCore.Identity.IdentityRole>()
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddApplicationInsightsTelemetry();
-                            
 
-
-            //does this override scoped lifetime of dbcontext above? GetService will return a scoped instance -> I would think not
             services.AddTransient<IMyKitchenDataContext>(provider => provider.GetService<ApplicationDbContext>());
 
             services.Configure<IdentityOptions>(options =>
@@ -66,12 +60,10 @@ namespace MyKitchen
             //add control key so we can view live metrics in the Azure Portal in Application Insights <
             services.ConfigureTelemetryModule<QuickPulseTelemetryModule>((module, o) => module.AuthenticationApiKey = "3ef7lulsu5s5tei6c1q258kg1glf7psn2scldi5u");
 
-
-
             services.AddTransient<IFoodItemRepository, EFFoodItemRepository>();
             services.AddTransient<IFoodReccomendationService, FoodRecommendationService>();
-            services.AddTransient<IMealRepository,EfMealRepository>();
-            services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
+            services.AddTransient<IMealRepository, EfMealRepository>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<UserInfo>();
 
 
@@ -85,26 +77,18 @@ namespace MyKitchen
             //todo re-enable service worker once we figure out how to have this not interfere with debugging..
             //services.AddProgressiveWebApp();
 
-  
+
             services.AddAuthentication()
             .AddFacebook(options =>
             {
                 options.AppId = Configuration["Authentication:Facebook:AppId"];
                 options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
             })
-            .AddGoogle(options => {
+            .AddGoogle(options =>
+            {
                 options.ClientId = Configuration["Authentication:Google:ClientId"];
                 options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
-            
-            
-            
-            ;
-
-            // services.AddAuthentication().AddGoogle(options =>
-            // jkkjkjjkj)
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -128,8 +112,6 @@ namespace MyKitchen
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-
-            //TODO can we research how this works with removing endpionts?
 
             app.UseMvc(routes =>
             {
