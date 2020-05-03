@@ -64,7 +64,7 @@ namespace MyKitchen.Tests
             var logger = factory.CreateLogger<EFFoodItemRepository>();
 
 
-                    UserManager<ApplicationUser> userManager
+                   // UserManager<ApplicationUser> userManager
 
 
             //act
