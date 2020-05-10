@@ -13,6 +13,10 @@ using MyKitchen.Controllers;
 using MyKitchen.Models;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using MyKitchen.BL;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using System;
+using Azure.Core;
 
 namespace MyKitchen
 {
@@ -112,6 +116,25 @@ namespace MyKitchen
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            //EXAMPLE
+            
+            //is seems doing this in Program.cs is better
+            //authenticate to Azure KeyVault
+            // var options = new SecretClientOptions(){
+            //     Retry={
+            //         Delay = TimeSpan.FromSeconds(2),
+            //         MaxDelay = TimeSpan.FromSeconds(16),
+            //         MaxRetries = 5,
+            //         Mode = RetryMode.Exponential
+            //     }
+            // };
+
+            // var client = new SecretClient(new Uri("https://kvmykitchen.vault.azure.net/"),new DefaultAzureCredential(),options);
+
+
+
+
 
             app.UseMvc(routes =>
             {
