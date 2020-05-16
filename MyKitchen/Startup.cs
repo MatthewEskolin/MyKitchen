@@ -49,6 +49,10 @@ namespace MyKitchen
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            //code needed to sucessfully override defaultUI
+
+
+
             services.AddApplicationInsightsTelemetry();
 
             services.AddTransient<IMyKitchenDataContext>(provider => provider.GetService<ApplicationDbContext>());

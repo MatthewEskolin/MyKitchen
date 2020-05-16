@@ -82,3 +82,6 @@ I Broke the calendar with the latest updates -> createcalendar needs to pass eve
 
 03/28/2020
 -work on creating a MVP by adding user accounts -> let's start by creating a social loging from google.
+
+05/16/2020
+let's try having 2 diferent user accounts, and making sure that they have their own MEALS and ITEMS
