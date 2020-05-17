@@ -60,8 +60,13 @@ namespace MyKitchen
             services.Configure<IdentityOptions>(options =>
                 {
                     options.Password.RequireDigit = true;
-                    options.Password.RequiredLength = 8;
+                    options.Password.RequiredLength = 6;
                     options.User.RequireUniqueEmail = true;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireLowercase = false;
+                    
+
                 }
             );
 
