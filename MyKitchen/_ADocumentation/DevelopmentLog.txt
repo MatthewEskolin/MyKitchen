@@ -85,3 +85,9 @@ I Broke the calendar with the latest updates -> createcalendar needs to pass eve
 
 05/16/2020
 let's try having 2 diferent user accounts, and making sure that they have their own MEALS and ITEMS
+
+05/24/2020
+implement the task from 5/16/2020 with a unit test for both users 
+
+06/01/2020
+-get this up and running on indihackers
