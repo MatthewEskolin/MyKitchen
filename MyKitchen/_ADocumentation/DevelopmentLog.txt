@@ -90,4 +90,14 @@ let's try having 2 diferent user accounts, and making sure that they have their 
 implement the task from 5/16/2020 with a unit test for both users 
 
 06/01/2020
--get this up and running on indihackers
+get this up and running on indihackers
+
+05/31/2020
+-set it up so each user can have their own calendar and food item collection.
+
+
+
+
+
+
+

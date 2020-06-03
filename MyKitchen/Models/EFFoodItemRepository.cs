@@ -28,6 +28,7 @@ namespace MyKitchen.Models
 
         public async Task<int> AddFoodForUser(ApplicationUser user, FoodItem foodItem)
         {
+
             var userFoodItem = new MyKitchen.Data.UserFoodItem();
             userFoodItem.FoodItemID = foodItem.FoodItemID;
             userFoodItem.AppUser = user;
