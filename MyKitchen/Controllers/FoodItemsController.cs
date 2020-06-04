@@ -99,7 +99,6 @@ namespace MyKitchen.Controllers
                 FoodItem = new FoodItem()
             };
 
-
             return View(viewModel);
         }
 

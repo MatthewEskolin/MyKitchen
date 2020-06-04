@@ -18,7 +18,11 @@ namespace MyKitchen.Models
             _logger = logger;
         }
 
+        //Returns all Food Items in the DB - should only be used when we don't care about this user who created the item
         public IQueryable<FoodItem> FoodItems => _context.FoodItems.Include(x => x.FoodGroup);
+        
+        
+       //Add's a new FoodItem to the globa database - these food items are not yet associated with a user. 
         public Task<int> Add(FoodItem foodItem)
         {
             _context.FoodItems.Add(foodItem);
@@ -26,6 +30,7 @@ namespace MyKitchen.Models
             return _context.SaveChangesAsync();
         }
 
+        //Adds an association between a food item and a user.
         public async Task<int> AddFoodForUser(ApplicationUser user, FoodItem foodItem)
         {
 
@@ -41,12 +46,14 @@ namespace MyKitchen.Models
 
         public Task<FoodItem> Find(int id)
         {
-            _logger.LogTrace("TRACE TEST - search for item");
-            _logger.LogDebug("DEUB TEST - search for item");
-            _logger.LogInformation("Information TEST - search for item");
-            _logger.LogWarning("WARNING TEST - search for item");
-            _logger.LogError("ERROR TEST - search for item");
-            _logger.LogCritical("CRITICAL TEST - search for item");
+            #region Example Code - Logging 
+            // _logger.LogTrace("TRACE TEST - search for item");
+            // _logger.LogDebug("DEUB TEST - search for item");
+            // _logger.LogInformation("Information TEST - search for item");
+            // _logger.LogWarning("WARNING TEST - search for item");
+            // _logger.LogError("ERROR TEST - search for item");
+            // _logger.LogCritical("CRITICAL TEST - search for item");
+            #endregion
             return _context.FoodItems.FindAsync(id).AsTask();
         }
 
@@ -86,7 +93,6 @@ namespace MyKitchen.Models
         {
             return FoodItems.AsEnumerable();
         }
-
         public IQueryable<FoodItem> GetFoodItemsForUser(ApplicationUser user)
         {
             var userFoodItems = _context.UserFoodItems.Where(x => x.AppUser.Id == user.Id).Select(x => x.FoodItems);

@@ -10,6 +10,8 @@ namespace MyKitchen.Models
 {
     public interface IFoodItemRepository
     {
+
+
         IQueryable<FoodItem> FoodItems { get; }
 
         IQueryable<FoodItem> GetFoodItemsForUser(ApplicationUser user);
