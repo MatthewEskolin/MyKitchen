@@ -95,9 +95,5 @@ get this up and running on indihackers
 05/31/2020
 -set it up so each user can have their own calendar and food item collection.
 
-
-
-
-
-
-
+06/03/2020
+-move development tracker into excel to improve development process.

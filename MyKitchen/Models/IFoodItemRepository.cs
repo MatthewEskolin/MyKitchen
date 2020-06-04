@@ -11,6 +11,10 @@ namespace MyKitchen.Models
     public interface IFoodItemRepository
     {
         IQueryable<FoodItem> FoodItems { get; }
+
+        IQueryable<FoodItem> GetFoodItemsForUser(ApplicationUser user);
+
+
         Task<int> Add(FoodItem foodItem);
         //Adds item for a specific user
         Task<int> AddFoodForUser(ApplicationUser user, FoodItem foodItem);

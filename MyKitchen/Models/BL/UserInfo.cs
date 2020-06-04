@@ -12,6 +12,11 @@ namespace MyKitchen.BL
 
             public ApplicationUser User {get; set;}
 
+            public UserInfo()
+            {
+
+            }
+
             public UserInfo(IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager){
 
                 manager = userManager;

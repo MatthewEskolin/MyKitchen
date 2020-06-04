@@ -68,7 +68,13 @@ namespace MyKitchen.Models
 
         public void Remove(FoodItem foodItem)
         {
+            var userFoodItems = _context.UserFoodItems.Where(x => x.FoodItemID == foodItem.FoodItemID).ToList();
+
+            //remove all userfood Items associated with this FoodItem
+            _context.UserFoodItems.RemoveRange(userFoodItems);
+            //remove the fooditem
             _context.FoodItems.Remove(foodItem);
+            
         }
 
         public FoodItem GetRandomItem()
@@ -81,9 +87,10 @@ namespace MyKitchen.Models
             return FoodItems.AsEnumerable();
         }
 
-      
-
-
-
+        public IQueryable<FoodItem> GetFoodItemsForUser(ApplicationUser user)
+        {
+            var userFoodItems = _context.UserFoodItems.Where(x => x.AppUser.Id == user.Id).Select(x => x.FoodItems);
+            return userFoodItems;
+        }
     }
 }

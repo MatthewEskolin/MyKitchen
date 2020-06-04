@@ -13,21 +13,16 @@ using MyKitchen.BL;
 
 namespace MyKitchen.Controllers
 {
-
-    //TODO this is experiment to facilitate unit testing based on https://www.jerriepelser.com/blog/resolve-dbcontext-as-interface-in-aspnet5-ioc-container/
-
-
     [Authorize]
     public class FoodItemsController : Controller
     {
-
         private IFoodItemRepository repository { get; set; }
         private IMyKitchenDataContext ctx { get; set; }
         private UserInfo CurrentUser {get; set;}
         private readonly ILogger _logger;
         public int PageSize = 10;
 
-        public FoodItemsController(IFoodItemRepository repo, IMyKitchenDataContext context,ILogger<FoodItemsController> logger,UserInfo user = null)
+        public FoodItemsController(IFoodItemRepository repo, IMyKitchenDataContext context,ILogger<FoodItemsController> logger,UserInfo user)
         {
             CurrentUser = user;
             
@@ -36,16 +31,15 @@ namespace MyKitchen.Controllers
             _logger = logger;
         }
 
-        // GET: FoodItems
+        // GET: FoodItems - show the User's food items
         public IActionResult Index(int currentPage = 1)
         {
             var viewModel = new FoodItemIndexViewModel()
             {
-                FoodItems = repository.FoodItems.OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
+                FoodItems = repository.GetFoodItemsForUser(this.CurrentUser.User).OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
                 PagingInfo = new PagingInfo { CurrentPage = currentPage,ItemsPerPage = PageSize, TotalItems = repository.FoodItems.Count() },
    
             };
-
 
             return View(viewModel);
         }
@@ -58,8 +52,7 @@ namespace MyKitchen.Controllers
                 return NotFound();
             }
 
-            var foodItem = await repository.FoodItems
-                .FirstOrDefaultAsync(m => m.FoodItemID == id);
+            var foodItem = await repository.FoodItems .FirstOrDefaultAsync(m => m.FoodItemID == id);
             if (foodItem == null)
             {
                 return NotFound();
@@ -109,11 +102,6 @@ namespace MyKitchen.Controllers
 
             return View(viewModel);
         }
-
-
-        
-
-
 
         // GET: FoodItems/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -192,8 +180,7 @@ namespace MyKitchen.Controllers
                 return NotFound();
             }
 
-            var foodItem = await repository.FoodItems
-                .FirstOrDefaultAsync(m => m.FoodItemID == id);
+            var foodItem = await repository.FoodItems .FirstOrDefaultAsync(m => m.FoodItemID == id);
             if (foodItem == null)
             {
                 return NotFound();
@@ -209,6 +196,7 @@ namespace MyKitchen.Controllers
         {
             var foodItem = await repository.Find(id);
             repository.Remove(foodItem);
+
             await repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
