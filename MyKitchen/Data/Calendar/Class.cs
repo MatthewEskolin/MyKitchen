@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,5 +28,14 @@ namespace MyKitchen.Data.Calendar
         [Required]
         public bool IsFullDay { get; set; }
 
+        public ApplicationUser AppUser {get; set;}
+
+        [ForeignKey("FoodItems")]
+        public int FoodItemID { get; set; }
+
+        public DateTime CreateDate { get; set; }
+
+        public virtual FoodItem FoodItems { get; set; }
     }
+    
 }
