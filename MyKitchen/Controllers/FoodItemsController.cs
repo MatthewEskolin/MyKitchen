@@ -7,8 +7,6 @@ using Microsoft.Extensions.Logging;
 using MyKitchen.Data;
 using MyKitchen.Models;
 using MyKitchen.Models.FoodItems;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
 using MyKitchen.BL;
 
 namespace MyKitchen.Controllers
@@ -37,8 +35,8 @@ namespace MyKitchen.Controllers
             var viewModel = new FoodItemIndexViewModel()
             {
                 FoodItems = repository.GetFoodItemsForUser(this.CurrentUser.User).OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
-                PagingInfo = new PagingInfo { CurrentPage = currentPage,ItemsPerPage = PageSize, TotalItems = repository.FoodItems.Count() },
-   
+                PagingInfo = new PagingInfo { CurrentPage = currentPage,ItemsPerPage = PageSize, TotalItems = repository.GetFoodItemsForUser(this.CurrentUser.User).Count() },
+  
             };
 
             return View(viewModel);
@@ -52,7 +50,7 @@ namespace MyKitchen.Controllers
                 return NotFound();
             }
 
-            var foodItem = await repository.FoodItems .FirstOrDefaultAsync(m => m.FoodItemID == id);
+            var foodItem = await repository.GetFoodItems().FirstOrDefaultAsync(m => m.FoodItemID == id);
             if (foodItem == null)
             {
                 return NotFound();
@@ -84,7 +82,7 @@ namespace MyKitchen.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FoodItemID,FoodItemName,FoddDescription,Cost,FoodGroupID")] FoodItem foodItem)
+        public async Task<IActionResult> Create([Bind("FoodItemID,FoodItemName,FoodDescription,Cost,FoodGroupID")] FoodItem foodItem)
         {
             if (ModelState.IsValid)
             {
@@ -179,7 +177,7 @@ namespace MyKitchen.Controllers
                 return NotFound();
             }
 
-            var foodItem = await repository.FoodItems .FirstOrDefaultAsync(m => m.FoodItemID == id);
+            var foodItem = await repository.GetFoodItems().FirstOrDefaultAsync(m => m.FoodItemID == id);
             if (foodItem == null)
             {
                 return NotFound();
@@ -202,7 +200,7 @@ namespace MyKitchen.Controllers
 
         private bool FoodItemExists(int id)
         {
-            return repository.FoodItems.Any(e => e.FoodItemID == id);
+            return repository.GetFoodItems().Any(e => e.FoodItemID == id);
         }
     }
 }

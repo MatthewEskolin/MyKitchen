@@ -21,7 +21,6 @@ namespace MyKitchen.Models
         //Returns all Food Items in the DB - should only be used when we don't care about this user who created the item
         public IQueryable<FoodItem> FoodItems => _context.FoodItems.Include(x => x.FoodGroup);
         
-        
        //Add's a new FoodItem to the globa database - these food items are not yet associated with a user. 
         public Task<int> Add(FoodItem foodItem)
         {
@@ -95,8 +94,28 @@ namespace MyKitchen.Models
         }
         public IQueryable<FoodItem> GetFoodItemsForUser(ApplicationUser user)
         {
-            var userFoodItems = _context.UserFoodItems.Where(x => x.AppUser.Id == user.Id).Select(x => x.FoodItems);
-            return userFoodItems;
+            
+            // return _context.FoodItems.Include(x => x.FoodGroup).Where(_context.UserFoodItems.Where);
+
+            var cresult = (from userFoodItmes in _context.UserFoodItems
+                              join foodItems in _context.FoodItems.Include(x => x.FoodGroup)
+                              on userFoodItmes.FoodItemID equals foodItems.FoodItemID
+                              where userFoodItmes.AppUser.Id == user.Id
+                              select foodItems).AsQueryable();
+
+            return cresult;
+
+
+
+
+
+            // var userFoodItems = _context.UserFoodItems.Where(x => x.AppUser.Id == user.Id).Select(x => x.FoodItems
+            // .Include(x => x.FoodGroups)).ToLIst();
+            // return userFoodItems;
+        }
+        IQueryable<FoodItem> IFoodItemRepository.GetFoodItems()
+        {
+            return FoodItems.AsQueryable();
         }
     }
 }

@@ -44,7 +44,7 @@ namespace MyKitchen.Controllers
 
             var viewModel = new MealBuilderCreateViewModel()
             {
-                FoodItems = foodItemRepository.GetFoodItems()
+                FoodItems = foodItemRepository.GetFoodItems().ToList()
             };
 
             return View(viewModel);
@@ -73,8 +73,8 @@ namespace MyKitchen.Controllers
             var meal = mealRepository.Find(mealId);
             var viewModel = new MealBuilderSelectFoodItemsViewModel()
             {
-                FoodItems = foodItemRepository.FoodItems.OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
-                PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = foodItemRepository.FoodItems.Count() },
+                FoodItems = foodItemRepository.GetFoodItems().OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
+                PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = foodItemRepository.GetFoodItems().Count() },
                 TheMeal = meal
                 
             };
@@ -102,8 +102,8 @@ namespace MyKitchen.Controllers
 
             var viewModel = new MealBuilderSelectFoodItemsViewModel()
             {
-                FoodItems = foodItemRepository.FoodItems.OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
-                PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = foodItemRepository.FoodItems.Count() },
+                FoodItems = foodItemRepository.GetFoodItems().OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
+                PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = foodItemRepository.GetFoodItems().Count() },
                 TheMeal = meal
 
             };
