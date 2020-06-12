@@ -18,7 +18,6 @@ namespace MyKitchen.Models
             context = ctx;
         }
 
-
         public Task<int> Add(Meal meal)
         {
             context.Meals.Add(meal);
@@ -98,6 +97,27 @@ namespace MyKitchen.Models
             var meal = context.Meals.Where(x => x.MealID == mealId).Include(x => x.MealFoodItems).FirstOrDefault();
             return meal;
 
+        }
+
+        public IQueryable<Meal> GetMealsForUser(ApplicationUser user)
+        {
+            var _context = this.context;
+
+            //figure out how to include a list of all food items in each meal as part of this query and look how it is performing the query.
+            var cresult = (from meals in _context.Meals.Include(x => x.MealFoodItems).ThenInclude(x => x.FoodItems)
+                           where meals.AppUser.Id == user.Id select meals).AsQueryable();
+
+            return cresult;
+
+
+        }
+        public int CountForUser(ApplicationUser user)
+        {
+            var _context = this.context;
+            var cresult = (from meals in _context.Meals.Include(x => x.MealFoodItems).ThenInclude(x => x.FoodItems)
+                           where meals.AppUser.Id == user.Id select meals).AsQueryable().Count();
+
+            return cresult;
         }
     }
 }

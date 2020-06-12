@@ -12,6 +12,8 @@ namespace MyKitchen.Data
         public int MealID { get; set; }
         public string Comments { get; set; }
 
+        public ApplicationUser AppUser {get; set;}
+
         public string MealName { get; set; }
         public ICollection<MealFoodItems> MealFoodItems { get; set; }
 
@@ -32,17 +34,6 @@ namespace MyKitchen.Data
         public bool ContainsFoodItem(int foodItemId)
         {
             return this.MealFoodItems.Any(x => x.FoodItemId == foodItemId);
-        }
-    }
-
-    public  class MealFactory
-    {
-        public MealFactory(ApplicationDbContext ctx) { }
-        public Meal NewMeal()
-        {
-            var name = "Satisfying Meal 1";
-            var rtn = new Meal() {MealName = name};
-            return rtn;
         }
     }
 

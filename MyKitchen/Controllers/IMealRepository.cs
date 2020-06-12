@@ -21,5 +21,7 @@ namespace MyKitchen.Controllers
         Meal GetRandomItem();
         IEnumerable<Meal> GetMeals();
         int Count();
+        IQueryable<Meal> GetMealsForUser(ApplicationUser user);
+        int CountForUser(ApplicationUser user);
     }
 }

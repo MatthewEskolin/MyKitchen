@@ -5,8 +5,8 @@ using MyKitchen.Data;
 using MyKitchen.Models;
 using System.Threading.Tasks;
 using MyKitchen.Models.Meals;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using MyKitchen.BL;
+using System;
 
 namespace MyKitchen.Controllers
 {
@@ -18,20 +18,25 @@ namespace MyKitchen.Controllers
         private readonly IMealRepository mealRepository;
         private ApplicationDbContext context;
 
-        public MealBuilderController(IFoodItemRepository foodItemRepo,IMealRepository mealRepo,ApplicationDbContext ctx)
+        private UserInfo CurrentUser {get; set;}
+
+        public MealBuilderController(IFoodItemRepository foodItemRepo,IMealRepository mealRepo,ApplicationDbContext ctx, UserInfo user)
         {
+            CurrentUser = user;
             context = ctx;
             foodItemRepository = foodItemRepo;
             mealRepository = mealRepo;
         }
 
-        // GET: /<controller>/
+        public int PageSize = 15;
+
         public IActionResult Index(int foodItemPage = 1, int mealListPage = 1)
         {
             var viewModel1 = new MealBuilderIndexViewModel()
             {
-                Meals = mealRepository.GetMeals(),
-                MealListPagingInfo = new PagingInfo() { CurrentPage = mealListPage,ItemsPerPage = 15,TotalItems = mealRepository.Count()}
+
+                 Meals = mealRepository.GetMealsForUser(this.CurrentUser.User).OrderBy(x => x.MealName).Skip((mealListPage - 1) * PageSize).Take(PageSize),
+                 MealListPagingInfo = new PagingInfo() { CurrentPage = mealListPage,ItemsPerPage = 15,TotalItems = mealRepository.CountForUser(CurrentUser.User)}
             };
 
             return View(viewModel1);
@@ -39,7 +44,7 @@ namespace MyKitchen.Controllers
 
         public IActionResult Create()
         {
-            var mealFactory = new MealFactory(context);
+            var mealFactory = new MyKitchen.Data.MealFactory(context);
             Meal meal = mealFactory.NewMeal();
 
             var viewModel = new MealBuilderCreateViewModel()
