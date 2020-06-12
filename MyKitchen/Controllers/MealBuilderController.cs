@@ -60,18 +60,20 @@ namespace MyKitchen.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveNewMeal(MealBuilderCreateViewModel model)
         {
+            var meal = model.Meal;
+            meal.AppUser = CurrentUser.User;
+
             if (ModelState.IsValid)
             {
-                await mealRepository.Add(model.Meal);
-
+                await mealRepository.Add(meal);
             }
 
             return RedirectToAction("Index");
-
         }
 
         public IActionResult SelectFoodItemsForMeal(int mealId,int currentPage = 1)
         {
+            //possible to prevent user from passing their own arguments.
 
             var PageSize = 10;
 
