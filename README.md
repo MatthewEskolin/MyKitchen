@@ -5,9 +5,13 @@ _My Kitchen_ or _What Should I Eat_ (not sure what the best name for this should
 ## Current Development
 * I would like to add user accounts - currently all data is global to all users
 * I would like to run this as in an Azure App Service as a Progressive Web App - (so it can be used on a phone without being a mobile app)
+* Change DB Password and implement Azure KeyVault
+* Add Test cases to make sure user accounts are working
 
 ## Existing Features
 * Meal Planning Calendar
 * What should I eat next advice
 * Create a personal database of your favorite foods
 * Combine Foods to make meals to simplify planning
+
+
