@@ -34,14 +34,12 @@ namespace MyKitchen.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
             builder.Entity<MealFoodItems>(x => { x.HasIndex(y => new {y.FoodItemId, y.MealId}).IsUnique(); });
+
             builder.Entity<FoodItem>().HasOne(x => x.FoodGroup).WithMany(y => y.FoodItem);
 
             builder.Entity<vwsMealsAndFoodItems>().HasNoKey();
-
-            //is toview no longer required
-            //builder.Entity<vwsMealsAndFoodItems>().HasNoKey().ToView("vwsMealsAndFoodItems");
-
 
         }
     }
