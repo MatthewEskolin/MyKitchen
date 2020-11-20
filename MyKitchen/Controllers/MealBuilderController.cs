@@ -76,11 +76,12 @@ namespace MyKitchen.Controllers
             //possible to prevent user from passing their own arguments.
 
             var PageSize = 10;
+            var foodItems = foodItemRepository.GetFoodItemsForUser(this.CurrentUser.User);
 
             var meal = mealRepository.Find(mealId);
             var viewModel = new MealBuilderSelectFoodItemsViewModel()
             {
-                FoodItems = foodItemRepository.GetFoodItems().OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
+                FoodItems = foodItems.OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
                 PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = foodItemRepository.GetFoodItems().Count() },
                 TheMeal = meal
                 
