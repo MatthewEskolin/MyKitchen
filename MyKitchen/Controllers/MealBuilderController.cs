@@ -110,7 +110,7 @@ namespace MyKitchen.Controllers
 
             var viewModel = new MealBuilderSelectFoodItemsViewModel()
             {
-                FoodItems = foodItemRepository.GetFoodItems().OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
+                FoodItems = foodItemRepository.GetFoodItemsForUser(CurrentUser.User).OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
                 PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = foodItemRepository.GetFoodItems().Count() },
                 TheMeal = meal
 

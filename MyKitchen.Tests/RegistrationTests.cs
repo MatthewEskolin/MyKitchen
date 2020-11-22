@@ -46,6 +46,16 @@ namespace MyKitchen.Tests
     }
 
 
+    public class DataIntegrityTests : IClassFixture<SharedTestContext>{
+
+        //[Fact]
+        //All Foods Associated with a meal also need to be associated with the user who owns the meal.
+
+        //check changes
+
+    }
+
+
     public class RegistrationTests :IClassFixture<SharedTestContext>{
 
 
