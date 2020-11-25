@@ -13,6 +13,7 @@ using MyKitchen.Controllers;
 using MyKitchen.Models;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using MyKitchen.BL;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using System;
@@ -78,6 +79,10 @@ namespace MyKitchen
             services.AddTransient<IMealRepository, EfMealRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<UserInfo>();
+
+            services.AddTransient<IEmailSender,EmailSender>();
+            // services.Configure<AuthMessageSenderOptions>(Configuration);
+            
 
 
             services.AddMvc()
