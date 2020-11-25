@@ -30,6 +30,9 @@ namespace MyKitchen.Data
         public DbSet<Events> Events { get; set; }
 
         public DbSet<vwsMealsAndFoodItems> vwsMealsAndFoodItems { get; set; }
+
+        public DbSet<vwsMealItems> vwsMealItems {get; set;}
+
         public DbSet<FoodGroup> FoodGroups { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -40,6 +43,8 @@ namespace MyKitchen.Data
             builder.Entity<FoodItem>().HasOne(x => x.FoodGroup).WithMany(y => y.FoodItem);
 
             builder.Entity<vwsMealsAndFoodItems>().HasNoKey();
+
+            builder.Entity<vwsMealItems>().HasNoKey();
 
         }
     }

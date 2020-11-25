@@ -101,9 +101,12 @@ namespace MyKitchen.Controllers
             }
             else
             {
+                //Food Item needs to be added to the User's Available Items.
+                foodItemRepository.AddFoodForUser(CurrentUser.User,foodItem);
+
                 meal.AddFoodItemToMeal(foodItem.FoodItemID);
                 mealRepository.SaveChanges();
-                ViewBag.Message =  "Food Item Added to Meal.";
+                ViewBag.Message =  $"{foodItem.FoodItemName} Added to Meal.";
             }
 
             var PageSize = 10;

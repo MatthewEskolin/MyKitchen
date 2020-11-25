@@ -150,6 +150,8 @@ namespace MyKitchen
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=WhatShouldIEat}/{action=DisplayCurrentPrediction}/{id?}");
+
+                
             });
 
 
