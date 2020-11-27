@@ -15,11 +15,7 @@ namespace MyKitchen
     {
         public static void Main(string[] args)
         {
-            var host = CreateWebHostBuilder(args).ConfigureLogging(x =>
-            {
-                x.ClearProviders();
-                x.AddApplicationInsights();
-            }).Build();
+            var host = CreateWebHostBuilder(args).Build();
 
             using (var scope = host.Services.CreateScope())
             {
@@ -37,15 +33,9 @@ namespace MyKitchen
                     var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "An error occured while seeding the database.");
                 }
-
-
-
-
             }
 
             host.Run();
-
-
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
@@ -60,7 +50,19 @@ namespace MyKitchen
                         var keyuri = $"https://{builtConfig["KeyVaultName"]}.vault.azure.net/";
 
                         config.AddAzureKeyVault(keyuri,keyVaultClient,new DefaultKeyVaultSecretManager());
+                    })
+                    .ConfigureKestrel((ctx,opt) =>
+                    {
+                        opt.ListenAnyIP(80);
+                        opt.ListenAnyIP(443, listenOpt => { listenOpt.UseHttps(ctx.Configuration["CertificateFileLocation"],ctx.Configuration["CertPassword"]); });
+                    }).
+                    UseStartup<Startup>().ConfigureLogging(x =>
+                    {
+                        x.ClearProviders();
+                        x.AddApplicationInsights();
 
-                    }).UseStartup<Startup>();
+                    })
+                    .UseUrls("https://mykitchen.azurewebsites.com")
+            ;
     }
 }
