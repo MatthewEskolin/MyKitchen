@@ -35,9 +35,11 @@ namespace MyKitchen{
         public Task Execute(string apiKey, string subject, string message, string email)
         {
             var client = new SendGridClient(apiKey);
+
+
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("MatthewEskolin@bluprogrammer.com", "Matthew Eskolin"),
+                From = new EmailAddress("mattheweskolin@blueprogrammer.com", "Kitchen Assistant"),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message

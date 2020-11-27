@@ -109,6 +109,19 @@ namespace MyKitchen.Tests
 
             }
 
+
+
+            [Fact]
+            public void DeleteUser()
+            {
+                //append guid so test coan be repeated
+                var deleteUser = Fixture.TestUserManager.FindByEmailAsync("mjeskolin@gmail.com").GetAwaiter().GetResult();
+                var result = Fixture.TestUserManager.DeleteAsync(deleteUser).GetAwaiter().GetResult();
+                Assert.True(result.Succeeded);
+            }
+
+
+
             [Fact]
             public void FoodItemsAreUserIsolated()
             {

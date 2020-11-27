@@ -90,7 +90,10 @@ namespace MyKitchen.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+
+                    //Welcome E-mail
+
+                    await _emailSender.SendEmailAsync(Input.Email, "Welcome to MyKitchen! - Activate your account",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
