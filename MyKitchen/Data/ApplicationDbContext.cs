@@ -33,6 +33,8 @@ namespace MyKitchen.Data
 
         public DbSet<vwsMealItems> vwsMealItems {get; set;}
 
+        public virtual DbSet<vwsUserMealsAndFoodItem> vwsUserMealsAndFoodItems { get; set;}
+
         public DbSet<FoodGroup> FoodGroups { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -45,6 +47,8 @@ namespace MyKitchen.Data
             builder.Entity<vwsMealsAndFoodItems>().HasNoKey();
 
             builder.Entity<vwsMealItems>().HasNoKey();
+
+            builder.Entity<vwsUserMealsAndFoodItem>().HasNoKey();
 
         }
     }

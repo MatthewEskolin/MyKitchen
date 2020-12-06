@@ -3,24 +3,20 @@
     "windowsAuthentication": false, 
     "anonymousAuthentication": true, 
     "iisExpress": {
-      "applicationUrl": "https://mykitchen.azurewebsites.com",
       "sslPort": 443
     }
   },
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
-      "ApplicationUrls":"https://mykitchen.azurewebsites.com",
-      
+      "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "MyKitchen": {
       "commandName": "Project",
-      "ApplicationUrls":"https://mykitchen.azurewebsites.com",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

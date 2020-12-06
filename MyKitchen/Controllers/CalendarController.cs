@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using MyKitchen.BL;
 using MyKitchen.Data;
 using MyKitchen.Data.Calendar;
 
@@ -9,6 +10,8 @@ namespace MyKitchen.Controllers
 {
     public class CalendarController : Controller
     {
+        public UserInfo CurrentUser { get; }
+
         //allow food items or meals to be added to the calendar
 
 
@@ -18,8 +21,9 @@ namespace MyKitchen.Controllers
 
         public int PageSize = 10;
 
-        public CalendarController(ApplicationDbContext context)
+        public CalendarController(ApplicationDbContext context,UserInfo user)
         {
+            CurrentUser = user;
             ctx = context;
         }
 
@@ -74,11 +78,9 @@ namespace MyKitchen.Controllers
 
         public JsonResult GetAvailableItems()
         {
-            var items = ctx.vwsMealsAndFoodItems.ToList();
+            var items = ctx.vwsUserMealsAndFoodItems.Where(x => x.AppUserId == CurrentUser.User.Id).ToList();;
             return new JsonResult(items);
         }
-
-
 
         [HttpPost]
         public JsonResult SaveNewEvent([FromBody] Events event1)
@@ -89,8 +91,6 @@ namespace MyKitchen.Controllers
             ctx.SaveChanges();
 
             return new JsonResult(true);
-
-
         }
 
         [HttpPost]
@@ -122,12 +122,5 @@ namespace MyKitchen.Controllers
 
             return new JsonResult(true);
         }
-
-
-
-
-
-
-
     }
 }

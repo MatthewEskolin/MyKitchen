@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>Calender</h3>
+<h3>Calendar</h3>
 <h1 id="h1draggable" class="draggable-event"></h1>
 <div id="itemContainer">
 
@@ -51,9 +51,9 @@
         $(document).ready(function() {
             var events = [];
 
-            GenerateCalender(eventSources);
+            GenerateCalendar(eventSources);
 
-            ////Get Events - calls GenerateCalender
+            ////Get Events - calls GenerateCalendar
             //$.ajax({
             //    type: "GET",
             //    url: "/calendar/GetEvents",
@@ -74,7 +74,7 @@
             //                events.push(newEvent);
 
             //            });
-            //        //GenerateCalender(events);
+            //        //GenerateCalendar(events);
 
             //    },
             //    error: function(error) {
@@ -107,8 +107,8 @@
                 }
             });
 
-            //Create Calender
-            function GenerateCalender(eventSources) {
+            //Create Calendar
+            function GenerateCalendar(eventSources) {
 
                 var calendarEl = document.getElementById('calendar');
                 var draggableEL = document.getElementById('itemContainer');

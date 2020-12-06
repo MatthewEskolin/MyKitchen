@@ -51,6 +51,7 @@ namespace MyKitchen
 
                         config.AddAzureKeyVault(keyuri,keyVaultClient,new DefaultKeyVaultSecretManager());
                     })
+                    
                     .ConfigureKestrel((ctx,opt) =>
                     {
                         opt.ListenAnyIP(80);
@@ -62,7 +63,7 @@ namespace MyKitchen
                         x.AddApplicationInsights();
 
                     })
-                    .UseUrls("https://mykitchen.azurewebsites.com")
+                    // .UseUrls("https://mykitchen.azurewebsites.com")
             ;
     }
 }
