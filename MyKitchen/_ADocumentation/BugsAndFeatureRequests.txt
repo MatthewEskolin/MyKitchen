@@ -3,3 +3,4 @@ Use OneNote/Personal/Projects/MyKitchen/BugsAndFeatureRequets for more
 [FEATURE] - cost should not default to 0.00 - should be nullable and only entered if the user wants it
 [FEATURE] - drag and drop column selection and grids
 [FEATURE] - store recipes in the meal details and allow uploading pictures of the meal
+
