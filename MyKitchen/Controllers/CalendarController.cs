@@ -86,7 +86,8 @@ namespace MyKitchen.Controllers
         public JsonResult SaveNewEvent([FromBody] Events event1)
         {
 
-            //Save new Event to DB
+            //Save new Event to DB for current user
+            event1.AppUser = CurrentUser.User;
             ctx.Events.Add(event1);
             ctx.SaveChanges();
 
@@ -98,7 +99,9 @@ namespace MyKitchen.Controllers
         {
             if(event1.EventID < 1) {  return new JsonResult(false);}
 
+            //use current user - add user id to event table
             var updateEvent = ctx.Events.FirstOrDefault(x => x.EventID == event1.EventID);
+
             updateEvent.Start = event1.Start;
             ctx.SaveChanges();
 

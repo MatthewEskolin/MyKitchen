@@ -91,12 +91,7 @@
                     $.each(data,
                         function(i, v) {
                             //for each item create a new div box;
-                            $("#itemContainer").append("<div class='draggableitem' data-event='{\"title\":\"" +
-                                v.itemName +
-                                "\"}'>" +
-                                v.itemName +
-                                " </div>");
-
+                            $("#itemContainer").append("<div class='draggableitem' data-event='{\"title\":\"" + v.itemName + "\",\"foodmealitemid\":\"" + v.itemId + "\",\"ItemType\":\"" + v.itemType + "\"}'>" + v.itemName + " </div>");
                         });
 
                 },
@@ -139,13 +134,18 @@
                         //    alert('a day has been clicked!');
                         //}
                         eventDrop: function(info) {
+
+
+
                             $.ajax({
                                 url: '/calendar/UpdateEvent',
                                 data: JSON.stringify({
                                     Subject: info.event.title,
                                     Start: info.event.start,
                                     IsFullDay: "true",
-                                    EventID: info.event.extendedProps.eventID
+                                    EventID: info.event.extendedProps.eventID,
+
+
                                 }),
                                 type: "POST",
                                 contentType: 'application/json; charset=utf-8',
@@ -160,12 +160,29 @@
 
                         },
                         eventReceive: function(info) {
+
+                            var mealId,foodItemId;
+
+                            if(info.event.extendedProps.ItemType == "FOOD ITEM")
+                            {
+                                foodItemId = info.event.extendedProps.foodmealitemid
+                                mealId = null;
+                            }
+                            else if(info.event.extenedProps.ItemType == "MEAL")
+                            {
+                                mealId = info.event.extendedProps.foodmealitemid;
+                                foodItemId = null;
+                            }
+
+
                             $.ajax({
                                 url: '/calendar/SaveNewEvent',
                                 data: JSON.stringify({
                                     Subject: info.event.title,
                                     Start: info.event.start,
-                                    IsFullDay: "true"
+                                    IsFullDay: "true",
+                                    FoodItemId: foodItemId,
+                                    MealID: mealId
                                 }),
                                 type: "POST",
                                 //contentType: 'application/x-www-form-urlencoded',
