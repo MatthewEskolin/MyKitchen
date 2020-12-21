@@ -191,10 +191,7 @@ namespace MyKitchen.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var foodItem = await repository.Find(id);
-            repository.Remove(foodItem);
-
-            await repository.SaveChangesAsync();
+            await repository.RemoveByIdAsync(id);
             return RedirectToAction(nameof(Index));
         }
 

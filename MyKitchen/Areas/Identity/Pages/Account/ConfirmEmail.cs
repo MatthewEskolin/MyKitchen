@@ -20,9 +20,10 @@ namespace MyKitchen.Areas.Identity.Pages.Account
 
         public bool Success {get; set;}
 
-        public ConfirmEmailModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> _signinManager)
+        public ConfirmEmailModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signinManager)
         {
             _userManager = userManager;
+            _signInManager = signinManager;
         }
 
         [TempData]

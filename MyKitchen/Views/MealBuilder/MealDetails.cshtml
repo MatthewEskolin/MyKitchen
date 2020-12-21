@@ -10,6 +10,11 @@
 <div>
     <hr />
     <h4>@Model.Meal.MealName</h4>
+        @if(Model.Meal.MealFoodItems.Count == 0)
+        {
+            @* var mealId = Model.Meal.MealID; *@
+            <span>This meal doesn't have any food in it yet.<a asp-action="SelectFoodItemsForMeal" asp-route-mealId="@Model.Meal.MealID">Click Here To Continue to site</a> } to add some</span>
+        }
         <dt>
     @foreach (var item in @Model.Meal.MealFoodItems)
     {

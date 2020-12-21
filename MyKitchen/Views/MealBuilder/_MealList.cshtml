@@ -6,6 +6,7 @@
     @* Should be a plate or a takeout bag if the meal is takeout *@
     <th scope="col"></th>
     <th scope="col">Name</th>
+    <th scope="col">Food Items</th>
     <th scope="col">Satiety Profile</th>
     <th scope="col">Edit</th>
     </thead>
@@ -18,6 +19,14 @@
             </td>
             <td>
                 @item.MealName
+            </td>
+            <td>
+                @foreach(var foodItem in item.MealFoodItems){
+                    <ul>
+                    @foodItem.FoodItems.FoodItemName
+
+                    </ul>
+                }
             </td>
             <td>
                 Tasty

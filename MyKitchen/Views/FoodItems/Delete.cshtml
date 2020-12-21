@@ -32,6 +32,7 @@
     </dl>
     
     <form asp-action="Delete">
+        Deleting a Food Item will delete all data associated with it including items from the calendar and meals.
         <input type="hidden" asp-for="FoodItemID" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>

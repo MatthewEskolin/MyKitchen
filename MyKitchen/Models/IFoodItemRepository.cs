@@ -23,7 +23,7 @@ namespace MyKitchen.Models
         void Update(FoodItem foodItem);
         void Remove(FoodItem foodItem);
         FoodItem  GetRandomItem();
-        
+        Task RemoveByIdAsync(int id);
     }
 
 

@@ -2,6 +2,11 @@
 
 @ViewBag.Message
 
+<style type='text/css'>
+/* The asp-validation-summary tag helper will always show content, even when validation has no errors, unless this style hides the content. */
+.validation-summary-valid { display:none;}
+</style>
+
 <div asp-validation-summary="All">
     <span style="color:red;">Please correct the following errors</span>
 </div>

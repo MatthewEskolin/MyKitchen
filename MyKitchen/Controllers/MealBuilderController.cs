@@ -82,7 +82,7 @@ namespace MyKitchen.Controllers
             var viewModel = new MealBuilderSelectFoodItemsViewModel()
             {
                 FoodItems = foodItems.OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
-                PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = foodItemRepository.GetFoodItems().Count() },
+                PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = foodItemRepository.GetFoodItemsForUser(CurrentUser.User).Count() },
                 TheMeal = meal
                 
             };
@@ -101,9 +101,6 @@ namespace MyKitchen.Controllers
             }
             else
             {
-                //Food Item needs to be added to the User's Available Items.
-                foodItemRepository.AddFoodForUser(CurrentUser.User,foodItem);
-
                 meal.AddFoodItemToMeal(foodItem.FoodItemID);
                 mealRepository.SaveChanges();
                 ViewBag.Message =  $"{foodItem.FoodItemName} Added to Meal.";
