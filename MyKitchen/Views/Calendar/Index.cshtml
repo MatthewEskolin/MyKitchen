@@ -4,14 +4,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>Calendar</h3>
+<h3>Calendar - TEST</h3>
 <h1 id="h1draggable" class="draggable-event"></h1>
 <div id="itemContainer">
 
 </div>
 
 <div style="clear: both;"></div>
-
+TEST
 <div id="calendar">
 </div>
 
@@ -88,10 +88,33 @@
                 url: "/calendar/GetAvailableItems",
                 success: function(data) {
 
+                    window.availableItems = [];
+
                     $.each(data,
                         function(i, v) {
                             //for each item create a new div box;
-                            $("#itemContainer").append("<div class='draggableitem' data-event='{\"title\":\"" + v.itemName + "\",\"foodmealitemid\":\"" + v.itemId + "\",\"ItemType\":\"" + v.itemType + "\"}'>" + v.itemName + " </div>");
+
+                            window.availableItems.push(v);
+
+                            var trimItemName = v.itemName.replace(/'/g, '$');
+                            //TODO figure out how to have single quotes in the item name without breaking javascript. 
+
+                            var dataEvent = "{\"itemId\":" + v.itemId + ",\"title\":\"" + trimItemName + "\"}";
+
+                            //if meal 
+
+                            if(v.itemType == "MEAL"){
+
+                                $("#itemContainer").append("<div class='draggableitem draggableitem-meal' data-event='" + dataEvent + "'>" + v.itemName + " </div>");
+                            }
+                            else
+                           {
+                                $("#itemContainer").append("<div class='draggableitem draggableitem-foodItem' data-event='" + dataEvent + "'>" + v.itemName + " </div>");
+                           } 
+
+                            //else if food item
+                            @* $("#itemContainer").append("<div class='draggableitem' data-event='{\"itemId\":" + v.itemId + ",\"title\":\"" + trimItemName + "\"}" + "'>" + v.itemName + " </div>"); *@
+                            @* $("#itemContainer").append("<div class='draggableitem' data-event='{\"title\":\"" + trimItemName + "\",\"foodmealitemid\":\"" + v.itemId + "\",\"ItemType\":\"" + v.itemType + "\"}'>" + trimItemName + " </div>"); *@
                         });
 
                 },
@@ -133,7 +156,91 @@
                         //dateClick: function() {
                         //    alert('a day has been clicked!');
                         //}
+
+                        eventRender: function(info) {
+
+                                $(info.el).find('.fc-content').append("<img style='width:28px;height:28px;float:right;' id='svg-delete-event' src='/images/red-trash-delete-icon.svg' />");
+                                $(info.el).find("#svg-delete-event").click(function(event) {
+
+                                    //clicking delete should only trigger the click event for the trash can icon here, and should not trigger the click event for the entire event which would bring user to details view.
+                                    event.stopPropagation();
+
+                                    //remove event from calendar
+                                    info.event.remove();
+
+                                    //also remove from backend stroage
+
+
+                                $.ajax({
+                                    url: '/calendar/RemoveEvent/',
+                                    data: JSON.stringify({
+                                        Subject: info.event.title,
+                                        Start: info.event.start,
+                                        IsFullDay: "true",
+                                        EventID: info.event.extendedProps.eventID,
+
+                                    }),
+                                    type: "POST",
+                                    contentType: 'application/json; charset=utf-8',
+                                    success: function(json) {
+                                        console.log("Delete Event returned");
+                                    },
+                                    failure: function(json) {
+                                        console.log("Delete Event failed.");
+                                    }
+
+                                });
+
+                            });
+                            
+                            @* .hide(); *@
+
+
+                            $(info.el).find("#svg-delete-event").mouseover(function(){ 
+
+                                $(this).attr("src","/images/red-trash-delete-icon-hover.svg")
+                            });
+
+
+                            $(info.el).find("#svg-delete-event").mouseout(function(){ 
+
+                                $(this).attr("src","/images/red-trash-delete-icon.svg")
+                            });
+
+
+                            $(info.el).find("#svg-delete-event").hide(); 
+
+
+
+
+
+                            },
+
+
+                        
+                        eventClick: function(info){
+
+                            //if food item, redirect to food item
+                            window.location.href = "/FoodItems/Details/" + info.event.extendedProps.foodItemID;
+
+                            //if meal, redirect to meal
+                            //NOT IMPLEMENTED
+
+                        },
+                        eventMouseEnter:function(info){
+
+                            //find remove button and make it visible
+                            $(info.el).find('#svg-delete-event').show();
+                        },
+
+                        eventMouseLeave:function(info){
+
+                            //find remove button and make it visible
+                          //  $(info.el).find('#svg-delete-event').hide();
+                        },
+
                         eventDrop: function(info) {
+
 
 
 
@@ -163,22 +270,24 @@
 
                             var mealId,foodItemId;
 
-                            if(info.event.extendedProps.ItemType == "FOOD ITEM")
+                            var sitemId = info.event.extendedProps.itemId
+                            var foodItem = window.availableItems.find(x =>x .itemId == sitemId);
+
+                            if(foodItem.itemType == "FOOD ITEM")
                             {
-                                foodItemId = info.event.extendedProps.foodmealitemid
+                                foodItemId = foodItem.itemId;
                                 mealId = null;
                             }
-                            else if(info.event.extenedProps.ItemType == "MEAL")
+                            else if(foodItem.itemType == "MEAL")
                             {
-                                mealId = info.event.extendedProps.foodmealitemid;
+                                mealId = foodItem.itemId;
                                 foodItemId = null;
                             }
-
 
                             $.ajax({
                                 url: '/calendar/SaveNewEvent',
                                 data: JSON.stringify({
-                                    Subject: info.event.title,
+                                    Subject: foodItem.itemName,
                                     Start: info.event.start,
                                     IsFullDay: "true",
                                     FoodItemId: foodItemId,

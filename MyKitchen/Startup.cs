@@ -155,6 +155,10 @@ namespace MyKitchen
                     name: "default",
                     template: "{controller=WhatShouldIEat}/{action=DisplayCurrentPrediction}/{id?}");
 
+                routes.MapRoute(
+                    name:"foodItemDetail",
+                    template: "{controller=FoodItems}/{action=Details}/{id}");
+
                 
             });
 

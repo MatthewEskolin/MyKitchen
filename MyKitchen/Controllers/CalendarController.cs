@@ -57,6 +57,9 @@ namespace MyKitchen.Controllers
             public bool allDay { get; set; }
             public int eventID { get; set; }
 
+            public int? mealID {get; set;}
+            public int? foodItemID {get; set;}
+
             public static FullCalendarEvent FromEvent(Events evt)
             {
                 var fullCalendarEvent = new FullCalendarEvent
@@ -67,8 +70,9 @@ namespace MyKitchen.Controllers
                     end = evt?.End,
                     color = evt.ThemeColor,
                     eventID = evt.EventID,
-                    allDay = evt.IsFullDay
-
+                    allDay = evt.IsFullDay,
+                    mealID = evt.MealID,
+                    foodItemID = evt.FoodItemID,
                 };
 
                 return fullCalendarEvent;
@@ -125,5 +129,19 @@ namespace MyKitchen.Controllers
 
             return new JsonResult(true);
         }
+
+        [HttpPost]
+        public JsonResult RemoveEvent([FromBody]Events deleteEvent)
+        {
+                        //Save new Event to DB for current user
+            ctx.Events.Remove(deleteEvent);
+            ctx.SaveChanges();
+
+            return new JsonResult(true);
+        }
+
+
+
+
     }
 }

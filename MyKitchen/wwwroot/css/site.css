@@ -65,6 +65,24 @@ body {
     padding: 3px;
 }
 
+.draggableitem.draggableitem-meal{
+
+  background:orange;
+  color:white;
+}
+
+.draggableitem.draggableitem-foodItem{
+
+  background:blue;
+  color:white;
+
+}
+
+
+
+
+
+
 .wseButton {
 
     border-radius: 5px;
