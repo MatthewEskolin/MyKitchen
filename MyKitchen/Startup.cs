@@ -24,9 +24,11 @@ namespace MyKitchen
 
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _env;
+        public Startup(IConfiguration configuration,IWebHostEnvironment environment)
         {
 
+            _env = environment;
             Configuration = configuration;
         }
 
@@ -51,6 +53,12 @@ namespace MyKitchen
                 .AddDefaultTokenProviders();
 
             //code needed to sucessfully override defaultUI
+
+            if(_env.IsDevelopment())
+            {
+           
+
+            }
 
 
 
@@ -84,9 +92,16 @@ namespace MyKitchen
             
 
 
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddFluentValidation().AddNewtonsoftJson();
+
+            if(_env.IsDevelopment())
+            {
+                services.AddMvc().AddRazorRuntimeCompilation().SetCompatibilityVersion(CompatibilityVersion.Version_3_0) .AddFluentValidation().AddNewtonsoftJson();
+            }
+            else
+            {
+                services.AddMvc() .SetCompatibilityVersion(CompatibilityVersion.Version_3_0) .AddFluentValidation().AddNewtonsoftJson();
+            }
+
 
 
             services.Configure<MvcOptions>(options => { options.EnableEndpointRouting = false; });

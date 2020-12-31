@@ -33,6 +33,7 @@ namespace MyKitchen.Controllers
             return View();
         }
 
+
         public JsonResult GetEvents()
         {
             var events = ctx.Events.ToList();
@@ -95,7 +96,7 @@ namespace MyKitchen.Controllers
             ctx.Events.Add(event1);
             ctx.SaveChanges();
 
-            return new JsonResult(true);
+            return new JsonResult(event1.EventID);
         }
 
         [HttpPost]
@@ -134,7 +135,9 @@ namespace MyKitchen.Controllers
         public JsonResult RemoveEvent([FromBody]Events deleteEvent)
         {
                         //Save new Event to DB for current user
-            ctx.Events.Remove(deleteEvent);
+
+            var removeEvent = ctx.Events.Where(x => x.EventID == deleteEvent.EventID).FirstOrDefault();
+            ctx.Events.Remove(removeEvent);
             ctx.SaveChanges();
 
             return new JsonResult(true);

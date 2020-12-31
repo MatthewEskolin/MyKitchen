@@ -9,9 +9,10 @@
 <div id="itemContainer">
 
 </div>
+hello this is some changed text in the index
 
 <div style="clear: both;"></div>
-TEST
+TEST CHANGED XX 
 <div id="calendar">
 </div>
 
@@ -99,7 +100,9 @@ TEST
                             var trimItemName = v.itemName.replace(/'/g, '$');
                             //TODO figure out how to have single quotes in the item name without breaking javascript. 
 
-                            var dataEvent = "{\"itemId\":" + v.itemId + ",\"title\":\"" + trimItemName + "\"}";
+
+
+                            var dataEvent = "{\"itemId\":" + v.itemId + ",\"title\":\"" + trimItemName + "\"" + ",\"itemType\":\"" + v.itemType + "\"}";
 
                             //if meal 
 
@@ -112,9 +115,6 @@ TEST
                                 $("#itemContainer").append("<div class='draggableitem draggableitem-foodItem' data-event='" + dataEvent + "'>" + v.itemName + " </div>");
                            } 
 
-                            //else if food item
-                            @* $("#itemContainer").append("<div class='draggableitem' data-event='{\"itemId\":" + v.itemId + ",\"title\":\"" + trimItemName + "\"}" + "'>" + v.itemName + " </div>"); *@
-                            @* $("#itemContainer").append("<div class='draggableitem' data-event='{\"title\":\"" + trimItemName + "\",\"foodmealitemid\":\"" + v.itemId + "\",\"ItemType\":\"" + v.itemType + "\"}'>" + trimItemName + " </div>"); *@
                         });
 
                 },
@@ -160,6 +160,24 @@ TEST
                         eventRender: function(info) {
 
                                 $(info.el).find('.fc-content').append("<img style='width:28px;height:28px;float:right;' id='svg-delete-event' src='/images/red-trash-delete-icon.svg' />");
+
+                                        if(info.event.extendedProps.mealID != null || info.event.extendedProps.itemType == "MEAL")
+                                        {
+                                             info.el.style.backgroundColor  = "orange"
+                                             info.el.style.color = "white";
+                                            }
+                                            else
+                                            {
+                                                 info.el.style.backgroundColor  = "blue"
+                                                 info.el.style.color = "white";
+                                            }
+                                                
+        
+        
+
+
+
+
                                 $(info.el).find("#svg-delete-event").click(function(event) {
 
                                     //clicking delete should only trigger the click event for the trash can icon here, and should not trigger the click event for the entire event which would bring user to details view.
@@ -236,7 +254,7 @@ TEST
                         eventMouseLeave:function(info){
 
                             //find remove button and make it visible
-                          //  $(info.el).find('#svg-delete-event').hide();
+                            $(info.el).find('#svg-delete-event').hide();
                         },
 
                         eventDrop: function(info) {
@@ -277,11 +295,14 @@ TEST
                             {
                                 foodItemId = foodItem.itemId;
                                 mealId = null;
+                                
+                                       
                             }
                             else if(foodItem.itemType == "MEAL")
                             {
                                 mealId = foodItem.itemId;
                                 foodItemId = null;
+                                
                             }
 
                             $.ajax({
@@ -299,6 +320,8 @@ TEST
                                 //contentType:'json',
                                 success: function(json) {
                                     console.log("SaveNewEvent returned");
+                                    info.event.setExtendedProp( "eventID", json )
+                                    
                                 },
                                 failure: function(json) {
                                     console.log("SaveNewEvent failed.");
