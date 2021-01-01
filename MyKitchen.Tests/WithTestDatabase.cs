@@ -36,7 +36,7 @@ namespace MyKitchen.Tests
                 }
                 catch (Exception e)
                 {
-                    throw e;
+                    throw;
                 }
                 finally
                 {

@@ -9,11 +9,11 @@ namespace WebEssentials.AspNetCore.Pwa
 {
     internal class WebManifestCache
     {
-        private readonly IHostingEnvironment _env;
+        private readonly IWebHostEnvironment _env;
         private readonly MemoryCache _cache;
         private readonly string _fileName;
 
-        public WebManifestCache(IHostingEnvironment env, string fileName)
+        public WebManifestCache(IWebHostEnvironment env, string fileName)
         {
             _env = env;
             _fileName = fileName;

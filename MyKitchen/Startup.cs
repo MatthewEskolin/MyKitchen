@@ -129,8 +129,10 @@ namespace MyKitchen
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                app.UseMigrationsEndPoint();               
+                
                 app.UseBrowserLink();
+
             }
             else
             {

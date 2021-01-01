@@ -68,7 +68,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddSingleton(sp =>
             {
-                IHostingEnvironment env = sp.GetService<IHostingEnvironment>();
+                IWebHostEnvironment env = sp.GetService<IWebHostEnvironment>();
                 return new WebManifestCache(env, manifestFileName);
             });
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System;
@@ -9,11 +10,11 @@ namespace WebEssentials.AspNetCore.Pwa
     {
         private string _script;
 
-        private IHostingEnvironment _env;
+        private IWebHostEnvironment _env;
         private IHttpContextAccessor _accessor;
         private PwaOptions _options;
 
-        public ServiceWorkerTagHelperComponent(IHostingEnvironment env, IHttpContextAccessor accessor, PwaOptions options)
+        public ServiceWorkerTagHelperComponent(IWebHostEnvironment env, IHttpContextAccessor accessor, PwaOptions options)
         {
             _env = env;
             _accessor = accessor;
