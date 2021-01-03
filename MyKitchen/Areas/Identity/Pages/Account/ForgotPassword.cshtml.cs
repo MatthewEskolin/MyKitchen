@@ -61,7 +61,7 @@ namespace MyKitchen.Areas.Identity.Pages.Account
                     protocol: Request.Scheme);
 
 
-                    _logger.LogInformation("Logging a password reset ");
+                    _logger.LogInformation($"Sending Password Reset E=Mail to {Input.Email}");
 
                 await _emailSender.SendEmailAsync(
                     Input.Email,
