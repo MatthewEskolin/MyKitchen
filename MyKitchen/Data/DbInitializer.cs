@@ -10,8 +10,8 @@ namespace MyKitchen.Data
     {
         public static void Initialize(ApplicationDbContext context)
         {
-            context.Database.Migrate();
-            CreateViews(context);
+             // context.Database.Migrate();
+           // CreateViews(context);
             InitializeFoodItems(context);
             InitializeFoodGroups(context);
 
