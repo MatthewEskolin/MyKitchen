@@ -5,30 +5,37 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Meal Details</h1>
+<div class="viewContainer">
 
-<div>
+<h2>@Model.Meal.MealName</h2>
     <hr />
-    <h4>@Model.Meal.MealName</h4>
+
         @if(Model.Meal.MealFoodItems.Count == 0)
         {
             @* var mealId = Model.Meal.MealID; *@
             <span>This meal doesn't have any food in it yet.<a asp-action="SelectFoodItemsForMeal" asp-route-mealId="@Model.Meal.MealID">Click Here To Continue to site</a> } to add some</span>
         }
-        <dt>
-    @foreach (var item in @Model.Meal.MealFoodItems)
-    {
-        var foodItem = item.FoodItems.FoodItemName;
-        <dl class="row">
-            @foodItem
-        </dl>
 
-    }
-        </dt>
-</div>
-<div>
+
     @Html.ActionLink("Add To Queue", "Edit", new {/* id = Model.PrimaryKey */}) |
     @Html.ActionLink("Add More Food", "SelectFoodItemsForMeal", new {mealId = Model.Meal.MealID}) |
     @Html.ActionLink("Delete Meal", "DeleteMeal", new {mealId = Model.Meal.MealID}) |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+    <ul>
+    @foreach (var item in @Model.Meal.MealFoodItems)
+    {
+        var foodItem = item.FoodItems.FoodItemName;
+        <li>@foodItem</li>
+    }
+    </ul>
+
+    <div class="form-group">
+        <label asp-for="Meal.Recipe"></label>
+        <textarea asp-for="Meal.Recipe"></textarea>
+
+    </div>
+
+        <a asp-action="Index">Back to List</a>
+<div>
+
+

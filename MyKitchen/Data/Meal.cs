@@ -15,6 +15,8 @@ namespace MyKitchen.Data
         public ApplicationUser AppUser {get; set;}
 
         public string MealName { get; set; }
+
+        public string Recipe {get; set;}
         public ICollection<MealFoodItems> MealFoodItems { get; set; }
 
         public Meal()
