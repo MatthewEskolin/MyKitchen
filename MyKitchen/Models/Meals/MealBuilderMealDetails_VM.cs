@@ -10,5 +10,7 @@ namespace MyKitchen.Models
     {
         public Meal Meal { get; set; }
 
+        
+
     }
 }

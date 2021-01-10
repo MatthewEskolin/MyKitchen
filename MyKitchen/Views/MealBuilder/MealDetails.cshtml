@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="viewContainer">
+<div class="container">
 
 <h2>@Model.Meal.MealName</h2>
     <hr />
@@ -29,13 +29,42 @@
     }
     </ul>
 
+    <form asp-action="UpdateMeal">
     <div class="form-group">
         <label asp-for="Meal.Recipe"></label>
-        <textarea asp-for="Meal.Recipe"></textarea>
+        <textarea rows="12" id="taRecipe" asp-for="Meal.Recipe" class="form-control w-75"></textarea>
 
     </div>
+       <div class=""> 
+            <input type="submit" value="Save" class="btn btn-success" />
+            <button type="button" class="btn btn-secondary">Cancel</button> 
+        </div> 
+    </form>
 
         <a asp-action="Index">Back to List</a>
 <div>
 
+@section scripts {
 
+    <script type="text/javascript">
+
+    jQuery.fn.extend({
+      autoHeight: function () {
+        function autoHeight_(element) {
+          return jQuery(element).css({
+            'height': 'auto',
+            'overflow-y': 'hidden'
+          }).height(element.scrollHeight);
+        }
+        return this.each(function () {
+          autoHeight_(this).on('input', function () {
+            autoHeight_(this);
+          });
+        });
+      }
+    });
+    $('#taRecipe').autoHeight();
+
+    </script>
+
+}

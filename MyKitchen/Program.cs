@@ -6,6 +6,7 @@ using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureKeyVault;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MyKitchen.Data;
 
@@ -40,16 +41,29 @@ namespace MyKitchen
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+
+
+
+
+
                    .ConfigureAppConfiguration((context,config) =>
                     {
                         var builtConfig = config.Build();
 
-                        var azureServicetokenProvider = new AzureServiceTokenProvider();
-                        var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServicetokenProvider.KeyVaultTokenCallback));
+                        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                        var isDevelopment = environment == Environments.Development;
 
-                        var keyuri = $"https://{builtConfig["KeyVaultName"]}.vault.azure.net/";
+                        if(!isDevelopment)
+                        {
+                            var azureServicetokenProvider = new AzureServiceTokenProvider();
+                            var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServicetokenProvider.KeyVaultTokenCallback));
 
-                        config.AddAzureKeyVault(keyuri,keyVaultClient,new DefaultKeyVaultSecretManager());
+                            var keyuri = $"https://{builtConfig["KeyVaultName"]}.vault.azure.net/";
+
+                            config.AddAzureKeyVault(keyuri,keyVaultClient,new DefaultKeyVaultSecretManager());
+                        }
+
+
                     })
                     
                     .ConfigureKestrel((ctx,opt) =>

@@ -145,6 +145,11 @@ namespace MyKitchen.Controllers
             return View("Index",viewModel1);
         }
 
+        public IActionResult UpdateMeal([FromForm] Meal meal)
+        {
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Edit()
         {
             throw new System.NotImplementedException();
