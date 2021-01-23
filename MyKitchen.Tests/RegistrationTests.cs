@@ -24,17 +24,22 @@ namespace MyKitchen.Tests
 
                 services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer( WithTestDatabase.MyConnectionString));
                 services.AddTransient<EFFoodItemRepository>();
+                services.AddTransient<EfMealRepository>();
 
                 var sp = services.BuildServiceProvider();
 
                 TestFoodItemRepository = sp.GetService<EFFoodItemRepository>();
+                TestMealRepository = sp.GetService<EfMealRepository>();
                 TestUserManager = sp.GetService<UserManager<ApplicationUser>>();
                 ApDbContext = sp.GetService<ApplicationDbContext>();
+
+                
 
 
         }
 
         public EFFoodItemRepository TestFoodItemRepository { get; private set; }
+        public EfMealRepository TestMealRepository { get; private set; }
         public UserManager<ApplicationUser> TestUserManager { get; private set; }
         public ApplicationDbContext ApDbContext { get; private set; }
 

@@ -111,6 +111,24 @@ namespace MyKitchen.Models
 
 
         }
+
+        public (IEnumerable<Meal> meals,PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user)
+        {
+            var _context = this.context;
+
+            //load meals with details for each food in the meal.
+            var cresult = (from meals in _context.Meals.Include(x => x.MealFoodItems).ThenInclude(x => x.FoodItems)
+                           where meals.AppUser.Id == user.Id select meals).AsQueryable();
+
+            cresult = cresult.OrderBy(x => x.MealName).Skip((pageNum - 1) * pageSize).Take(pageSize);
+
+            //need to set the total item count;
+            var pagingInfo = new PagingInfo() { CurrentPage = pageNum,ItemsPerPage = 15,TotalItems = CountForUser(user)};
+
+            return (cresult, pagingInfo);
+        }
+
+
         public int CountForUser(ApplicationUser user)
         {
             var _context = this.context;

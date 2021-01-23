@@ -30,16 +30,29 @@ namespace MyKitchen.Controllers
 
         public int PageSize = 15;
 
-        public IActionResult Index(int foodItemPage = 1, int mealListPage = 1)
+        // public IActionResult Index(int pageNum = 1)
+        // {
+        //     var viewModel1 = new MealBuilderIndexViewModel()
+        //     {
+
+        //          Meals = mealRepository.GetMealsForUser(this.CurrentUser.User).OrderBy(x => x.MealName).Skip((pageNum - 1) * PageSize).Take(PageSize),
+        //          MealListPagingInfo = new PagingInfo() { CurrentPage = pageNum,ItemsPerPage = 15,TotalItems = mealRepository.CountForUser(CurrentUser.User)}
+        //     };
+
+        //     return View(viewModel1);
+        // }
+
+
+        public IActionResult Index(int pageNum = 1)
         {
-            var viewModel1 = new MealBuilderIndexViewModel()
-            {
 
-                 Meals = mealRepository.GetMealsForUser(this.CurrentUser.User).OrderBy(x => x.MealName).Skip((mealListPage - 1) * PageSize).Take(PageSize),
-                 MealListPagingInfo = new PagingInfo() { CurrentPage = mealListPage,ItemsPerPage = 15,TotalItems = mealRepository.CountForUser(CurrentUser.User)}
-            };
+           var result = mealRepository.GetMealsForUser(pageNum,PageSize,this.CurrentUser.User);
+           var viewModel = new MealBuilderIndexViewModel(){
+               Meals = result.meals,
+               MealListPagingInfo = result.pagingInfo
+           };
 
-            return View(viewModel1);
+            return View(viewModel);
         }
 
         public IActionResult Create()

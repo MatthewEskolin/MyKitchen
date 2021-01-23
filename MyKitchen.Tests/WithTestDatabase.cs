@@ -34,7 +34,7 @@ namespace MyKitchen.Tests
                     
                     testFunc(context);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     throw;
                 }

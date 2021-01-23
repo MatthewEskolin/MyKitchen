@@ -51,7 +51,7 @@ namespace MyKitchen.Tests
             var mock = new Mock<IFoodItemRepository>();
             var dbmock = new Mock<IMyKitchenDataContext>();
             var usermock = new Mock<UserInfo>();
-            mock.SetupGet(x => x.GetFoodItems()).Returns(new[] { new FoodItem {FoodItemName = "test 1"} }.AsQueryable);
+            mock.Setup(x => x.GetFoodItems()).Returns(new[] { new FoodItem {FoodItemName = "test 1"} }.AsQueryable);
 
             var mockLogger = new Mock<Microsoft.Extensions.Logging.ILogger<FoodItemsController>>();
 
@@ -61,7 +61,7 @@ namespace MyKitchen.Tests
             var result = controller.Index();
 
             //assert
-            mock.VerifyGet(x => x.GetFoodItems(),Times.AtMost(2));
+            mock.Verify(x => x.GetFoodItems(),Times.AtMost(2));
 
         }
 #region
@@ -83,7 +83,7 @@ namespace MyKitchen.Tests
             var applicationUserMock = new Mock<ApplicationUser>();
             var mock = new Mock<IFoodItemRepository>();
             var dbmock = new Mock<IMyKitchenDataContext>();
-            mock.SetupGet(x => x.GetFoodItems()).Returns(new[]
+            mock.Setup(x => x.GetFoodItems()).Returns(new[]
             {
                 new FoodItem() {FoodDescription = "FI1"},
                 new FoodItem() {FoodDescription = "FI2"},
