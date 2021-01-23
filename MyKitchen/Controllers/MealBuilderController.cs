@@ -160,6 +160,11 @@ namespace MyKitchen.Controllers
 
         public IActionResult UpdateMeal([FromForm] Meal meal)
         {
+            //TODO how to update using repository method, don't know...
+
+            var mealRec = mealRepository.Find(meal.MealID);
+            mealRec.Recipe = meal.Recipe;
+            mealRepository.SaveChanges();
             return RedirectToAction("Index");
         }
 
