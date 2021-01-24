@@ -237,10 +237,25 @@
                         eventClick: function(info){
 
                             //if food item, redirect to food item
-                            window.location.href = "/FoodItems/Details/" + info.event.extendedProps.foodItemID;
+                            if(info.event.extendedProps.itemType == "FOOD ITEM"){
+
+                                window.location.href = "/FoodItems/Details/" + info.event.extendedProps.itemId;
+                            }
+                            else if(info.event.extendedProps.itemType == "MEAL")
+                            {
+
+                                window.location.href = "/Meals/Details/" + info.event.extendedProps.itemId;;
+                            }
+                            else {
+
+                                window.location.href = "/FoodItems/Details/" + info.event.extendedProps.foodItemID;
 
                             //if meal, redirect to meal
-                            //NOT IMPLEMENTED
+                            //TODO NOT IMPLEMENTED
+                            }
+
+
+
 
                         },
                         eventMouseEnter:function(info){
