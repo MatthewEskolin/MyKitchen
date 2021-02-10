@@ -42,10 +42,6 @@ namespace MyKitchen
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
 
-
-
-
-
                    .ConfigureAppConfiguration((context,config) =>
                     {
                         var builtConfig = config.Build();
@@ -69,7 +65,15 @@ namespace MyKitchen
                     .ConfigureKestrel((ctx,opt) =>
                     {
                         opt.ListenAnyIP(80);
-                        opt.ListenAnyIP(443, listenOpt => { listenOpt.UseHttps(ctx.Configuration["CertificateFileLocation"],ctx.Configuration["CertPassword"]); });
+
+                        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                        var isDevelopment = environment == Environments.Development;
+
+                        if(!isDevelopment)
+                        {
+                            // opt.ListenAnyIP(443, listenOpt => { listenOpt.UseHttps(ctx.Configuration["CertificateFileLocation"],ctx.Configuration["CertPassword"]); });
+                            opt.ListenAnyIP(443, listenOpt => { listenOpt.UseHttps();});
+                        }
                     }).
                     UseStartup<Startup>().ConfigureLogging(x =>
                     {

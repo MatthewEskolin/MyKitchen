@@ -16,7 +16,8 @@
             "serverReadyAction": {
                 "action": "openExternally",
                 "pattern": "^\\s*Now listening on:\\s+https?://\\S+",
-                "uriFormat":"https://mykitchen.azurewebsites.net"
+                // "uriFormat-NOT-WORKING-BACKUP":"https://mykitchen.azurewebsites.net",
+                "uriFormat":"http://localhost"
                 
             },
             "env": {
