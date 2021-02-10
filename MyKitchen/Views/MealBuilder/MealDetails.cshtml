@@ -37,12 +37,13 @@
     </div>
        <div class=""> 
             <input type="submit" value="Save" class="btn btn-success" />
-            <button type="button" class="btn btn-secondary">Cancel</button> 
+            <input type="submit" asp-action="Index" class="btn btn-secondary" value="Cancel" />
+
         </div> 
         <input asp-for="Meal.MealID" value="@Model.Meal.MealID" type="hidden">
     </form>
 
-        <a asp-action="Index">Back to List</a>
+        @* <a asp-action="Index">Back to List</a> *@
 <div>
 
 @section scripts {

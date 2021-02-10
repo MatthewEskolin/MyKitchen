@@ -147,11 +147,16 @@ namespace MyKitchen.Controllers
             var meal = mealRepository.Find(mealid);
             mealRepository.Remove(meal);
             mealRepository.SaveChanges();
+            
+
+            //possible to get previous page number here?
+            var pageNum = 1;
 
             //TempData[""]
             var viewModel1 = new MealBuilderIndexViewModel()
             {
-                Meals = mealRepository.GetMeals(),
+
+                Meals = mealRepository.GetMealsForUser(pageNum,PageSize,this.CurrentUser.User).meals,
                 MealListPagingInfo = new PagingInfo() { CurrentPage = 1, ItemsPerPage = 15, TotalItems = mealRepository.Count() }
             };
 
