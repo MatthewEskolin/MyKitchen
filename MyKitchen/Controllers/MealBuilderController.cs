@@ -173,6 +173,12 @@ namespace MyKitchen.Controllers
             return RedirectToAction("Index");
         }
 
+    public IActionResult EditMealName([FromQuery]int mealID){
+
+            TempData["editMealName"] = true;
+            return RedirectToAction("MealDetails",new {mealId = mealID});
+        }
+
         public IActionResult Edit()
         {
             throw new System.NotImplementedException();

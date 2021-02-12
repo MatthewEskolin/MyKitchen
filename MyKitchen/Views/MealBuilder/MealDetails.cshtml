@@ -4,18 +4,62 @@
     ViewData["Title"] = "Meal Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style type="text/css">
+.editImage {
+  height:35px;
+  width:35px;
+}
+
+</style>
 
 <div class="container">
 
-<h2>@Model.Meal.MealName</h2>
+
+@if((bool?)(TempData["editMealName"]) == true)
+{
+  <h1>edit mode test</h1>
+}
+else
+{
+  <h1>Edit Mode Off</h1>
+}
+
+
+<div class="page-header">
+  <div class="float-left">
+  <h2>@Model.Meal.MealName</h2> 
+  </div>
+  <div class="float-left">
+    MealID = @Model.Meal.MealID
+    <a href='@Url.Action("EditMealName", new { mealId = @Model.Meal.MealID})' id="@Model.Meal.MealID">
+    <img class="editImage" src="~/images/editpencil_120034.png" asp-append-version="true" />
+    </a>
+  </div>
+  <div class="clearfix"></div>
+</div>
+<div class="page-header">
+  <div class="float-left">
+    <form asp-action="SaveMealName">
+    <input asp-for="Meal.MealName" type="text" />
+    <input type="submit" value="Save">
+    <input type="submit" value="Cancel">
+    </form>
+  </div>
+  <div class="clearfix"></div>
+</div>
+
     <hr />
 
         @if(Model.Meal.MealFoodItems.Count == 0)
         {
             @* var mealId = Model.Meal.MealID; *@
-            <span>This meal doesn't have any food in it yet.<a asp-action="SelectFoodItemsForMeal" asp-route-mealId="@Model.Meal.MealID">Click Here To Continue to site</a> } to add some</span>
+            <div>
+            <span>This meal doesn't have any food in it yet.</span>
+            </div>
+            <div>
+              <a asp-action="SelectFoodItemsForMeal" asp-route-mealId="@Model.Meal.MealID">Click Here To Continue to site</a>  to add food
+            </div>
         }
-
 
     @Html.ActionLink("Add To Queue", "Edit", new {/* id = Model.PrimaryKey */}) |
     @Html.ActionLink("Add More Food", "SelectFoodItemsForMeal", new {mealId = Model.Meal.MealID}) |

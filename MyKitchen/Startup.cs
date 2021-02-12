@@ -164,7 +164,7 @@ namespace MyKitchen
 
 
 
-
+            app.AddSession();
 
             app.UseMvc(routes =>
             {
@@ -179,6 +179,7 @@ namespace MyKitchen
                 
             });
 
+            app.UseCookiePolicy();
 
 
         }
