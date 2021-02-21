@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.AspNetCore.Routing;
 using MyKitchen.Models;
 
 namespace MyKitchen.Infrastructure
@@ -34,16 +35,22 @@ namespace MyKitchen.Infrastructure
         public string PageClassNormal { get; set; }
         public string PageClassSelected { get; set; }
 
-        public override void Process(TagHelperContext context,
-            TagHelperOutput output)
+        public RouteValueDictionary PageRouteParameters {get; set;} = new RouteValueDictionary();
+
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+
+
             TagBuilder result = new TagBuilder("div");
             for (int i = 1; i <= PageModel.TotalPages; i++)
             {
                 TagBuilder tag = new TagBuilder("a");
-                tag.Attributes["href"] = urlHelper.Action(PageAction,
-                    new { currentPage = i });
+
+                PageRouteParameters.Add("currentPage", i);
+
+                tag.Attributes["href"] = urlHelper.Action(PageAction,PageRouteParameters);
                 if (PageClassesEnabled)
                 {
                     tag.AddCssClass(PageClass);
@@ -52,6 +59,8 @@ namespace MyKitchen.Infrastructure
                 }
                 tag.InnerHtml.Append(i.ToString());
                 result.InnerHtml.AppendHtml(tag);
+
+                PageRouteParameters.Remove("currentPage");
             }
             output.Content.AppendHtml(result.InnerHtml);
         }

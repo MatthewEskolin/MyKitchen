@@ -1,4 +1,6 @@
 ﻿@model MyKitchen.Models.MealBuilderMealDetails_VM
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "Meal Details";
@@ -15,38 +17,40 @@
 <div class="container">
 
 
-@if((bool?)(TempData["editMealName"]) == true)
+ 
+@if(@Model.EditMealMode)
 {
-  <h1>edit mode test</h1>
+<div class="page-header">
+  <div class="float-left">
+    <form asp-action="SaveMealName">
+    <input asp-for="Meal.MealName" type="text" />
+    <input asp-action="SaveMealName" type="submit" value="Save">
+    <input asp-action="Cancel_SaveMealName" type="submit" value="Cancel">
+    <input type="hidden" asp-for="Meal.MealID" />
+    </form>
+  </div>
+  <div class="clearfix"></div>
+</div> 
 }
 else
 {
-  <h1>Edit Mode Off</h1>
-}
-
 
 <div class="page-header">
   <div class="float-left">
   <h2>@Model.Meal.MealName</h2> 
   </div>
   <div class="float-left">
-    MealID = @Model.Meal.MealID
     <a href='@Url.Action("EditMealName", new { mealId = @Model.Meal.MealID})' id="@Model.Meal.MealID">
     <img class="editImage" src="~/images/editpencil_120034.png" asp-append-version="true" />
     </a>
   </div>
   <div class="clearfix"></div>
 </div>
-<div class="page-header">
-  <div class="float-left">
-    <form asp-action="SaveMealName">
-    <input asp-for="Meal.MealName" type="text" />
-    <input type="submit" value="Save">
-    <input type="submit" value="Cancel">
-    </form>
-  </div>
-  <div class="clearfix"></div>
-</div>
+
+} 
+
+
+
 
     <hr />
 

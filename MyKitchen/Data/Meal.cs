@@ -33,6 +33,13 @@ namespace MyKitchen.Data
             MealFoodItems.Add(newItem);
         }
 
+        public void RemoveFoodItemFromMeal(int mealFoodItemId)
+        {
+            var removeRec = MealFoodItems.FirstOrDefault(x => x.MealFoodItemId == mealFoodItemId);
+            MealFoodItems.Remove(removeRec);
+            
+        }
+
         public bool ContainsFoodItem(int foodItemId)
         {
             return this.MealFoodItems.Any(x => x.FoodItemId == foodItemId);

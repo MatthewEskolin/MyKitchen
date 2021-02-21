@@ -102,6 +102,15 @@ namespace MyKitchen
                 services.AddMvc() .SetCompatibilityVersion(CompatibilityVersion.Version_3_0) .AddFluentValidation().AddNewtonsoftJson();
             }
 
+            //distributed memory cache necessary for session state?
+            //services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(100);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
 
             services.Configure<MvcOptions>(options => { options.EnableEndpointRouting = false; });
@@ -144,9 +153,8 @@ namespace MyKitchen
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseSession();
             app.UseAuthentication();
-
             //EXAMPLE
             
             //is seems doing this in Program.cs is better
@@ -164,7 +172,6 @@ namespace MyKitchen
 
 
 
-            app.AddSession();
 
             app.UseMvc(routes =>
             {
@@ -179,7 +186,7 @@ namespace MyKitchen
                 
             });
 
-            app.UseCookiePolicy();
+
 
 
         }

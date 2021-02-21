@@ -1,4 +1,5 @@
-﻿@model  MyKitchen.Models.Meals.MealBuilderSelectFoodItemsViewModel
+﻿@using Microsoft.AspNetCore.Routing
+@model  MyKitchen.Models.Meals.MealBuilderSelectFoodItemsViewModel
 
 @ViewBag.Message
 
@@ -9,6 +10,17 @@
 
 <div asp-validation-summary="All">
     <span style="color:red;">Please correct the following errors</span>
+</div>
+
+
+@{
+
+    var routeParams = new RouteValueDictionary{{ "mealId", @Model.TheMeal.MealID}};
+}
+
+<div page-model="@Model.PagingInfo" page-action="SelectFoodItemsForMeal" page-classes-enabled="true" page-route-parameters="routeParams"
+     page-class="btn" page-class-normal="btn-secondary"
+     page-class-selected="btn-primary" class="btn-group pull-right m-1">
 </div>
 
 <table class="table">

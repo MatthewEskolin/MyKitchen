@@ -1,5 +1,8 @@
 ﻿@model MealBuilderIndexViewModel
 
+<form>
+
+
 <table class="table table-light">
     <thead>
 
@@ -24,7 +27,7 @@
                 @foreach(var foodItem in item.MealFoodItems){
                     <ul>
                     @foodItem.FoodItems.FoodItemName
-
+                    <input type="submit" value="delete" text="X" asp-action="DeleteFoodItem" asp-route-mealFoodItemId="@foodItem.MealFoodItemId">
                     </ul>
                 }
             </td>
@@ -41,3 +44,4 @@
     </tbody>
 </table>
 
+</form>

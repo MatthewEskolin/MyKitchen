@@ -9,6 +9,7 @@ namespace MyKitchen.Models
     public class MealBuilderMealDetails_VM
     {
         public Meal Meal { get; set; }
+        public bool EditMealMode {get; set;}
 
         
 
