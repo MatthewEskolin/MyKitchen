@@ -222,11 +222,11 @@ namespace MyKitchen.Controllers
 
 
         //Delete A Food Item from the selected meal.
-        public IActionResult DeleteFoodItemFromMeal(int mealFoodItemId)
+        public void DeleteFoodItemFromMeal(int mealFoodItemId)
         {
-            mealRepository.add
+            // mealRepository.add
 
-            RedirectToAction("Details", new {mealId = });
+            RedirectToAction("Details", new {mealId = 0});
         }
 
 
