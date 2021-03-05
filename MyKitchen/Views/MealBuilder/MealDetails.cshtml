@@ -69,13 +69,18 @@ else
     @Html.ActionLink("Add More Food", "SelectFoodItemsForMeal", new {mealId = Model.Meal.MealID}) |
     @Html.ActionLink("Delete Meal", "DeleteMeal", new {mealId = Model.Meal.MealID}) |
 
+    <form method="POST">
+
     <ul>
     @foreach (var item in @Model.Meal.MealFoodItems)
     {
         var foodItem = item.FoodItems.FoodItemName;
-        <li>@foodItem</li>
+        <li>@foodItem <input type="submit" value="delete" text="X" asp-action="DeleteFoodItemFromMeal" asp-route-mealFoodItemId="@item.MealFoodItemId" /></li>
     }
     </ul>
+
+    <input id="mealID" name="MealID" value="@Model.Meal.MealID" type="hidden" />
+    </form>
 
     <form asp-action="UpdateMeal">
     <div class="form-group">

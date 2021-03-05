@@ -222,11 +222,14 @@ namespace MyKitchen.Controllers
 
 
         //Delete A Food Item from the selected meal.
-        public void DeleteFoodItemFromMeal(int mealFoodItemId)
+        public IActionResult DeleteFoodItemFromMeal([FromForm]int MealID,[FromQuery]int mealFoodItemId)
         {
-            // mealRepository.add
+            // get Meal Entity and remove the food Item from the meal.
+            var meal = mealRepository.Find(MealID);
+            meal.RemoveFoodItemFromMeal(mealFoodItemId);
+            mealRepository.SaveChanges();
 
-            RedirectToAction("Details", new {mealId = 0});
+            return RedirectToAction("MealDetails", new {mealId = MealID});
         }
 
 
