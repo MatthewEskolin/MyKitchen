@@ -13,6 +13,9 @@
             "args": [],
             "cwd": "${workspaceFolder}/MyKitchen",
             "stopAtEntry": false,
+            "launchBrowser": {
+                "enabled": true
+            },
             "serverReadyAction": {
                 "action": "openExternally",
                 "pattern": "^\\s*Now listening on:\\s+https?://\\S+",

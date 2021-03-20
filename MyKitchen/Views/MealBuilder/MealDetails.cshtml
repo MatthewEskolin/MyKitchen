@@ -96,6 +96,33 @@ else
         <input asp-for="Meal.MealID" value="@Model.Meal.MealID" type="hidden">
     </form>
 
+
+    Upload Images
+    <form id="form" name="form" action="/uploader" enctype="multipart/form-data" method="post">
+  <div class="buttons">
+    <div class="upload-button">
+      
+      <input type="hidden" id="file-upload-form-mealID" name="MealID" value="@Model.Meal.MealID" />
+      <input id="files" name="files" type="file" size="1" multiple onchange="uploadFiles('files');" />
+    </div>
+  </div>
+
+
+<div id="_ImageList">
+@{
+  Html.RenderPartialAsync("_ImageList",Model.MealImages);
+}
+</div>
+
+    @* <img src= "@Url.Content(Model.ImagePath)" alt="Image" /> *@
+
+
+</form>
+
+
+
+
+
         @* <a asp-action="Index">Back to List</a> *@
 <div>
 
@@ -119,6 +146,43 @@ else
       }
     });
     $('#taRecipe').autoHeight();
+
+
+function uploadFiles(inputId) {
+  var input = document.getElementById(inputId);
+  var files = input.files;
+  var formData = new FormData();
+
+  for (var i = 0; i != files.length; i++) {
+    formData.append("files", files[i]);
+  }
+
+  var fileUploadFormMealID = document.getElementById("file-upload-form-mealID");
+  formData.append("MealID", $(fileUploadFormMealID).val());
+
+  $.ajax(
+    {
+      url: "/MealBuilder/UploadFile",
+      data: formData,
+      processData: false,
+      contentType: false,
+      type: "POST",
+      success: function (data) {
+            $('#_ImageList').html(data); 
+
+              @* $('#_ImageList').load('MealBuilder/LoadImages'); *@
+              //'//PartialView'); 
+        console.info("files-uploaded");
+          
+        alert("Files Uploaded!");
+      },
+      complete:function(){
+        console.info("upload complete");
+      }
+    }
+  );
+}
+
 
     </script>
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using MyKitchen.BL;
@@ -8,17 +7,11 @@ using MyKitchen.Data.Calendar;
 
 namespace MyKitchen.Controllers
 {
-    public class CalendarController : Controller
+    //Food items and meals to be added to the calendar. Each user has their own calendar. 
+    public partial class CalendarController : Controller
     {
         public UserInfo CurrentUser { get; }
-
-        //allow food items or meals to be added to the calendar
-
-
-
         private ApplicationDbContext ctx { get; set; }
-
-
         public int PageSize = 10;
 
         public CalendarController(ApplicationDbContext context,UserInfo user)
@@ -27,13 +20,12 @@ namespace MyKitchen.Controllers
             ctx = context;
         }
 
-
         public IActionResult Index()
         {
             return View();
         }
 
-
+        //Gets all events in the database - not filtered by user - this shouldn't be used to view a users events.
         public JsonResult GetEvents()
         {
             var events = ctx.Events.ToList();
@@ -46,41 +38,7 @@ namespace MyKitchen.Controllers
             return new JsonResult(events);
         }
 
-
-        public class FullCalendarEvent
-        {
-            //mirroring fullcalendar object properties
-            public string  title { get; set; }
-            public string description { get; set; }
-            public DateTime start { get; set; }
-            public DateTime? end { get; set; }
-            public string color { get; set; }
-            public bool allDay { get; set; }
-            public int eventID { get; set; }
-
-            public int? mealID {get; set;}
-            public int? foodItemID {get; set;}
-
-            public static FullCalendarEvent FromEvent(Events evt)
-            {
-                var fullCalendarEvent = new FullCalendarEvent
-                {
-                    title = evt.Subject,
-                    description = evt.Description,
-                    start = evt.Start,
-                    end = evt?.End,
-                    color = evt.ThemeColor,
-                    eventID = evt.EventID,
-                    allDay = evt.IsFullDay,
-                    mealID = evt.MealID,
-                    foodItemID = evt.FoodItemID,
-                };
-
-                return fullCalendarEvent;
-            }
-
-        }
-
+        //Gets Available Items for the current User.
         public JsonResult GetAvailableItems()
         {
             var items = ctx.vwsUserMealsAndFoodItems.Where(x => x.AppUserId == CurrentUser.User.Id).ToList();;
@@ -113,15 +71,10 @@ namespace MyKitchen.Controllers
             return new JsonResult(true);
         }
 
-
-        public class CalendarCommand
-        {
-            public int Month { get; set; }
-        }
-
         [HttpPost]
         public JsonResult ClearMonth([FromBody]  CalendarCommand cmd)
         {
+            //TODO this should also filter events by user, or it will be deleting events for all users.
             var smonth = cmd.Month + 1;
 
             List<Events> monthEvents = ctx.Events.Where(x => x.Start.Month == smonth).ToList();
@@ -134,17 +87,12 @@ namespace MyKitchen.Controllers
         [HttpPost]
         public JsonResult RemoveEvent([FromBody]Events deleteEvent)
         {
-                        //Save new Event to DB for current user
-
+            //Deletes a single event from the calendar
             var removeEvent = ctx.Events.Where(x => x.EventID == deleteEvent.EventID).FirstOrDefault();
             ctx.Events.Remove(removeEvent);
             ctx.SaveChanges();
 
             return new JsonResult(true);
         }
-
-
-
-
     }
 }

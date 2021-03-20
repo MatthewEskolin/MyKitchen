@@ -84,6 +84,14 @@ namespace MyKitchen
             services.AddTransient<IFoodItemRepository, EFFoodItemRepository>();
             services.AddTransient<IFoodReccomendationService, FoodRecommendationService>();
             services.AddTransient<IMealRepository, EfMealRepository>();
+
+            // services.AddTransient<MyKitchen.Controllers.IMealImageService,MyKitchen.Controllers.FileSystemMealImageService>();
+            services.AddTransient<MyKitchen.Controllers.IMealImageService,MyKitchen.Controllers.AzureBlobMealImageService>();
+
+
+
+            
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<UserInfo>();
 

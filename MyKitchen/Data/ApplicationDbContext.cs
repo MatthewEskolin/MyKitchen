@@ -26,6 +26,10 @@ namespace MyKitchen.Data
         public DbSet<MealFoodItems> MealFoodItems { get; set; }
         public DbSet<FoodItem> FoodItems { get; set; }
 
+        public DbSet<FileUpload> FileUploads {get; set;}
+
+
+
         public DbSet<UserFoodItem> UserFoodItems {get; set;}
 
 

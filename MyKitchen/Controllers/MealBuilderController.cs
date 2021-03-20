@@ -8,25 +8,44 @@ using System.Threading.Tasks;
 using MyKitchen.Models.Meals;
 using MyKitchen.BL;
 using System;
+using System.Collections.Generic;
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Azure.Storage.Blobs;
+using Microsoft.Extensions.Configuration;
 
 namespace MyKitchen.Controllers
 {
     [Authorize]
     public class MealBuilderController : Controller
     {
-
         private readonly IFoodItemRepository foodItemRepository;
         private readonly IMealRepository mealRepository;
         private ApplicationDbContext context;
 
         private UserInfo CurrentUser { get; set; }
 
-        public MealBuilderController(IFoodItemRepository foodItemRepo, IMealRepository mealRepo, ApplicationDbContext ctx, UserInfo user)
+        IWebHostEnvironment _env {get; set;}
+        public IConfiguration _configuration { get; private set; }
+        IMealImageService ImageService {get; set;}
+
+        public MealBuilderController(IMealImageService imageService,
+                                     IWebHostEnvironment env, 
+                                     IFoodItemRepository foodItemRepo, 
+                                     IMealRepository mealRepo, 
+                                     ApplicationDbContext ctx, 
+                                     IConfiguration configuration,
+                                     UserInfo user)
         {
             CurrentUser = user;
             context = ctx;
             foodItemRepository = foodItemRepo;
             mealRepository = mealRepo;
+            _env = env;
+            _configuration = configuration;
+            ImageService = imageService;
+
         }
 
         public int PageSize = 15;
@@ -49,6 +68,10 @@ namespace MyKitchen.Controllers
             HttpContext.Session.SetInt32("editMealName", 0); 
 
             var result = mealRepository.GetMealsForUser(pageNum, PageSize, this.CurrentUser.User);
+
+
+
+            
             var viewModel = new MealBuilderIndexViewModel()
             {
                 Meals = result.meals,
@@ -138,9 +161,15 @@ namespace MyKitchen.Controllers
         public IActionResult MealDetails(int mealID, [FromQuery]bool editMode)
         {
             var meal = mealRepository.Find(mealID);
+            
+            var images = ImageService.LoadImages(mealID);
+
             var viewModel = new MealBuilderMealDetails_VM();
+
             viewModel.Meal = meal;
             viewModel.EditMealMode = editMode;
+            viewModel.MealImages = images;
+
 
             return View(viewModel);
 
@@ -165,6 +194,24 @@ namespace MyKitchen.Controllers
             };
 
             return View("Index", viewModel1);
+        }
+
+        public IActionResult GetImage([FromQuery]string imageName)
+        {
+                BlobServiceClient blobServiceClient = new(_configuration.GetConnectionString("saMyKitchen"));
+                BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient("fileuploads");
+                BlobClient blobClient = blobContainerClient.GetBlobClient(imageName);
+
+                var memoryStream = new MemoryStream();
+                blobClient.DownloadTo(memoryStream);
+
+                return File(memoryStream.GetBuffer(),"image/jpg");
+
+
+                // var image = System.IO.File.OpenRead("C:\\test\\random_image.jpeg");
+                // return File(image, "image/jpeg");
+
+
         }
 
         public IActionResult UpdateMeal([FromForm] Meal meal)
@@ -220,7 +267,6 @@ namespace MyKitchen.Controllers
             throw new System.NotImplementedException();
         }
 
-
         //Delete A Food Item from the selected meal.
         public IActionResult DeleteFoodItemFromMeal([FromForm]int MealID,[FromQuery]int mealFoodItemId)
         {
@@ -231,6 +277,21 @@ namespace MyKitchen.Controllers
 
             return RedirectToAction("MealDetails", new {mealId = MealID});
         }
+
+
+        [HttpPost]
+        public IActionResult UploadFile(IList<IFormFile> files, [FromForm]int MealID)
+        {
+            foreach (IFormFile source in files)
+            {
+                this.ImageService.SaveImage(source,MealID);
+            }
+
+            var images = this.ImageService.LoadImages(MealID);
+
+            return PartialView("_ImageList",images);
+        }
+
 
 
     }

@@ -11,6 +11,8 @@ namespace MyKitchen.Models
         public Meal Meal { get; set; }
         public bool EditMealMode {get; set;}
 
+        public List<string> MealImages {get; set;}
+
         
 
     }
