@@ -41,6 +41,48 @@ namespace MyKitchen.Data.Calendar
         public virtual FoodItem FoodItems { get; set; }
 
         public virtual Meal Meal {get; set;}
+
+
+        [NotMapped]
+        public string itemType
+        {
+            get
+            {
+
+                if (this.MealID == null)
+                {
+                    return "FOOD ITEM";
+                }
+                else
+                {
+                    return "MEAL";
+                }
+            }
+        }
+
+
+        [NotMapped]
+        public int itemId 
+        {
+            get{
+
+                if(this.MealID != null)
+                {
+                    return this.MealID.Value;
+                }
+
+                if(this.FoodItemID != null)
+                {
+                    return this.FoodItemID.Value;
+                }
+
+                return 0;
+
+            }
+        }
+
+
+
     }
     
 }

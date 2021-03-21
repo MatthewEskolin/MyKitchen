@@ -5,7 +5,7 @@
 }
 
 
-<form method="post" asp-action="SearchAll">
+<form id="fmSearchItems" method="post" asp-action="SearchAll">
 
 
 <div class="search-bar">
@@ -133,6 +133,58 @@
                 }
             });
 
+
+            //Set Up Search Ajax Call 
+             $("#fmSearchItems").submit(function(event){
+
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    type :"POST",
+                    url:"/calendar/SearchForItems",
+                    data:formData
+                }).done(function(data){
+
+                    //replace existing draggable options with whatever is returned from the search
+                    window.availableItems = [];
+                     $("#itemContainer").empty();
+
+                    $.each(data,
+                        function(i, v) {
+                            //for each item create a new div box;
+
+                            window.availableItems.push(v);
+
+                            var trimItemName = v.itemName.replace(/'/g, '$');
+                            //TODO figure out how to have single quotes in the item name without breaking javascript. 
+
+
+
+                            var dataEvent = "{\"itemId\":" + v.itemId + ",\"title\":\"" + trimItemName + "\"" + ",\"itemType\":\"" + v.itemType + "\"}";
+
+                            //if meal 
+
+                            if(v.itemType == "MEAL"){
+
+                                $("#itemContainer").append("<div class='draggableitem draggableitem-meal' data-event='" + dataEvent + "'>" + v.itemName + " </div>");
+                            }
+                            else
+                           {
+                                $("#itemContainer").append("<div class='draggableitem draggableitem-foodItem' data-event='" + dataEvent + "'>" + v.itemName + " </div>");
+                           } 
+
+                        });
+
+
+
+
+                });
+
+                event.preventDefault();
+            });
+
+
+
             //Create Calendar
             function GenerateCalendar(eventSources) {
 
@@ -179,12 +231,6 @@
                                                  info.el.style.backgroundColor  = "blue"
                                                  info.el.style.color = "white";
                                             }
-                                                
-        
-        
-
-
-
 
                                 $(info.el).find("#svg-delete-event").click(function(event) {
 
@@ -233,16 +279,9 @@
                                 $(this).attr("src","/images/red-trash-delete-icon.svg")
                             });
 
-
                             $(info.el).find("#svg-delete-event").hide(); 
 
-
-
-
-
                             },
-
-
                         
                         eventClick: function(info){
 
@@ -254,7 +293,7 @@
                             else if(info.event.extendedProps.itemType == "MEAL")
                             {
 
-                                window.location.href = "/Meals/Details/" + info.event.extendedProps.itemId;;
+                                window.location.href = "/MealBuilder/MealDetails/" + info.event.extendedProps.itemId;;
                             }
                             else {
 
@@ -263,27 +302,18 @@
                             //if meal, redirect to meal
                             //TODO NOT IMPLEMENTED
                             }
-
-
-
-
                         },
                         eventMouseEnter:function(info){
 
                             //find remove button and make it visible
                             $(info.el).find('#svg-delete-event').show();
                         },
-
                         eventMouseLeave:function(info){
 
                             //find remove button and make it visible
                             $(info.el).find('#svg-delete-event').hide();
                         },
-
                         eventDrop: function(info) {
-
-
-
 
                             $.ajax({
                                 url: '/calendar/UpdateEvent',
@@ -351,7 +381,6 @@
                                 }
                             });
                         },
-
                         customButtons: {
                             custom1: {
                                 text: 'Clear Month',

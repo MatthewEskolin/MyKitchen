@@ -19,6 +19,10 @@ namespace MyKitchen.Controllers
             public int? mealID {get; set;}
             public int? foodItemID {get; set;}
 
+            public string itemType {get; set;}
+
+            public int itemId {get; set;}
+
             public static FullCalendarEvent FromEvent(Events evt)
             {
                 var fullCalendarEvent = new FullCalendarEvent
@@ -32,6 +36,8 @@ namespace MyKitchen.Controllers
                     allDay = evt.IsFullDay,
                     mealID = evt.MealID,
                     foodItemID = evt.FoodItemID,
+                    itemType = evt.itemType,
+                    itemId = evt.itemId
                 };
 
                 return fullCalendarEvent;

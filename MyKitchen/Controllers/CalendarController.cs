@@ -25,6 +25,13 @@ namespace MyKitchen.Controllers
             return View();
         }
 
+        public IActionResult SearchForItems([FromForm]string searchText)
+        {
+            var items = ctx.vwsUserMealsAndFoodItems.Where(x => x.AppUserId == CurrentUser.User.Id && x.ItemName.Contains(searchText)).ToList();;
+            return new JsonResult(items);
+        }
+
+
         //Gets all events in the database - not filtered by user - this shouldn't be used to view a users events.
         public JsonResult GetEvents()
         {

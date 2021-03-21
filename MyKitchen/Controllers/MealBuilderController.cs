@@ -158,6 +158,8 @@ namespace MyKitchen.Controllers
             return View("SelectFoodItemsForMeal", viewModel);
         }
 
+
+        [Route("MealBuilder/MealDetails/{mealID}")]
         public IActionResult MealDetails(int mealID, [FromQuery]bool editMode)
         {
             var meal = mealRepository.Find(mealID);
