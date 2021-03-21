@@ -6,7 +6,7 @@ using SendGrid.Helpers.Mail;
 using MyKitchen;
 using Microsoft.Extensions.Configuration;
 
-namespace MyKitchen{
+namespace MyKitchen.Services {
 
     public class EmailSender : IEmailSender
     {

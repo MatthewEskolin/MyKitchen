@@ -1,4 +1,4 @@
-﻿namespace MyKitchen
+﻿namespace MyKitchen.Services
 {
     public interface IFoodReccomendationService
     {

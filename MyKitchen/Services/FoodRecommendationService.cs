@@ -3,7 +3,7 @@ using System.Linq;
 using MyKitchen.BL;
 using MyKitchen.Data;
 
-    namespace MyKitchen
+    namespace MyKitchen.Services
 {
     public class FoodRecommendationService:IFoodReccomendationService
     {

@@ -10,20 +10,18 @@ namespace MyKitchen.Data
     {
         public static void Initialize(ApplicationDbContext context)
         {
-             // context.Database.Migrate();
-           // CreateViews(context);
+            // Uncomment the below line to run migrations during App Startup
+            // context.Database.Migrate();
+
+            //Seed Tables with Initial Data.
+
             InitializeFoodItems(context);
             InitializeFoodGroups(context);
 
 
         }
 
-        private static void CreateViews(ApplicationDbContext context)
-        {
 
-
-
-        }
 
         private static void InitializeFoodGroups(ApplicationDbContext context)
         {

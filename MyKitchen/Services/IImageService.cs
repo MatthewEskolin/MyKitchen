@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyKitchen.Data;
 using MyKitchen.Models;
 
-namespace MyKitchen.Controllers
+namespace MyKitchen.Services
 {
 
 

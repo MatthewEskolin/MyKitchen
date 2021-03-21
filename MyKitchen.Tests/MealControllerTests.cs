@@ -12,6 +12,7 @@ using MyKitchen.BL;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
+using MyKitchen.Services;
 
 namespace MyKitchen.Tests
 {
@@ -43,6 +44,7 @@ namespace MyKitchen.Tests
             var dbmock = new Mock<ApplicationDbContext>();
             var mkImageService = new Mock<IMealImageService>();
             var mkHostingEnv = new Mock<IWebHostEnvironment>();
+            var mkConfiguration = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
 
             var meals = new List<Meal>(){
                 new Meal(){MealName = "Meal1"},
@@ -51,7 +53,7 @@ namespace MyKitchen.Tests
 
             var info = new PagingInfo();
 
-            var controller = new MealBuilderController(mkImageService.Object,mkHostingEnv.Object,mkFoodItemRepo.Object, mkMealRepo.Object,dbmock.Object,userMock.Object) {PageSize = 3};
+            var controller = new MealBuilderController(mkImageService.Object,mkHostingEnv.Object,mkFoodItemRepo.Object, mkMealRepo.Object,dbmock.Object,mkConfiguration.Object,userMock.Object) {PageSize = 3};
             mkMealRepo.Setup(x => x.GetMealsForUser(controller.PageSize, testPageIndex, userMock.Object.User)).Returns((meals,info));
 
             //act

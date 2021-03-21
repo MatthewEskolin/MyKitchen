@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MyKitchen.Controllers;
@@ -57,12 +56,6 @@ namespace MyKitchen.Data
             builder.Entity<vwsUserMealsAndFoodItem>().HasNoKey();
 
         }
-    }
-
-    // Add profile data for application users by adding properties to the ApplicationUser class
-    public class ApplicationUser : IdentityUser
-    {
-        public string FavoriteFood { get; set; }
     }
 
 }

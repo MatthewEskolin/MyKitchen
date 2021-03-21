@@ -16,6 +16,8 @@ namespace MyKitchen.Controllers
     public class HomeController : Controller
     {
         ApplicationDbContext ctx { get; set; }
+
+
         public HomeController(ApplicationDbContext pctx)
         {
             var errorarray = new int[4];
@@ -23,6 +25,8 @@ namespace MyKitchen.Controllers
 
             ctx = pctx;
         }
+
+        [Route("Home")]
         public IActionResult Index()
         {
             //Let's store in the database the time we last cooked our own meal, and track how many meals we cooked overtime

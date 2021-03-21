@@ -9,9 +9,7 @@ namespace MyKitchen.Data
         [Key]
         public int FoodGroupID { get; set; }
         public string Name { get; set; }
-
         public ICollection<FoodItem> FoodItem { get; set; }
-
 
     }
 }

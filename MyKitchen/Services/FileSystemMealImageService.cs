@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using MyKitchen.Data;
 
-namespace MyKitchen.Controllers
+namespace MyKitchen.Services
 {
     public class FileSystemMealImageService:IMealImageService
     {

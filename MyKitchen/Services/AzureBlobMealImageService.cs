@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Http;
 using MyKitchen.Data;
 using Microsoft.Extensions.Configuration;
 
-namespace MyKitchen.Controllers
+namespace MyKitchen.Services
 {
     public class AzureBlobMealImageService:IMealImageService{
 

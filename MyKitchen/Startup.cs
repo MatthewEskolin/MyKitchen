@@ -18,6 +18,7 @@ using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using System;
 using Azure.Core;
+using MyKitchen.Services;
 
 namespace MyKitchen
 {
@@ -86,7 +87,7 @@ namespace MyKitchen
             services.AddTransient<IMealRepository, EfMealRepository>();
 
             // services.AddTransient<MyKitchen.Controllers.IMealImageService,MyKitchen.Controllers.FileSystemMealImageService>();
-            services.AddTransient<MyKitchen.Controllers.IMealImageService,MyKitchen.Controllers.AzureBlobMealImageService>();
+            services.AddTransient<MyKitchen.Services.IMealImageService,MyKitchen.Services.AzureBlobMealImageService>();
 
 
 
