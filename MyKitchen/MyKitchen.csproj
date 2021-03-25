@@ -12,20 +12,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Dependencies\**" />
-    <Compile Remove="Views\Home\**" />
+    <!-- <Compile Remove="Views\Home\**" /> -->
     <Compile Remove="Views\Shared\MvcGrid\**" />
     <Content Remove="Dependencies\**" />
-    <Content Remove="Views\Home\**" />
+    <!-- <Content Remove="Views\Home\**" /> -->
     <Content Remove="Views\Shared\MvcGrid\**" />
     <EmbeddedResource Remove="Dependencies\**" />
-    <EmbeddedResource Remove="Views\Home\**" />
+    <!-- <EmbeddedResource Remove="Views\Home\**" /> -->
     <EmbeddedResource Remove="Views\Shared\MvcGrid\**" />
     <None Remove="Dependencies\**" />
-    <None Remove="Views\Home\**" />
+    <!-- <None Remove="Views\Home\**" /> -->
     <None Remove="Views\Shared\MvcGrid\**" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Controllers\HomeController.cs" />
+    <!-- <Compile Remove="Controllers\HomeController.cs" /> -->
     <Compile Remove="Data\Migrations\20190921155905_MealItems.cs" />
     <Compile Remove="Data\Migrations\20190921155905_MealItems.Designer.cs" />
     <Compile Remove="Data\Migrations\20190921160155_MealFoodItems.cs" />

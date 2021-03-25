@@ -1,4 +1,4 @@
-﻿@model IndexViewModel
+﻿@model MyKitchen.Models.Home.HomeIndexVM
 <!-- Create Quick Add Here-->
 <div>Quick Add new Food</div>
 
@@ -21,7 +21,7 @@
 </form>
 
 
-@Html.AjaxGrid(Url.Action("IndexGrid"), new { id = "my-ajax-grid" })
+@* @Html.AjaxGrid(Url.Action("IndexGrid"), new { id = "my-ajax-grid" }) *@
 
 
 @*@(Html.Grid(Model.FoodItemList)

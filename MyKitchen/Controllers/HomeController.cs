@@ -7,9 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyKitchen.Data;
 using MyKitchen.Models;
-using NonFactors.Mvc.Grid;
-
-
+using MyKitchen.Models.Home;
 
 namespace MyKitchen.Controllers
 {
@@ -35,18 +33,15 @@ namespace MyKitchen.Controllers
 
 
 
-            var newVariable = 5;
+     
             ViewBag.BagItem1 = "Browser Link Change Test";
 
             //CAN WE CREATE A model contains food items and a lost
 
 
-            var viewModel = new IndexViewModel()
-            {
-                FoodItemList = ctx.FoodItems,
-                
+            var viewModel = new HomeIndexVM()
 
-            };
+;
 
             return View(viewModel);
         }
@@ -88,16 +83,16 @@ namespace MyKitchen.Controllers
 
 
         [HttpPost]
-        public IActionResult SaveNewFood(IndexViewModel viewModel1 )
+        public IActionResult SaveNewFood(HomeIndexVM viewModel1 )
         {
             FoodItem newItem = viewModel1.NewFoodItem;
                        
             ctx.Add(newItem);
             ctx.SaveChanges();
 
-            var newModel = new IndexViewModel()
+            var newModel = new HomeIndexVM()
             {
-                FoodItemList = ctx.FoodItems
+                FoodItemList = ctx.FoodItems.ToList()
 
             };
 
