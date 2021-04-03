@@ -64,14 +64,11 @@ namespace MyKitchen.Controllers
         // }
 
 
-        public IActionResult Index(int pageNum = 1)
+        public IActionResult Index(int currentPage = 1)
         {
             HttpContext.Session.SetInt32("editMealName", 0); 
 
-            var result = mealRepository.GetMealsForUser(pageNum, PageSize, this.CurrentUser.User);
-
-
-
+            var result = mealRepository.GetMealsForUser(currentPage, PageSize, this.CurrentUser.User);
             
             var viewModel = new MealBuilderIndexViewModel()
             {
@@ -108,7 +105,9 @@ namespace MyKitchen.Controllers
                 await mealRepository.Add(meal);
             }
 
-            return RedirectToAction("Index");
+            // return RedirectToAction("Details");
+
+            return Redirect($"/MealBuilder/MealDetails/{meal.MealID}?editMode=false");
         }
 
         public IActionResult SelectFoodItemsForMeal(int mealId, int currentPage = 1)
@@ -159,6 +158,7 @@ namespace MyKitchen.Controllers
             return View("SelectFoodItemsForMeal", viewModel);
         }
 
+        //public IActionResult MealDetails(int mealID, [FromQuery]bool editMode)
 
         [Route("MealBuilder/MealDetails/{mealID}")]
         public IActionResult MealDetails(int mealID, [FromQuery]bool editMode)

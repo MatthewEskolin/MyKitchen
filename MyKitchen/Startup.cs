@@ -192,6 +192,14 @@ namespace MyKitchen
                     name:"foodItemDetail",
                     template: "{controller=FoodItems}/{action=Details}/{id}");
 
+
+                // routes.MapRoute(
+                //     name:"mealDetails",
+                //     template:"{controller}/{action}/{MealId}"
+
+//                );
+
+
                 
             });
 
