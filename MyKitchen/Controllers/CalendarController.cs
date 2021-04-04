@@ -25,10 +25,18 @@ namespace MyKitchen.Controllers
             return View();
         }
 
-        public IActionResult SearchForItems([FromForm]string searchText)
+        public IActionResult SearchForItems([FromForm]string searchText, [FromForm]string cbShowMealsOnly)
         {
-            var items = ctx.vwsUserMealsAndFoodItems.Where(x => x.AppUserId == CurrentUser.User.Id && x.ItemName.Contains(searchText)).ToList();;
-            return new JsonResult(items);
+
+            //if showing meals only, want to exclude the Food Items from the search result;
+            var items = ctx.vwsUserMealsAndFoodItems.Where(x => x.AppUserId == CurrentUser.User.Id && x.ItemName.Contains(searchText));
+
+            if(cbShowMealsOnly == "on")
+            {
+                items = items.Where(x => x.ItemType == "MEAL");
+            }
+
+            return new JsonResult(items.ToList());
         }
 
 
