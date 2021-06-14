@@ -51,24 +51,11 @@ namespace MyKitchen.Controllers
 
         public int PageSize = 15;
 
-        // public IActionResult Index(int pageNum = 1)
-        // {
-        //     var viewModel1 = new MealBuilderIndexViewModel()
-        //     {
-
-        //          Meals = mealRepository.GetMealsForUser(this.CurrentUser.User).OrderBy(x => x.MealName).Skip((pageNum - 1) * PageSize).Take(PageSize),
-        //          MealListPagingInfo = new PagingInfo() { CurrentPage = pageNum,ItemsPerPage = 15,TotalItems = mealRepository.CountForUser(CurrentUser.User)}
-        //     };
-
-        //     return View(viewModel1);
-        // }
-
-
         public IActionResult Index(int currentPage = 1)
         {
             HttpContext.Session.SetInt32("editMealName", 0); 
 
-            var result = mealRepository.GetMealsForUser(currentPage, PageSize, this.CurrentUser.User);
+            var result = mealRepository.GetMealsForUser(currentPage, PageSize, this.CurrentUser.User,string.Empty);
             
             var viewModel = new MealBuilderIndexViewModel()
             {
@@ -78,6 +65,46 @@ namespace MyKitchen.Controllers
 
             return View(viewModel);
         }
+
+        // public IActionResult ShowList()
+        // {
+        //     return View("Index",viewModel)
+        // }
+
+        public IActionResult SearchMeals([FromForm]string searchText)
+        {
+            var result = mealRepository.GetMealsForUser(1,PageSize,this.CurrentUser.User,searchText);
+            
+            var viewModel = new MealBuilderIndexViewModel()
+            {
+                Meals = result.meals,
+                MealListPagingInfo = result.pagingInfo
+            };
+
+            return View("Index",viewModel);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public IActionResult Create()
         {
@@ -192,7 +219,7 @@ namespace MyKitchen.Controllers
             var viewModel1 = new MealBuilderIndexViewModel()
             {
 
-                Meals = mealRepository.GetMealsForUser(pageNum, PageSize, this.CurrentUser.User).meals,
+                Meals = mealRepository.GetMealsForUser(pageNum, PageSize, this.CurrentUser.User,String.Empty).meals,
                 MealListPagingInfo = new PagingInfo() { CurrentPage = 1, ItemsPerPage = 15, TotalItems = mealRepository.Count() }
             };
 

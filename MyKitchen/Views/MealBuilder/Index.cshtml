@@ -32,6 +32,15 @@ Search Food Items
     <p>
         <a asp-action="Create">Create New Meal</a>
     </p>
+
+<form id="fmSearchItems" name="fmSearchMeals" method="post" asp-action="SearchMeals">
+<div class="search-bar">
+  <input class="input-text" type="text" name="searchText" placeholder="Search">
+  <i class="icon fa fa-search" onclick="document.fmSearchMeals.submit()" style="cursor:pointer;"></i>
+  @* Show Meals Only? <input type="checkbox" name="cbShowMealsOnly" /> *@
+</div>
+</form>
+
             @await Html.PartialAsync("_MealList")
 @*<div class="container">
     <div class="row">

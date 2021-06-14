@@ -112,7 +112,7 @@ namespace MyKitchen.Models
 
         }
 
-        public (IEnumerable<Meal> meals,PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user)
+        public (IEnumerable<Meal> meals,PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user,string mealName)
         {
             var _context = this.context;
 
@@ -120,22 +120,32 @@ namespace MyKitchen.Models
             var cresult = (from meals in _context.Meals.Include(x => x.MealFoodItems).ThenInclude(x => x.FoodItems)
                            where meals.AppUser.Id == user.Id select meals).AsQueryable();
 
+            if(!String.IsNullOrEmpty(mealName)){
+                cresult = cresult.Where(x => x.MealName.ToUpper().Contains(mealName.ToUpper()));
+            }                
+
             cresult = cresult.OrderBy(x => x.MealName).Skip((pageNum - 1) * pageSize).Take(pageSize);
 
             //need to set the total item count;
-            var pagingInfo = new PagingInfo() { CurrentPage = pageNum,ItemsPerPage = 15,TotalItems = CountForUser(user)};
+            var pagingInfo = new PagingInfo() { CurrentPage = pageNum,ItemsPerPage = 15,TotalItems = CountForUser(user,mealName)};
 
             return (cresult, pagingInfo);
         }
 
 
-        public int CountForUser(ApplicationUser user)
+        public int CountForUser(ApplicationUser user,string mealName)
         {
             var _context = this.context;
             var cresult = (from meals in _context.Meals.Include(x => x.MealFoodItems).ThenInclude(x => x.FoodItems)
-                           where meals.AppUser.Id == user.Id select meals).AsQueryable().Count();
+                           where meals.AppUser.Id == user.Id select meals).AsQueryable();
+                           
+                           
+            if(!String.IsNullOrEmpty(mealName))
+            {
+                cresult = cresult.Where(x => x.MealName.Contains(mealName));
+            }
 
-            return cresult;
+            return cresult.Count();
         }
     }
 }

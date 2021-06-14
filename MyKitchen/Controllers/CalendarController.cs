@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyKitchen.BL;
 using MyKitchen.Data;
@@ -8,6 +9,8 @@ using MyKitchen.Data.Calendar;
 namespace MyKitchen.Controllers
 {
     //Food items and meals to be added to the calendar. Each user has their own calendar. 
+
+   [Authorize]
     public partial class CalendarController : Controller
     {
         public UserInfo CurrentUser { get; }

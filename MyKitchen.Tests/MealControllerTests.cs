@@ -54,7 +54,7 @@ namespace MyKitchen.Tests
             var info = new PagingInfo();
 
             var controller = new MealBuilderController(mkImageService.Object,mkHostingEnv.Object,mkFoodItemRepo.Object, mkMealRepo.Object,dbmock.Object,mkConfiguration.Object,userMock.Object) {PageSize = 3};
-            mkMealRepo.Setup(x => x.GetMealsForUser(controller.PageSize, testPageIndex, userMock.Object.User)).Returns((meals,info));
+            mkMealRepo.Setup(x => x.GetMealsForUser(controller.PageSize, testPageIndex, userMock.Object.User,string.Empty)).Returns((meals,info));
 
             //act
             var result = (controller.Index(testPageIndex) as ViewResult)?.ViewData.Model as MealBuilderIndexViewModel;
