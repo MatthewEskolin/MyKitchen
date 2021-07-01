@@ -45,8 +45,11 @@ namespace MyKitchen
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer( Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(options => {
+                options.UseSqlServer( Configuration.GetConnectionString("DefaultConnection"), builder => {
+                    builder.EnableRetryOnFailure(3, TimeSpan.FromSeconds(5), null);
+                });
+            });
 
             services.AddIdentity<ApplicationUser, Microsoft.AspNetCore.Identity.IdentityRole>()
                 .AddDefaultUI()
