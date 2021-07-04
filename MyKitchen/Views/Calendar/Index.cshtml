@@ -5,12 +5,12 @@
 }
 
 
-<form id="fmSearchItems" method="post" asp-action="SearchAll">
+<form id="fmSearchItems" name="searchForm" method="post" asp-action="SearchAll">
 
 
 <div class="search-bar">
   <input class="input-text" type="text" name="searchText" placeholder="Search">
-  <i class="icon fa fa-search"></i>
+  <i class="icon fa fa-search" style="cursor:pointer;" onclick="$('#fmSearchItems').submit()"></i>
   Show Meals Only? <input type="checkbox" name="cbShowMealsOnly" />
 </div>
 </form>

@@ -16,6 +16,8 @@ namespace MyKitchen.Data
 
         public string MealName { get; set; }
 
+        public bool IsFavorite {get; set;}
+
         public string Recipe {get; set;}
         public ICollection<MealFoodItems> MealFoodItems { get; set; }
 

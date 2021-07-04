@@ -18,6 +18,7 @@
     <th scope="col">Food Items</th>
     <th scope="col">Satiety Profile</th>
     <th scope="col">Edit</th>
+    <th scope="col">Favorite</th>
     </thead>
     <tbody>
     @foreach(var item in Model.Meals)
@@ -45,9 +46,18 @@
                 <a asp-action="MealDetails" asp-route-mealId="@item.MealID">Select</a>
 
             </td>
+            <td>
+                <img src="images/fav-unselected.png">
+            </td>
         </tr>
     }
     </tbody>
 </table>
+
+<div page-model="@Model.MealListPagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary"
+     page-class-selected="btn-primary" class="btn-group pull-left m-1">
+</div>
+
 
 </form>
