@@ -158,3 +158,28 @@ body { padding: 2em; }
 .loginBtn--Google:focus {
   background: #E74B37;
 }
+
+/* Favorite Icons - uses CSS Sprites */
+
+
+.favImage {
+  zoom:0.05;
+  -moz-transform:scale(0.05);
+}
+
+.bg-nofav:hover {
+  /* width: 512px; height: 512px; */
+  background: url('/images/css_sprites.png') -542px -10px;
+}
+.bg-fav:hover {
+    width: 512px; height: 512px;
+    background: url('/images/css_sprites.png') -10px -10px;
+}
+.bg-fav {
+  width: 512px; height: 512px;
+  background: url('/images/css_sprites.png') -542px -10px;
+}
+.bg-nofav {
+  width: 512px; height: 512px;
+  background: url('/images/css_sprites.png') -10px -10px;
+}

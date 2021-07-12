@@ -47,10 +47,8 @@
 
             </td>
             <td>
-                <img src="images/fav-unselected.png">
-            </td>
-        </tr>
-    }
+                
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" class="@GetFavoritesClass(item.IsFavorite) favImage" /> </td> </tr> }
     </tbody>
 </table>
 
@@ -61,3 +59,26 @@
 
 
 </form>
+
+@functions{ 
+  public string GetFavoritesClass(bool isFavorite) 
+    {
+        return isFavorite ? "bg-fav" : "bg-nofav";
+    }
+}
+
+
+@section Scripts {
+
+    @* <script type="text/javascript">
+        //Change Image Source on Hover
+
+
+        document.addEventListener('rowclick', function (e) {
+                console.log('data: ', e.detail.data);
+                console.log('grid: ', e.detail.grid);
+                console.log('original event: ', e.detail.originalEvent);
+
+        });
+    </script> *@
+}

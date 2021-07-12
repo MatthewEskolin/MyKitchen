@@ -31,3 +31,8 @@ can the app encourage users to start cooking? what about food meditations? can w
 -->Delivery Drivers
 -->all the hands it passed through to reach the user
 
+
+07/04/2021
+
+-try building a vue.js or angular front-end to learn how to use a front-end framework.
+

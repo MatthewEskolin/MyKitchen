@@ -7,7 +7,6 @@ namespace MyKitchen.Models
     {
         //MealList
         public PagingInfo MealListPagingInfo { get; set; }
-
         public IEnumerable<Meal> Meals { get; set; }
 
     }
