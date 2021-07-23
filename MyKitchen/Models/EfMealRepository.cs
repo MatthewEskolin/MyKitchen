@@ -64,7 +64,7 @@ namespace MyKitchen.Models
 
         public void Update(Meal foodItem)
         {
-            throw new NotImplementedException();
+            SaveChanges();
         }
 
         public void Remove(Meal foodItem)

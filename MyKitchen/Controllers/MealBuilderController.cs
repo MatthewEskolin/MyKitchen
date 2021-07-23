@@ -15,6 +15,8 @@ using System.IO;
 using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
 using MyKitchen.Services;
+using Utilities;
+
 
 namespace MyKitchen.Controllers
 {
@@ -298,10 +300,17 @@ namespace MyKitchen.Controllers
         }
 
         //Set a meal as a favorite
-        [Route("SetFavorite/{isFav}")]
-        public IActionResult SetFavorite(int isFav){
+        [HttpPost]
+        [Route("MealBuilder/SetFavorite/{mealId}/{isFav}")]
+        public IActionResult SetFavorite(int mealId, int isFav){
+
+            //update meal to the appropriate value
+            var meal = mealRepository.Find(mealId);
+            meal.IsFavorite = CUtilities.IntToBool(isFav);
+            mealRepository.Update(meal);
 
             return new EmptyResult();
+            
         }
 
         //Delete A Food Item from the selected meal.

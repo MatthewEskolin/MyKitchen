@@ -51,6 +51,33 @@ Search Food Items
 </div>*@
 
 
+@section Scripts {
+
+    <script>
+    
+        console.log("scripts rendered");
+        function SetFavorite(img,mealId,isFavorite){
+
+            //Toggle favorite from 0 to 1 or 1 to 0
+            if(isFavorite == true) { isFav = 0; } else { isFav = 1; }
+
+            $.ajax({ 
+                type:"POST",
+                url:`/MealBuilder/SetFavorite/${mealId}/${isFav}`,
+                success:function(data){
+
+
+                },
+                error:function(error){
+                    console.log(error);
+                }
+
+            });
+        }
+
+    
+    </script>
+}
 
 
 

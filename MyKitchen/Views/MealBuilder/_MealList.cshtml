@@ -44,7 +44,7 @@
             </td>
             <td>
                 
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" class="@GetFavoritesClass(item.IsFavorite) favImage" onclick="SetFavorite(this,@item.IsFavorite)" /> </td> </tr> }
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" class="@GetFavoritesClass(item.IsFavorite) favImage" onclick="SetFavorite(this,@item.MealID,@item.IsFavorite.ToString().ToLower())" /> </td> </tr> }
     </tbody>
 </table>
 
@@ -63,47 +63,4 @@
     }
 
 
-}
-
-
-@section Scripts {
-
-    @* <script type="text/javascript">
-        //Change Image Source on Hover
-
-
-        document.addEventListener('rowclick', function (e) {
-                console.log('data: ', e.detail.data);
-                console.log('grid: ', e.detail.grid);
-                console.log('original event: ', e.detail.originalEvent);
-
-        });
-    </script> *@
-
-    <script type="text/javascript">
-    
-        public int setFavorite(img,isFavorite){
-
-            if(isFavorite == true) { isFav = 1; } else { isFav = 0; }
-
-            $.ajax({ 
-                type:"POST",
-                url:`/MealBuilder/SetFavorite/${isFav}`
-                success:function(data){
-
-
-                },
-                error:function(error){
-                    console.log(error);
-                }
-
-            });
-        }
-
-    
-    </script>
-
-
-
-    }
 }
