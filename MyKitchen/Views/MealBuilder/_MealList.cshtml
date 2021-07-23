@@ -1,13 +1,10 @@
 ﻿@model MealBuilderIndexViewModel
 
 <form>
-
-
 <div page-model="@Model.MealListPagingInfo" page-action="Index" page-classes-enabled="true"
      page-class="btn" page-class-normal="btn-secondary"
      page-class-selected="btn-primary" class="btn-group pull-left m-1">
 </div>
-
 
 <table class="table table-light">
     <thead>
@@ -34,7 +31,6 @@
                 @foreach(var foodItem in item.MealFoodItems){
                     <ul>
                     @foodItem.FoodItems.FoodItemName
-
                     </ul>
                 }
             </td>
@@ -48,7 +44,7 @@
             </td>
             <td>
                 
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" class="@GetFavoritesClass(item.IsFavorite) favImage" /> </td> </tr> }
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" class="@GetFavoritesClass(item.IsFavorite) favImage" onclick="SetFavorite(this,@item.IsFavorite)" /> </td> </tr> }
     </tbody>
 </table>
 
@@ -65,6 +61,8 @@
     {
         return isFavorite ? "bg-fav" : "bg-nofav";
     }
+
+
 }
 
 
@@ -81,4 +79,31 @@
 
         });
     </script> *@
+
+    <script type="text/javascript">
+    
+        public int setFavorite(img,isFavorite){
+
+            if(isFavorite == true) { isFav = 1; } else { isFav = 0; }
+
+            $.ajax({ 
+                type:"POST",
+                url:`/MealBuilder/SetFavorite/${isFav}`
+                success:function(data){
+
+
+                },
+                error:function(error){
+                    console.log(error);
+                }
+
+            });
+        }
+
+    
+    </script>
+
+
+
+    }
 }

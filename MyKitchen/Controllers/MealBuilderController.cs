@@ -297,6 +297,13 @@ namespace MyKitchen.Controllers
             throw new System.NotImplementedException();
         }
 
+        //Set a meal as a favorite
+        [Route("SetFavorite/{isFav}")]
+        public IActionResult SetFavorite(int isFav){
+
+            return new EmptyResult();
+        }
+
         //Delete A Food Item from the selected meal.
         public IActionResult DeleteFoodItemFromMeal([FromForm]int MealID,[FromQuery]int mealFoodItemId)
         {

@@ -36,3 +36,6 @@ can the app encourage users to start cooking? what about food meditations? can w
 
 -try building a vue.js or angular front-end to learn how to use a front-end framework.
 
+07/11/2021
+
+-build a abilty to have a custom themed plate
