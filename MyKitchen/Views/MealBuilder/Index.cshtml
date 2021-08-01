@@ -54,17 +54,41 @@ Search Food Items
 @section Scripts {
 
     <script>
-    
-        console.log("scripts rendered");
-        function SetFavorite(img,mealId,isFavorite){
+        function SetFavorite(img,mealId){
 
-            //Toggle favorite from 0 to 1 or 1 to 0
-            if(isFavorite == true) { isFav = 0; } else { isFav = 1; }
+            var imgElement = $(img);
+            var isFavoriteBool = $(img).data("isfavorite").toLowerCase();
+            //Reverse of isFavorite
+            var isFavBit =  isFavoriteBool == 'true' ? 0 : 1;
+
+            console.log(isFavBit);
+            console.log(isFavoriteBool);
+
+
+            @* //Toggle favorite from 0 to 1 or 1 to 0
+            if(isFavorite == true) { isFav = 0; } else { isFav = 1; } *@
 
             $.ajax({ 
                 type:"POST",
-                url:`/MealBuilder/SetFavorite/${mealId}/${isFav}`,
+                url:`/MealBuilder/SetFavorite/${mealId}/${isFavBit}`,
                 success:function(data){
+
+                    //toggle image source to reflect new state
+                    if(isFavBit == 0)
+                    {
+                        imgElement.data("isfavorite","False");
+
+                        imgElement.addClass("bg-nofav");
+                        imgElement.removeClass("bg-fav");
+                        
+                    }
+                    else
+                    {
+                        imgElement.data("isfavorite","True");
+
+                        imgElement.addClass("bg-fav");
+                        imgElement.removeClass("bg-nofav");
+                    }
 
 
                 },

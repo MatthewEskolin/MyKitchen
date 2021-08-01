@@ -44,7 +44,7 @@
             </td>
             <td>
                 
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" class="@GetFavoritesClass(item.IsFavorite) favImage" onclick="SetFavorite(this,@item.MealID,@item.IsFavorite.ToString().ToLower())" /> </td> </tr> }
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-isfavorite="@item.IsFavorite" class="@GetFavoritesClass(item.IsFavorite) favImage" onclick="SetFavorite(this,@item.MealID)" /> </td> </tr> }
     </tbody>
 </table>
 
