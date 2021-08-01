@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using MyKitchen.Data;
@@ -24,7 +26,9 @@ namespace MyKitchen.Controllers
         int Count();
         // IQueryable<Meal> GetMealsForUser(ApplicationUser user);
 
-        (IEnumerable<Meal> meals,PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user,string mealName);
+        // (IEnumerable<Meal> meals,PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user,string mealName);
+        (IEnumerable<Meal> meals, PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user,string mealName);
+        (IEnumerable<Meal> meals, PagingInfo pagingInfo) GetMealsForUser2(int pageNum, int pageSize, ApplicationUser user,string mealName,string orderBy);
 
         int CountForUser(ApplicationUser user,string mealName);
     }

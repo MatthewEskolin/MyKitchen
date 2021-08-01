@@ -8,14 +8,12 @@
 
 <table class="table table-light">
     <thead>
-
-    @* Should be a plate or a takeout bag if the meal is takeout *@
     <th scope="col"></th>
     <th scope="col">Name</th>
     <th scope="col">Food Items</th>
     <th scope="col">Satiety Profile</th>
     <th scope="col">Edit</th>
-    <th scope="col">Favorite</th>
+    <th scope="col"><a asp-action="Index2" asp-route-toggleSort="true" asp-route-sortOrder='@ViewData["sortOrder"]'>Favorite</a></th>
     </thead>
     <tbody>
     @foreach(var item in Model.Meals)
@@ -44,7 +42,8 @@
             </td>
             <td>
                 
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-isfavorite="@item.IsFavorite" class="@GetFavoritesClass(item.IsFavorite) favImage" onclick="SetFavorite(this,@item.MealID)" /> </td> </tr> }
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-isfavorite="@item.IsFavorite" class="@GetFavoritesClass(item.IsFavorite) favImage" onclick="SetFavorite(this,@item.MealID)" /> 
+                </td> </tr> }
     </tbody>
 </table>
 

@@ -16,7 +16,8 @@ using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
 using MyKitchen.Services;
 using Utilities;
-
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyKitchen.Controllers
 {
@@ -57,6 +58,11 @@ namespace MyKitchen.Controllers
         {
             HttpContext.Session.SetInt32("editMealName", 0); 
 
+            //use default sort
+            //MealName is the default sort
+
+            Expression<Func<Meal, bool>> orderBy = x => x.IsFavorite;
+
             var result = mealRepository.GetMealsForUser(currentPage, PageSize, this.CurrentUser.User,string.Empty);
             
             var viewModel = new MealBuilderIndexViewModel()
@@ -68,10 +74,43 @@ namespace MyKitchen.Controllers
             return View(viewModel);
         }
 
-        // public IActionResult ShowList()
-        // {
-        //     return View("Index",viewModel)
-        // }
+
+        public IActionResult Index2(string sortOrder,int currentPage = 1,bool toggleSort = false)
+        {
+            HttpContext.Session.SetInt32("editMealName", 0); 
+
+            //use default sort
+            //MealName is the default sort
+            var orderBy = "MealName";
+
+            if(!string.IsNullOrEmpty(sortOrder)){
+
+                orderBy = sortOrder;
+                orderBy = ToggleAscDesc(sortOrder);
+            }
+
+
+            // Expression<Func<Meal, bool>> orderBy = x => x.IsFavorite;
+
+            var result = mealRepository.GetMealsForUser2(currentPage, PageSize, this.CurrentUser.User,string.Empty,orderBy);
+            
+            var viewModel = new MealBuilderIndexViewModel()
+            {
+                Meals = result.meals,
+                MealListPagingInfo = result.pagingInfo
+            };
+
+
+            ViewData["sortOrder"] = sortOrder;
+
+            return View("Index",viewModel);
+        }
+
+        private string ToggleAscDesc(string sortOrder)
+        {
+            //Add Descending 
+            throw new NotImplementedException();
+        }
 
         public IActionResult SearchMeals([FromForm]string searchText)
         {
@@ -85,27 +124,6 @@ namespace MyKitchen.Controllers
 
             return View("Index",viewModel);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         public IActionResult Create()
@@ -186,8 +204,6 @@ namespace MyKitchen.Controllers
 
             return View("SelectFoodItemsForMeal", viewModel);
         }
-
-        //public IActionResult MealDetails(int mealID, [FromQuery]bool editMode)
 
         [Route("MealBuilder/MealDetails/{mealID}")]
         public IActionResult MealDetails(int mealID, [FromQuery]bool editMode)
@@ -292,7 +308,6 @@ namespace MyKitchen.Controllers
             return View("MealDetails",viewModel);
 
        }
-        
         
         public IActionResult Edit()
         {

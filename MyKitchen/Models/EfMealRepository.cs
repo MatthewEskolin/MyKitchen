@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -112,25 +113,81 @@ namespace MyKitchen.Models
 
         }
 
+
+
+
         public (IEnumerable<Meal> meals,PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user,string mealName)
         {
+            //TODO add filter parameter Func<Meal,bool> filter does this need to be an expresison as well?
+            
+
+
             var _context = this.context;
+
 
             //load meals with details for each food in the meal.
             var cresult = (from meals in _context.Meals.Include(x => x.MealFoodItems).ThenInclude(x => x.FoodItems)
-                           where meals.AppUser.Id == user.Id select meals).AsQueryable();
+                           where meals.AppUser.Id == user.Id select meals);
 
             if(!String.IsNullOrEmpty(mealName)){
                 cresult = cresult.Where(x => x.MealName.ToUpper().Contains(mealName.ToUpper()));
             }                
 
-            cresult = cresult.OrderBy(x => x.MealName).Skip((pageNum - 1) * pageSize).Take(pageSize);
+            // if(orderBy == null)
+            // {
+                cresult = cresult.OrderBy(x => x.MealName).Skip((pageNum - 1) * pageSize).Take(pageSize);
+            // }
+            // else
+            // {
+            //     cresult = cresult.OrderBy(orderBy);
+            // }
 
             //need to set the total item count;
             var pagingInfo = new PagingInfo() { CurrentPage = pageNum,ItemsPerPage = 15,TotalItems = CountForUser(user,mealName)};
 
             return (cresult, pagingInfo);
         }
+
+        public (IEnumerable<Meal> meals,PagingInfo pagingInfo) GetMealsForUser2(int pageNum, int pageSize, ApplicationUser user,string mealName,string orderBy)
+        {
+            //TODO add filter parameter Func<Meal,bool> filter does this need to be an expresison as well?
+            
+            var _context = this.context;
+
+
+            //load meals with details for each food in the meal.
+            var cresult = (from meals in _context.Meals.Include(x => x.MealFoodItems).ThenInclude(x => x.FoodItems)
+                           where meals.AppUser.Id == user.Id select meals);
+
+            if(!String.IsNullOrEmpty(mealName)){
+                cresult = cresult.Where(x => x.MealName.ToUpper().Contains(mealName.ToUpper()));
+            }                
+
+            if(String.IsNullOrEmpty(orderBy))
+            {
+                cresult = cresult.OrderBy(x => x.MealName).Skip((pageNum - 1) * pageSize).Take(pageSize);
+            }
+            else
+            {
+                //desc vs asscedning sort
+                if(orderBy.EndsWith("_desc"))
+                {
+                    cresult = cresult.OrderByDescending(e => EF.Property<object>(e, orderBy));
+                }
+                else
+                {
+                    cresult = cresult.OrderBy(e => EF.Property<object>(e, orderBy));
+                }
+            }
+
+            //need to set the total item count;
+            var pagingInfo = new PagingInfo() { CurrentPage = pageNum,ItemsPerPage = 15,TotalItems = CountForUser(user,mealName)};
+
+            return (cresult, pagingInfo);
+        }
+
+
+
 
 
         public int CountForUser(ApplicationUser user,string mealName)
@@ -143,9 +200,12 @@ namespace MyKitchen.Models
             if(!String.IsNullOrEmpty(mealName))
             {
                 cresult = cresult.Where(x => x.MealName.Contains(mealName));
+         
             }
 
             return cresult.Count();
         }
+
+
     }
 }
