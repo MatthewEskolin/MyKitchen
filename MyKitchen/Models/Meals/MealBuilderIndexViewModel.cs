@@ -5,9 +5,22 @@ namespace MyKitchen.Models
 {
     public class MealBuilderIndexViewModel
     {
+        public MealBuilderIndexViewModel()
+        {
+            //add default sort state all columns asscending
+            SortState.Add("MealName","MealName");
+            SortState.Add("SatietyProfile","SatietyProfile");
+            SortState.Add("IsFavorite","IsFavorite");
+        }
+
+
         //MealList
         public PagingInfo MealListPagingInfo { get; set; }
         public IEnumerable<Meal> Meals { get; set; }
+
+        public Dictionary<string,string> SortState {get; set;} = new Dictionary<string,string>();
+
+        public string CurrentSort {get; set;} = string.Empty;
 
     }
 }

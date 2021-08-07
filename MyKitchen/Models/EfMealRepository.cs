@@ -172,7 +172,8 @@ namespace MyKitchen.Models
                 //desc vs asscedning sort
                 if(orderBy.EndsWith("_desc"))
                 {
-                    cresult = cresult.OrderByDescending(e => EF.Property<object>(e, orderBy));
+                    var orderByProp = orderBy.Substring(0,orderBy.Length - "_desc".Length);
+                    cresult = cresult.OrderByDescending(e => EF.Property<object>(e, orderByProp));
                 }
                 else
                 {

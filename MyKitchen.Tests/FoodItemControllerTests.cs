@@ -12,42 +12,10 @@ namespace MyKitchen.Tests
 {
     public class FoodItemControllerTests
     {
-        //BEGIN CODE EXAMPLE
-        //Below is an example of how to use test data in an xUnit Test         
-
-        // [Theory(Skip="Example For Test Data Class - not a valid test")]
-        // [ClassData(typeof(FoodItemTestData))]
-        // public void IndexActionModelIsComplete(FoodItem[] foodItems)
-        // {
-        //     //arrange
-        //     var mock = new Mock<IFoodItemRepository>();
-        //     var dbmock = new Mock<IMyKitchenDataContext>();
-        //     mock.SetupGet(x => x.FoodItems).Returns(foodItems.AsQueryable());
-
-        //     var mockLogger = new Mock<Microsoft.Extensions.Logging.ILogger<FoodItemsController>>();
-
-
-        //     var dbset = MockDbSetFactory.Create<FoodItem>(foodItems);
-        //     dbmock.SetupGet(x => x.FoodItems).Returns(dbset.Object);
-        //     var controller = new FoodItemsController(mock.Object, dbmock.Object,mockLogger.Object);
-
-
-        //     //act
-        //     var model = (controller.Index() as ViewResult)?.ViewData.Model as FoodItemIndexViewModel;
-        //     var modelenum = model.FoodItems;
-
-        //     //assert
-        //     Assert.Equal(modelenum,mock.Object.FoodItems.AsEnumerable(),Comparer.Get<FoodItem>((p1,p2) => p1.FoodItemName == p2.FoodItemName));
-
-        // }
-        // END CODE EXAMPLE
-
         [Fact]
         public void RepositoryPropertyCalledTwice()
         {
-            //called once for entities - once for count
-
-            //arrange
+            //Arrange
             var mock = new Mock<IFoodItemRepository>();
             var dbmock = new Mock<IMyKitchenDataContext>();
             var usermock = new Mock<UserInfo>();
@@ -57,14 +25,14 @@ namespace MyKitchen.Tests
 
             var controller = new FoodItemsController(mock.Object, dbmock.Object,mockLogger.Object,usermock.Object);
 
-            //act
+            //Act
             var result = controller.Index();
 
-            //assert
+            //Assert
             mock.Verify(x => x.GetFoodItems(),Times.AtMost(2));
 
         }
-#region
+    #region
         [Fact]
         public void Can_Paginate()
         {

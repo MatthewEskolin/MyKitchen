@@ -1,6 +1,5 @@
 //TODO Consider moving this to a utilities assembly
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -8,36 +7,6 @@ using Moq;
 
 namespace MyKitchen.Tests
 {
-    public class Comparer<T> : Comparer, IEqualityComparer<T>
-    {
-        private Func<T, T, bool> comparisonFunction;
-
-        public Comparer(Func<T, T, bool> func)
-        {
-            comparisonFunction = func;
-        }
-
-        public bool Equals(T x, T y)
-        {
-            return comparisonFunction(x, y);
-        }
-
-        public int GetHashCode(T obj)
-        {
-            return obj.GetHashCode();
-        }
-    }
-
-    public class Comparer
-    {
-
-        public static Comparer<U> Get<U>(Func<U, U, bool> func)
-        {
-            return new Comparer<U>(func);
-        }
-    }
-
-
     public static class MockDbSetFactory
     {
     public static Mock<DbSet<T>> Create<T>(IEnumerable<T> data) where T : class

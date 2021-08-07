@@ -75,22 +75,11 @@ namespace MyKitchen.Controllers
         }
 
 
-        public IActionResult Index2(string sortOrder,int currentPage = 1,bool toggleSort = false)
+        public IActionResult Index2(string newSort,int currentPage = 1,bool toggleSort = false, [FromForm]string currentSort = null)
         {
             HttpContext.Session.SetInt32("editMealName", 0); 
 
-            //use default sort
-            //MealName is the default sort
-            var orderBy = "MealName";
-
-            if(!string.IsNullOrEmpty(sortOrder)){
-
-                orderBy = sortOrder;
-                orderBy = ToggleAscDesc(sortOrder);
-            }
-
-
-            // Expression<Func<Meal, bool>> orderBy = x => x.IsFavorite;
+            string orderBy = this.GetMealsSort(newSort,currentSort,toggleSort);
 
             var result = mealRepository.GetMealsForUser2(currentPage, PageSize, this.CurrentUser.User,string.Empty,orderBy);
             
@@ -100,16 +89,35 @@ namespace MyKitchen.Controllers
                 MealListPagingInfo = result.pagingInfo
             };
 
-
-            ViewData["sortOrder"] = sortOrder;
+            //trim the _desc to get the lookup for sort order
+            var lookup = Utilities.GridUtilities.Trim_desc(orderBy);
+            viewModel.SortState[lookup] = orderBy;
 
             return View("Index",viewModel);
         }
 
-        private string ToggleAscDesc(string sortOrder)
+        private string GetMealsSort(string newSort, string currentSort, bool toggle)
         {
-            //Add Descending 
-            throw new NotImplementedException();
+            var rtn = string.Empty;
+            
+            if(!String.IsNullOrEmpty(currentSort))
+            {
+                //get sort state from model
+                rtn = currentSort;
+            }
+            else
+            {
+                //MealName is the default sort
+                rtn = "MealName";
+            }
+
+            //sort order is the "new" sort - only triggered if user clicks on a sorting link
+            if(!string.IsNullOrEmpty(newSort)){
+
+                rtn = toggle ? Utilities.GridUtilities.ToggleAscDesc(newSort) : newSort;
+            }
+
+            return rtn;
         }
 
         public IActionResult SearchMeals([FromForm]string searchText)
