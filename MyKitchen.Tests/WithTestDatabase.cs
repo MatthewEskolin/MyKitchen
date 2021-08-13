@@ -17,7 +17,8 @@ namespace MyKitchen.Tests
 
 
 
-        public static string MyConnectionString = "Server=DESKTOP-3CUUUOC;Database=MyKitchen;Trusted_Connection=True;MultipleActiveResultSets=true";
+        public static string MyConnectionString_Laptop = "Server=DESKTOP-3CUUUOC;Database=MyKitchen;Trusted_Connection=True;MultipleActiveResultSets=true";
+        public static string MyConnectionString = "Server=DESKTOP-01PHJ1E\\SQLEXPRESS;Database=MyKitchen;Trusted_Connection=True;MultipleActiveResultSets=true";
         public static void Run(Action<ApplicationDbContext> testFunc)
         {
 

@@ -26,9 +26,7 @@ namespace MyKitchen.Controllers
         int Count();
         // IQueryable<Meal> GetMealsForUser(ApplicationUser user);
 
-        // (IEnumerable<Meal> meals,PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user,string mealName);
-        (IEnumerable<Meal> meals, PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user,string mealName);
-        (IEnumerable<Meal> meals, PagingInfo pagingInfo) GetMealsForUser2(int pageNum, int pageSize, ApplicationUser user,string mealName,string orderBy);
+        (IEnumerable<Meal> meals, PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user,string mealName,string orderBy);
 
         int CountForUser(ApplicationUser user,string mealName);
     }

@@ -30,6 +30,8 @@ namespace MyKitchen.Controllers
 
         private UserInfo CurrentUser { get; set; }
 
+        public string DefaultSortProperty {get; set;} = "MealName";
+
         IWebHostEnvironment _env {get; set;}
         public IConfiguration _configuration { get; private set; }
         IMealImageService ImageService {get; set;}
@@ -54,34 +56,14 @@ namespace MyKitchen.Controllers
 
         public int PageSize = 15;
 
-        public IActionResult Index(int currentPage = 1)
-        {
-            HttpContext.Session.SetInt32("editMealName", 0); 
-
-            //use default sort
-            //MealName is the default sort
-
-            Expression<Func<Meal, bool>> orderBy = x => x.IsFavorite;
-
-            var result = mealRepository.GetMealsForUser(currentPage, PageSize, this.CurrentUser.User,string.Empty);
-            
-            var viewModel = new MealBuilderIndexViewModel()
-            {
-                Meals = result.meals,
-                MealListPagingInfo = result.pagingInfo
-            };
-
-            return View(viewModel);
-        }
-
-
-        public IActionResult Index2(string newSort,int currentPage = 1,bool toggleSort = false, [FromForm]string currentSort = null)
+        [HttpGet]
+        public IActionResult Index(string newSort,int currentPage = 1,bool toggleSort = false, [FromForm]string currentSort = null)
         {
             HttpContext.Session.SetInt32("editMealName", 0); 
 
             string orderBy = this.GetMealsSort(newSort,currentSort,toggleSort);
 
-            var result = mealRepository.GetMealsForUser2(currentPage, PageSize, this.CurrentUser.User,string.Empty,orderBy);
+            var result = mealRepository.GetMealsForUser(currentPage, PageSize, this.CurrentUser.User,string.Empty,orderBy);
             
             var viewModel = new MealBuilderIndexViewModel()
             {
@@ -95,6 +77,25 @@ namespace MyKitchen.Controllers
 
             return View("Index",viewModel);
         }
+
+        public IActionResult Index(MealBuilderIndexViewModel model)
+        {
+            return View("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Index(int currentPage)
+        {
+            var meal = mealRepository.GetMealsForUser(currentPage, PageSize, this.CurrentUser.User, string.Empty, DefaultSortProperty);
+
+            return base.View("Index", new MealBuilderIndexViewModel()
+            {
+                Meals = meal.meals,
+                MealListPagingInfo = meal.pagingInfo
+            });
+        }
+
+
 
         private string GetMealsSort(string newSort, string currentSort, bool toggle)
         {
@@ -122,7 +123,7 @@ namespace MyKitchen.Controllers
 
         public IActionResult SearchMeals([FromForm]string searchText)
         {
-            var result = mealRepository.GetMealsForUser(1,PageSize,this.CurrentUser.User,searchText);
+            var result = mealRepository.GetMealsForUser(1,PageSize,this.CurrentUser.User,searchText,DefaultSortProperty);
             
             var viewModel = new MealBuilderIndexViewModel()
             {
@@ -245,7 +246,7 @@ namespace MyKitchen.Controllers
             var viewModel1 = new MealBuilderIndexViewModel()
             {
 
-                Meals = mealRepository.GetMealsForUser(pageNum, PageSize, this.CurrentUser.User,String.Empty).meals,
+                Meals = mealRepository.GetMealsForUser(pageNum, PageSize, this.CurrentUser.User,String.Empty,DefaultSortProperty).meals,
                 MealListPagingInfo = new PagingInfo() { CurrentPage = 1, ItemsPerPage = 15, TotalItems = mealRepository.Count() }
             };
 

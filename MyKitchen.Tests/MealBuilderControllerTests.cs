@@ -17,24 +17,22 @@ using MyKitchen.Services;
 namespace MyKitchen.Tests
 {
 
-    public class MealBuilderControllerTests :IClassFixture<SharedTestContext>{
-
-        SharedTestContext Fixture;
+    public class MealBuilderControllerTests {
 
 
-
-        public MealBuilderControllerTests(SharedTestContext fixture)
-        {
-            this.Fixture = fixture;
-        }
+        // public MealBuilderControllerTests(SharedTestContext fixture)
+        // {
+        //     this.Fixture = fixture;
+        // }
 
         [Fact]
         public void Index_PopulateViewModel()
         {
             //Tests to make sure the Meal Repository when called by the MealBuilderController is being populated using the a test page number
-            //and test page index.
+            //and test page size.
 
-            var testPageIndex = 3;
+            var testPageIndex = 1;
+            var testPageSize = 3;
 
             var userMock = new Mock<UserInfo>();
             var applicationUserMock = new Mock<ApplicationUser>();
@@ -53,8 +51,19 @@ namespace MyKitchen.Tests
 
             var info = new PagingInfo();
 
-            var controller = new MealBuilderController(mkImageService.Object,mkHostingEnv.Object,mkFoodItemRepo.Object, mkMealRepo.Object,dbmock.Object,mkConfiguration.Object,userMock.Object) {PageSize = 3};
-            mkMealRepo.Setup(x => x.GetMealsForUser2(controller.PageSize, testPageIndex, userMock.Object.User,string.Empty,string.Empty)).Returns((meals,info));
+            mkMealRepo.Setup(x => x.GetMealsForUser(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<ApplicationUser>(),It.IsAny<string>(),It.IsAny<string>()))
+                        .Returns((meals,info));
+
+
+            var controller = new MealBuilderController(mkImageService.Object,
+                                                       mkHostingEnv.Object,
+                                                       mkFoodItemRepo.Object, 
+                                                       mkMealRepo.Object,
+                                                       dbmock.Object,
+                                                       mkConfiguration.Object,
+                                                       userMock.Object) 
+                                                       
+                                                       {PageSize = testPageSize};
 
             //act
             var result = (controller.Index(testPageIndex) as ViewResult)?.ViewData.Model as MealBuilderIndexViewModel;
