@@ -20,7 +20,13 @@ namespace MyKitchen.Models
 
         public Dictionary<string,string> SortState {get; set;} = new Dictionary<string,string>();
 
-        public string CurrentSort {get; set;} = string.Empty;
+        public string CurrentSort {get; set;} = "MealName";
+
+        public string NewSort {get; set;} = string.Empty;
+
+        public int CurrentPage {get; set;} = 1;
+
+        public bool ToggleSort {get; set;} = false;
 
     }
 }

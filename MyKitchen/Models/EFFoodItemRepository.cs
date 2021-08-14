@@ -77,21 +77,18 @@ namespace MyKitchen.Models
             //Remove Related Records in Appropriate Order
             //Not sure if this is how repositories are suppoesed to work, but need to get this working today.
             
-            //If the food item is deleted entirely, no user will have access to it        
+            //Remove User-Food Records     
             var userFoodItems = _context.UserFoodItems.Where(x => x.FoodItemID == foodItem.FoodItemID).ToList();
 
-            //remove from all meals that have this item in them.
+            //Remove From All Meals That have this item in them.
             var userMealFoodItems = _context.MealFoodItems.Where(x => x.FoodItemId == foodItem.FoodItemID).ToList();
 
             //remove from calendar of events and history.
             var foodEvents = _context.Events.Where(x => x.FoodItemID == foodItem.FoodItemID).ToList();
 
-            //remove all userfood Items associated with this FoodItem
             _context.UserFoodItems.RemoveRange(userFoodItems);
             _context.MealFoodItems.RemoveRange(userMealFoodItems);
             _context.Events.RemoveRange(foodEvents);
-
-            //remove the fooditem
             _context.FoodItems.Remove(foodItem);
 
             SaveChangesAsync();

@@ -12,6 +12,76 @@ using MyKitchen.Models;
 
 namespace MyKitchen.Infrastructure
 {
+
+
+
+    [HtmlTargetElement("div", Attributes = "page-form-model")]
+    public class PageFormTagHelper : TagHelper{
+
+     private IUrlHelperFactory urlHelperFactory;
+
+        public PageFormTagHelper(IUrlHelperFactory helperFactory)
+        {
+            urlHelperFactory = helperFactory;
+        }
+
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
+        public PagingInfo PageFormModel { get; set; }
+
+
+        public string PageAction { get; set; }
+
+        public bool PageClassesEnabled { get; set; } = false;
+        public string PageClass { get; set; }
+        public string PageClassNormal { get; set; }
+        public string PageClassSelected { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+
+
+            TagBuilder result = new TagBuilder("div");
+            for (int i = 1; i <= PageFormModel.TotalPages; i++)
+            {
+                TagBuilder tag = new TagBuilder("button");
+
+
+                tag.Attributes["name"] = "CurrentPage";
+                tag.Attributes["value"] = i.ToString();
+
+                tag.Attributes["type"] = "submit";
+                if (PageClassesEnabled)
+                {
+                    tag.AddCssClass(PageClass);
+                    tag.AddCssClass(i == PageFormModel.CurrentPage
+                        ? PageClassSelected : PageClassNormal);
+                }
+                tag.InnerHtml.Append(i.ToString());
+                result.InnerHtml.AppendHtml(tag);
+
+            }
+
+            
+
+
+            output.Content.AppendHtml(result.InnerHtml);
+        }
+
+
+
+
+
+
+
+
+    }
+
+
+
     [HtmlTargetElement("div", Attributes = "page-model")]
     public class PageLinkTagHelper : TagHelper
     {
@@ -27,6 +97,7 @@ namespace MyKitchen.Infrastructure
         public ViewContext ViewContext { get; set; }
 
         public PagingInfo PageModel { get; set; }
+
 
         public string PageAction { get; set; }
 

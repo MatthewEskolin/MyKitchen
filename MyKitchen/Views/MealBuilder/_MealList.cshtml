@@ -1,10 +1,21 @@
 ﻿@model MealBuilderIndexViewModel
 
-<form>
-<div page-model="@Model.MealListPagingInfo" page-action="Index2" page-classes-enabled="true"
+<form method="GET" asp-action="Index">
+<div page-model="@Model.MealListPagingInfo" page-action="Index" page-classes-enabled="true"
      page-class="btn" page-class-normal="btn-secondary"
      page-class-selected="btn-primary" class="btn-group pull-left m-1">
 </div>
+
+
+<div page-form-model="@Model.MealListPagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary"
+     page-class-selected="btn-primary" class="btn-group pull-left m-1">
+</div>
+
+
+
+
+
 <input type="hidden" text="@Model.CurrentSort" name="currentSort">
 <table class="table table-light">
     <thead>
@@ -13,7 +24,7 @@
     <th scope="col">Food Items</th>
     <th scope="col">Satiety Profile</th>
     <th scope="col">Edit</th>
-    <th scope="col"><a asp-action="Index2" asp-route-toggleSort="true" asp-route-newSort='@Model.SortState["IsFavorite"]'>Favorite</a></th>
+    <th scope="col"><a asp-action="Index" asp-route-toggleSort="true" asp-route-newSort='@Model.SortState["IsFavorite"]'>Favorite</a></th>
     </thead>
     <tbody>
     @foreach(var item in Model.Meals)

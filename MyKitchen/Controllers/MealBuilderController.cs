@@ -1,23 +1,25 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
+using Azure.Storage.Blobs;
+
+using MyKitchen.BL;
 using MyKitchen.Data;
 using MyKitchen.Models;
-using System.Threading.Tasks;
 using MyKitchen.Models.Meals;
-using MyKitchen.BL;
-using System;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using Azure.Storage.Blobs;
-using Microsoft.Extensions.Configuration;
 using MyKitchen.Services;
+
 using Utilities;
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
 
 namespace MyKitchen.Controllers
 {
@@ -57,13 +59,13 @@ namespace MyKitchen.Controllers
         public int PageSize = 15;
 
         [HttpGet]
-        public IActionResult Index(string newSort,int currentPage = 1,bool toggleSort = false, [FromForm]string currentSort = null)
+        public IActionResult Index(MealBuilderIndexViewModel model)
         {
             HttpContext.Session.SetInt32("editMealName", 0); 
 
-            string orderBy = this.GetMealsSort(newSort,currentSort,toggleSort);
+            string orderBy = this.GetMealsSort(model.NewSort,model.CurrentSort,model.ToggleSort);
 
-            var result = mealRepository.GetMealsForUser(currentPage, PageSize, this.CurrentUser.User,string.Empty,orderBy);
+            var result = mealRepository.GetMealsForUser(model.CurrentPage, PageSize, this.CurrentUser.User,string.Empty,orderBy);
             
             var viewModel = new MealBuilderIndexViewModel()
             {
@@ -78,22 +80,19 @@ namespace MyKitchen.Controllers
             return View("Index",viewModel);
         }
 
-        public IActionResult Index(MealBuilderIndexViewModel model)
-        {
-            return View("Index");
-        }
 
-        [HttpGet]
-        public IActionResult Index(int currentPage)
-        {
-            var meal = mealRepository.GetMealsForUser(currentPage, PageSize, this.CurrentUser.User, string.Empty, DefaultSortProperty);
+        // [HttpGet]
+        // [Route("[controller]/[action]/{int}")]
+        // public IActionResult Index(int currentPage)
+        // {
+        //     var meal = mealRepository.GetMealsForUser(currentPage, PageSize, this.CurrentUser.User, string.Empty, DefaultSortProperty);
 
-            return base.View("Index", new MealBuilderIndexViewModel()
-            {
-                Meals = meal.meals,
-                MealListPagingInfo = meal.pagingInfo
-            });
-        }
+        //     return base.View("Index", new MealBuilderIndexViewModel()
+        //     {
+        //         Meals = meal.meals,
+        //         MealListPagingInfo = meal.pagingInfo
+        //     });
+        // }
 
 
 
@@ -237,7 +236,6 @@ namespace MyKitchen.Controllers
             var meal = mealRepository.Find(mealid);
             mealRepository.Remove(meal);
             mealRepository.SaveChanges();
-
 
             //possible to get previous page number here?
             var pageNum = 1;

@@ -68,9 +68,19 @@ namespace MyKitchen.Models
             SaveChanges();
         }
 
-        public void Remove(Meal foodItem)
+        public void Remove(Meal meal)
         {
-            context.Remove(foodItem);
+
+
+            //Remove From All Meals That have this item in them.
+            var userMealFoodItems = context.MealFoodItems.Where(x => x.MealId == meal.MealID).ToList();
+
+            //remove from calendar of events and history.
+            var mealEvents = context.Events.Where(x => x.MealID == meal.MealID).ToList();
+
+            context.Events.RemoveRange(mealEvents);
+            context.MealFoodItems.RemoveRange(userMealFoodItems);
+            context.Remove(meal);
         }
 
         public Meal GetRandomItem()
@@ -122,30 +132,29 @@ namespace MyKitchen.Models
             var cresult = (from meals in _context.Meals.Include(x => x.MealFoodItems).ThenInclude(x => x.FoodItems)
                            where meals.AppUser.Id == user.Id select meals);
 
+  
+            //Where Clause Conditions
+
             if(!String.IsNullOrEmpty(mealName)){
                 cresult = cresult.Where(x => x.MealName.ToUpper().Contains(mealName.ToUpper()));
             }                
 
-            if(String.IsNullOrEmpty(orderBy))
+            //Order By Conditions
+            if(orderBy.EndsWith("_desc"))
             {
-                cresult = cresult.OrderBy(x => x.MealName).Skip((pageNum - 1) * pageSize).Take(pageSize);
+                var orderByProp = orderBy.Substring(0,orderBy.Length - "_desc".Length);
+                cresult = cresult.OrderByDescending(e => EF.Property<object>(e, orderByProp));
             }
             else
             {
-                //desc vs asscedning sort
-                if(orderBy.EndsWith("_desc"))
-                {
-                    var orderByProp = orderBy.Substring(0,orderBy.Length - "_desc".Length);
-                    cresult = cresult.OrderByDescending(e => EF.Property<object>(e, orderByProp));
-                }
-                else
-                {
-                    cresult = cresult.OrderBy(e => EF.Property<object>(e, orderBy));
-                }
+                cresult = cresult.OrderBy(e => EF.Property<object>(e, orderBy));
             }
 
+            cresult = cresult.Skip((pageNum - 1) * pageSize).Take(pageSize);
+
+
             //need to set the total item count;
-            var pagingInfo = new PagingInfo() { CurrentPage = pageNum,ItemsPerPage = 15,TotalItems = CountForUser(user,mealName)};
+            var pagingInfo = new PagingInfo() { CurrentPage = pageNum,ItemsPerPage = pageSize,TotalItems = CountForUser(user,mealName)};
 
             return (cresult, pagingInfo);
         }

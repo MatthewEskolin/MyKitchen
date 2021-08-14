@@ -14,10 +14,7 @@ using MyKitchen.Models;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using MyKitchen.BL;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
 using System;
-using Azure.Core;
 using MyKitchen.Services;
 
 namespace MyKitchen
