@@ -66,7 +66,8 @@ namespace MyKitchen.Tests
                                                        {PageSize = testPageSize};
 
             //act
-            var result = (controller.Index(new MealBuilderIndexViewModel(){PageSize = testPageSize}) as ViewResult)?.ViewData.Model as MealBuilderIndexViewModel;
+
+            var result = (controller.Index(new MealBuilderIndexViewModel()) as ViewResult)?.ViewData.Model as MealBuilderIndexViewModel;
 
             Meal[] mealArray = result.Meals.ToArray();
             Assert.True(mealArray.Length == 2);

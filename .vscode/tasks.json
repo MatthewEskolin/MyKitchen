@@ -14,7 +14,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-                        "label": "build-all",
+            "label": "build-all",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -22,7 +22,6 @@
                 "${workspaceFolder}/MyKitchen.sln"
             ],
             "problemMatcher": "$msCompile"
-
         },
         {
             "label": "publish",
@@ -46,6 +45,42 @@
                 "${workspaceFolder}/MyKitchen/MyKitchen.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Run Unit Tests",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "test",
+                "--filter",
+                "Category=Unit",
+                "--no-build"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Run Integration Tests",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "test",
+                "--filter",
+                "Category=Integration",
+                "--no-build"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Run Selenium Tests",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "test",
+                "--filter",
+                "Category=Selenium",
+                "--no-build"
             ],
             "problemMatcher": "$msCompile"
         }
