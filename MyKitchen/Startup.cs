@@ -23,6 +23,8 @@ namespace MyKitchen
     public class Startup
     {
         private readonly IWebHostEnvironment _env;
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration,IWebHostEnvironment environment)
         {
 
@@ -30,11 +32,9 @@ namespace MyKitchen
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Cookie Settings
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -42,30 +42,21 @@ namespace MyKitchen
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+
+            //Set Up Database
             services.AddDbContext<ApplicationDbContext>(options => {
                 options.UseSqlServer( Configuration.GetConnectionString("DefaultConnection"), builder => {
                     builder.EnableRetryOnFailure(3, TimeSpan.FromSeconds(5), null);
                 });
             });
 
+            services.AddTransient<IMyKitchenDataContext>(provider => provider.GetService<ApplicationDbContext>());
+
+            //Add Identity Services
             services.AddIdentity<ApplicationUser, Microsoft.AspNetCore.Identity.IdentityRole>()
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
-            //code needed to sucessfully override defaultUI
-
-            if(_env.IsDevelopment())
-            {
-           
-
-            }
-
-
-
-            services.AddApplicationInsightsTelemetry();
-
-            services.AddTransient<IMyKitchenDataContext>(provider => provider.GetService<ApplicationDbContext>());
 
             services.Configure<IdentityOptions>(options =>
                 {
@@ -79,6 +70,8 @@ namespace MyKitchen
                 }
             );
 
+            //Application Insights
+            services.AddApplicationInsightsTelemetry();
             //add control key so we can view live metrics in the Azure Portal in Application Insights <
             services.ConfigureTelemetryModule<QuickPulseTelemetryModule>((module, o) => module.AuthenticationApiKey = "3ef7lulsu5s5tei6c1q258kg1glf7psn2scldi5u");
 
@@ -86,18 +79,13 @@ namespace MyKitchen
             services.AddTransient<IFoodReccomendationService, FoodRecommendationService>();
             services.AddTransient<IMealRepository, EfMealRepository>();
 
-            // services.AddTransient<MyKitchen.Controllers.IMealImageService,MyKitchen.Controllers.FileSystemMealImageService>();
+            //Azure Blob Services
             services.AddTransient<MyKitchen.Services.IMealImageService,MyKitchen.Services.AzureBlobMealImageService>();
-
-
-
-            
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<UserInfo>();
-
             services.AddTransient<IEmailSender,EmailSender>();
-            // services.Configure<AuthMessageSenderOptions>(Configuration);
+
             
 
 
@@ -111,9 +99,6 @@ namespace MyKitchen
                 services.AddMvc() .SetCompatibilityVersion(CompatibilityVersion.Version_3_0) .AddFluentValidation().AddNewtonsoftJson();
             }
 
-            //distributed memory cache necessary for session state?
-            //services.AddDistributedMemoryCache();
-
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(100);
@@ -124,10 +109,10 @@ namespace MyKitchen
 
             services.Configure<MvcOptions>(options => { options.EnableEndpointRouting = false; });
 
-            //todo re-enable service worker once we figure out how to have this not interfere with debugging..
+            //TODO re-enable service worker once we figure out how to have this not interfere with debugging..
             //services.AddProgressiveWebApp();
 
-
+            //Add Authentication
             services.AddAuthentication()
             .AddFacebook(options =>
             {
@@ -139,9 +124,10 @@ namespace MyKitchen
                 options.ClientId = Configuration["Authentication:Google:ClientId"];
                 options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
+
+            
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
