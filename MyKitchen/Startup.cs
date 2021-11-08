@@ -95,7 +95,7 @@ namespace MyKitchen
             // }
 
             services.AddRazorPages();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson();
             
             services.AddSession(options =>
             {
