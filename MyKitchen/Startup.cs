@@ -51,6 +51,14 @@ namespace MyKitchen
             });
 
             services.AddTransient<IMyKitchenDataContext>(provider => provider.GetService<ApplicationDbContext>());
+            services.AddTransient<IFoodItemRepository, EFFoodItemRepository>();
+            services.AddTransient<IFoodReccomendationService, FoodRecommendationService>();
+            services.AddTransient<IMealRepository, EfMealRepository>();
+            services.AddTransient<IEmailSender,EmailSender>();
+            services.AddTransient<UserInfo>();
+            services.AddTransient<MyKitchen.Services.IMealImageService,MyKitchen.Services.AzureBlobMealImageService>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //Add Identity Services
             services.AddIdentity<ApplicationUser, Microsoft.AspNetCore.Identity.IdentityRole>()
@@ -75,30 +83,20 @@ namespace MyKitchen
             //add control key so we can view live metrics in the Azure Portal in Application Insights <
             services.ConfigureTelemetryModule<QuickPulseTelemetryModule>((module, o) => module.AuthenticationApiKey = "3ef7lulsu5s5tei6c1q258kg1glf7psn2scldi5u");
 
-            services.AddTransient<IFoodItemRepository, EFFoodItemRepository>();
-            services.AddTransient<IFoodReccomendationService, FoodRecommendationService>();
-            services.AddTransient<IMealRepository, EfMealRepository>();
 
-            //Azure Blob Services
-            services.AddTransient<MyKitchen.Services.IMealImageService,MyKitchen.Services.AzureBlobMealImageService>();
+            // var mvc = services.AddMvc()
+            //         .AddFluentValidation()
+            //         .AddNewtonsoftJson();
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<UserInfo>();
-            services.AddTransient<IEmailSender,EmailSender>();
+            // //To allow changes to razor pages without restarting app
+            // if (_env.IsDevelopment())
+            // {
+            //     mvc.AddRazorRuntimeCompilation();
+            // }
 
+            services.AddRazorPages();
+            services.AddControllersWithViews();
             
-
-
-
-            if(_env.IsDevelopment())
-            {
-                services.AddMvc().AddRazorRuntimeCompilation().SetCompatibilityVersion(CompatibilityVersion.Version_3_0) .AddFluentValidation().AddNewtonsoftJson();
-            }
-            else
-            {
-                services.AddMvc() .SetCompatibilityVersion(CompatibilityVersion.Version_3_0) .AddFluentValidation().AddNewtonsoftJson();
-            }
-
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(100);
@@ -125,7 +123,7 @@ namespace MyKitchen
                 options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
 
-            
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -133,23 +131,25 @@ namespace MyKitchen
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseMigrationsEndPoint();               
-                
-                app.UseBrowserLink();
-
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseRouting();
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
+
             app.UseAuthentication();
+            app.UseAuthorization();
             //EXAMPLE
             
             //is seems doing this in Program.cs is better
@@ -164,30 +164,69 @@ namespace MyKitchen
             // };
 
             // var client = new SecretClient(new Uri("https://kvmykitchen.vault.azure.net/"),new DefaultAzureCredential(),options);
+app.Use((context, next) =>
+{
+    var endpointFeature = context.Features[typeof(Microsoft.AspNetCore.Http.Features.IEndpointFeature)]
+                                           as Microsoft.AspNetCore.Http.Features.IEndpointFeature;
+
+    Microsoft.AspNetCore.Http.Endpoint endpoint = endpointFeature?.Endpoint;
+
+    //Note: endpoint will be null, if there was no
+    //route match found for the request by the endpoint route resolver middleware
+    if (endpoint != null)
+    {
+        var routePattern = (endpoint as Microsoft.AspNetCore.Routing.RouteEndpoint)?.RoutePattern
+                                                                                   ?.RawText;
+
+        Console.WriteLine("Name: " + endpoint.DisplayName);
+        Console.WriteLine($"Route Pattern: {routePattern}");
+        Console.WriteLine("Metadata Types: " + string.Join(", ", endpoint.Metadata));
+    }
+    return next();
+});
 
 
-
-
-            app.UseMvc(routes =>
+            app.UseEndpoints(endPoints => 
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=WhatShouldIEat}/{action=DisplayCurrentPrediction}/{id?}");
 
-                routes.MapRoute(
+                //for attribute routing
+                endPoints.MapControllers();
+
+                //for template based routing
+                endPoints.MapControllerRoute(
+                    name:"default",
+                    pattern:"{controller=WhatShouldIEat}/{action=DisplayCurrentPrediction}/{id?}"
+                );
+
+                endPoints.MapControllerRoute(
                     name:"foodItemDetail",
-                    template: "{controller=FoodItems}/{action=Details}/{id}");
+                    pattern:"{controller=FoodItems}/{action=Details}/{id}"
+                );
+
+                endPoints.MapRazorPages();
+            });
 
 
-                // routes.MapRoute(
-                //     name:"mealDetails",
-                //     template:"{controller}/{action}/{MealId}"
+//             app.UseMvc(routes =>
+//             {
+//                 routes.MapRoute(
+//                     name: "default",
+//                     template: "{controller=WhatShouldIEat}/{action=DisplayCurrentPrediction}/{id?}");
 
-//                );
+//                 routes.MapRoute(
+//                     name:"foodItemDetail",
+//                     template: "{controller=FoodItems}/{action=Details}/{id}");
+
+
+//                 // routes.MapRoute(
+//                 //     name:"mealDetails",
+//                 //     template:"{controller}/{action}/{MealId}"
+
+// //                );
 
 
                 
-            });
+//             });
 
 
 

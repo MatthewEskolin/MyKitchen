@@ -6,6 +6,7 @@ using MyKitchen.Services;
 namespace MyKitchen.Controllers
 {
     [Authorize]
+
     public class WhatShouldIEatController : Controller
     {
         private IFoodReccomendationService FoodRecService { get; }
@@ -15,7 +16,8 @@ namespace MyKitchen.Controllers
             FoodRecService = pFoodRecService;
         }
 
-
+        //This should be the default action for the homepage
+        [Route("", Order = 0)]
         public IActionResult DisplayCurrentPrediction()
         {
             var viewModel = new DisplayCurrentPredictionViewModel() {FoodEntityName = FoodRecService.GetNextRecommendation()};
