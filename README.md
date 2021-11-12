@@ -1,6 +1,6 @@
-# MyKitchen
+# MyKitchen - Meal Planning App
 
-_My Kitchen_ or _What Should I Eat_ (not sure what the best name for this should be), is a tool to help me spend less time thinking about what to eat.
+This app is a tool I created to help me spend less time thinking about what to eat. 
 
 ## Current Development
 * finish adding user accounts - currently some data is global to all users
@@ -9,13 +9,13 @@ _My Kitchen_ or _What Should I Eat_ (not sure what the best name for this should
 
 ## Existing Features
 * Meal Planning Calendar
-* What should I eat next advice
+* What should I eat next advisor 
 * Create a personal database of your favorite foods
-* Combine Foods to make meals to simplify planning
+* Food Database - Combine foods to build cutomizable meals  
 
 ## Learning Focus
-* I am using this project to improve my knowledge of programming
-* 11/14/2020 - Focus on creating Unit Tests
-
+* I am using this project to improve my knowledge of programming in .NET 
 ## Technical Specs
 * Uses Azure KeyVault for User Secrets and Passwords
+* Frequent Updates to Latest Version of .NET - Currently .NET 5
+
