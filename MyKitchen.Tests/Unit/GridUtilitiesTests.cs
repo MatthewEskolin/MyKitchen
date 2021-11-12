@@ -11,7 +11,7 @@ namespace MyKitchen.Tests
         public void ToggleAscDesc_Test_AscToDesc()
         {
             var toggleToDesc = MyKitchen.Utilities.GridUtilities.ToggleAscDesc("TestColumn");
-            Assert.True(toggleToDesc.EndsWith("_desc"));
+            Assert.EndsWith(toggleToDesc,"_desc");
         }
 
         [Fact]

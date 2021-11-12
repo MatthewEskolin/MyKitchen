@@ -11,12 +11,9 @@
   height:35px;
   width:35px;
 }
-
 </style>
 
 <div class="container">
-
-
  
 @if(@Model.EditMealMode)
 {
@@ -110,7 +107,7 @@ else
 
 <div id="_ImageList">
 @{
-  Html.RenderPartialAsync("_ImageList",Model.MealImages);
+  await Html.RenderPartialAsync("_ImageList",Model.MealImages);
 }
 </div>
 

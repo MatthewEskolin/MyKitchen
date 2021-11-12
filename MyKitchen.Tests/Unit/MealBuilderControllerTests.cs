@@ -1,10 +1,6 @@
 using MyKitchen.Data;
 using MyKitchen.Models;
 using Xunit;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using Moq;
 using MyKitchen.Controllers;
@@ -30,8 +26,6 @@ namespace MyKitchen.Tests
         {
             //Tests to make sure the Meal Repository when called by the MealBuilderController is being populated using the a test page number
             //and test page size.
-
-            var testPageIndex = 1;
             var testPageSize = 3;
 
             var userMock = new Mock<UserInfo>();
