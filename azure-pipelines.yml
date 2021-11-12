@@ -16,6 +16,8 @@ variables:
 
 steps:
 - task: NuGetToolInstaller@1
+  inputs:
+    checkLatest:true
 
 - task: NuGetCommand@2
   inputs:
@@ -33,16 +35,6 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-# - task: AzureRmWebAppDeployment@4
-#   inputs:
-#     ConnectionType: 'AzureRM'
-#     azureSubscription: 'Pay-As-You-Go(c76345d3-e114-4861-91af-d0e8ea4d45cb)'
-#     appType: 'webApp'
-#     WebAppName: 'WhatShouldIEat'
-#     deployToSlotOrASE: true
-#     ResourceGroupName: 'rgMyKitchen_Global'
-#     SlotName: 'production'
-#     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
