@@ -2,6 +2,8 @@
 
 This app is a tool I created to help me spend less time thinking about what to eat. 
 
+[![Build Status](https://dev.azure.com/BlueProgrammer1/MyKitchen/_apis/build/status/MatthewEskolin.MyKitchen?branchName=master)](https://dev.azure.com/BlueProgrammer1/MyKitchen/_build/latest?definitionId=1&branchName=master)
+
 ## Current Development
 * finish adding user accounts - currently some data is global to all users
 * I would like to run this as in an Azure App Service as a Progressive Web App - (so it can be used on a phone without being a mobile app)
