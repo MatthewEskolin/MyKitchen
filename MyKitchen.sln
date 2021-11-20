@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28621.142
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyKitchen", "MyKitchen\MyKitchen.csproj", "{EFEC2DE8-DFC2-4BB6-94D6-D7BB8E3AC2C5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebEssentials.AspNetCore.Pwa", "MyKitchen\Dependencies\WebEssentials.AspNetCore.Pwa.csproj", "{3D01BEFB-8CCA-455B-8D68-3F3F950C17F2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyKitchen.Tests", "MyKitchen.Tests\MyKitchen.Tests.csproj", "{CE8C2234-7244-488E-BD3B-5D430773A968}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{59E2B25D-06BD-4829-AD6A-3C6499ADD450}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

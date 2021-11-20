@@ -8,6 +8,8 @@ This app is a tool I created to help me spend less time thinking about what to e
 * finish adding user accounts - currently some data is global to all users
 * I would like to run this as in an Azure App Service as a Progressive Web App - (so it can be used on a phone without being a mobile app)
 * Add Test cases to make sure user accounts are working
+* I think having Tags for meals would be very helpful - things like "Chicken", "Mexican", "ThanksGiving Dishes" would be very helpful
+* Need to fix bug when Uploading Images, when uploading a large image, we need to scape down the image
 
 ## Existing Features
 * Meal Planning Calendar
