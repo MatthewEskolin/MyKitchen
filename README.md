@@ -2,7 +2,7 @@
 
 This app is a tool I created to help me spend less time thinking about what to eat. 
 
-![Build] https://dev.azure.com/BlueProgrammer1/MyKitchen/_apis/build/status/MatthewEskolin.MyKitchen?branchName=master
+![Build] https://dev.azure.com/BlueProgrammer1/MyKitchen/_apis/build/status/MatthewEskolin.MyKitchen?branchName=main
 
 ## Current Development
 * finish adding user accounts - currently some data is global to all users
@@ -23,3 +23,7 @@ This app is a tool I created to help me spend less time thinking about what to e
 * Uses Azure KeyVault for User Secrets and Passwords
 * Frequent Updates to Latest Version of .NET - Currently .NET 5
 
+## Azure DevOps Organization
+
+This Project currently uses Azure Devops for Project Planning. Contact me if you would like access to this.
+<https://dev.azure.com/BlueProgrammer1/MyKitchen>
