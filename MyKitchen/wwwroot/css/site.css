@@ -183,3 +183,8 @@ body { padding: 2em; }
   width: 512px; height: 512px;
   background: url('/images/css_sprites.png') -10px -10px;
 }
+
+/* Images */
+.foodImage {
+    max-width:300px;
+}
