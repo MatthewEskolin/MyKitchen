@@ -1,4 +1,8 @@
-﻿## 11/20/2021
+﻿## 11/21/2021
+
+* I would like to convert / replicate this entire application in Blazer Server side
+
+## 11/20/2021
 
 * Build a abilty to have a custom themed plate
 
