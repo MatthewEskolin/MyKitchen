@@ -12,15 +12,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Dependencies\**" />
+    <Compile Remove="Pages\Calendar\**" />
     <!-- <Compile Remove="Views\Home\**" /> -->
     <Compile Remove="Views\Shared\MvcGrid\**" />
     <Content Remove="Dependencies\**" />
+    <Content Remove="Pages\Calendar\**" />
     <!-- <Content Remove="Views\Home\**" /> -->
     <Content Remove="Views\Shared\MvcGrid\**" />
     <EmbeddedResource Remove="Dependencies\**" />
+    <EmbeddedResource Remove="Pages\Calendar\**" />
     <!-- <EmbeddedResource Remove="Views\Home\**" /> -->
     <EmbeddedResource Remove="Views\Shared\MvcGrid\**" />
     <None Remove="Dependencies\**" />
+    <None Remove="Pages\Calendar\**" />
     <!-- <None Remove="Views\Home\**" /> -->
     <None Remove="Views\Shared\MvcGrid\**" />
   </ItemGroup>
@@ -90,6 +94,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\BL\" />
-    <Folder Include="Pages\Calendar\" />
   </ItemGroup>
 </Project>
