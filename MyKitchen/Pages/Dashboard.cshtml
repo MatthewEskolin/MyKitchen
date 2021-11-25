@@ -1,0 +1,87 @@
+﻿@page
+@model MyKitchen.Pages.DashboardModel
+@{
+    Layout = "_Layout";
+}
+<style type="text/css">
+
+    .title-banner {
+        background-color: blue;
+        color: white;
+    }
+</style>
+
+<div class="container">
+    <div class="main-body">
+
+        <div class="row gutters-sm">
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-left">
+                            <h4 class="text-left">Menu</h4>
+                            <div class="title-banner w-100 rounded p-1">Today</div>
+                            <div class="mb-4">
+                                @if (@Model.TodaysMeals.Count > 0)
+                                {
+                                    foreach (var meal in @Model.TodaysMeals)
+                                    {
+                                        @:@meal.MealName
+                                    }
+                                }
+                                else
+                                {
+                                    @:<span>There is Nothing on the Menu for Today. Add some Food to keep on track</span>
+                                }
+                            </div>
+                            <div class="title-banner w-100 rounded p-1">Tomorrow</div>
+                            <div class="mb-5">
+                                @if (@Model.TomorrowsMeals.Count > 0)
+                                {
+                                    //Display List of Food Item
+                                    foreach (var meal in @Model.TomorrowsMeals)
+                                    {
+                                        @:@meal.MealName
+                                    }
+                                }
+                                else
+                                {
+                                    @:<span>There is Nothing on the Menu for Tomorrow. Add some Food to keep on track</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb=3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-left">
+                            <h4 class="text-left">Favorite Meals</h4>
+                            <hr/>
+                            <div class="mb-1">
+                                @if (@Model.FavoriteMeals.Count > 0)
+                                {
+
+                                    <ul>
+                                        @foreach (var meal in @Model.FavoriteMeals)
+                                        {
+                                        
+                                            <li>@meal.MealName</li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    @:<span>You have no favorites yet</span>
+                                }
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+
+</div>
+

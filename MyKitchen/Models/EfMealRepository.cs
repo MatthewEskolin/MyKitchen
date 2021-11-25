@@ -159,8 +159,20 @@ namespace MyKitchen.Models
             return (cresult, pagingInfo);
         }
 
+        public IEnumerable<Meal> GetFavoriteMealsForUser(ApplicationUser user)
+        {
+            
+            //load meals with details for each food in the meal.
 
+            var results = (from meals in 
+                    context.Meals.Include(x => x.MealFoodItems)
+                                 .ThenInclude(x => x.FoodItems)
+                where meals.AppUser.Id == user.Id 
+                where meals.IsFavorite
+                select meals);
 
+            return results;
+        }
 
 
         public int CountForUser(ApplicationUser user,string mealName)

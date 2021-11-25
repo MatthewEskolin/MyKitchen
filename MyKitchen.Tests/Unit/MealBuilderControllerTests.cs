@@ -4,10 +4,10 @@ using Xunit;
 using System.Linq;
 using Moq;
 using MyKitchen.Controllers;
-using MyKitchen.BL;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
+using MyKitchen.Models.BL;
 using MyKitchen.Services;
 
 namespace MyKitchen.Tests

@@ -2,9 +2,9 @@
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyKitchen.BL;
 using MyKitchen.Data;
 using MyKitchen.Data.Calendar;
+using MyKitchen.Models.BL;
 
 namespace MyKitchen.Controllers
 {

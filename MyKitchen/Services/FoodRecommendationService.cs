@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using MyKitchen.BL;
 using MyKitchen.Data;
+using MyKitchen.Models.BL;
 
-    namespace MyKitchen.Services
+namespace MyKitchen.Services
 {
     public class FoodRecommendationService:IFoodReccomendationService
     {

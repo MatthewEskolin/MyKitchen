@@ -1,10 +1,10 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using MyKitchen.BL;
 using MyKitchen.Controllers;
 using MyKitchen.Data;
 using MyKitchen.Models;
+using MyKitchen.Models.BL;
 using MyKitchen.Models.FoodItems;
 using Xunit;
 

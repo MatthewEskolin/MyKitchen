@@ -10,12 +10,8 @@ namespace MyKitchen.Tests.Selenium
     [TestCaseOrderer("MyKitchen.Tests.Utilities.TestPriorityAttribute", "MyKitchen.Tests")]
     [Trait("Category","BrowserAutomation")]
     public class SeleniumTests{
-
-
-
-
-
-        [Fact,TestPriorityAttribute(1)]
+        [Fact]
+        [TestPriority(1)]
         public void GoToHomePage()
         {
                 using(IWebDriver driver = new ChromeDriver())
@@ -27,9 +23,13 @@ namespace MyKitchen.Tests.Selenium
                     driver.FindElement(By.Id("forgot-password"));
 
                 }
+        }
+
+        [Fact, TestPriority(2)]
+        public void Login()
+        {
 
 
         }
-
     }
 }

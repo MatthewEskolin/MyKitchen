@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MyKitchen.Data;
 using MyKitchen.Models;
+using MyKitchen.Models.BL;
 using MyKitchen.Models.FoodItems;
-using MyKitchen.BL;
 
 namespace MyKitchen.Controllers
 {
