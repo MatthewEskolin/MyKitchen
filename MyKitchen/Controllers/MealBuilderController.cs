@@ -12,10 +12,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 using Azure.Storage.Blobs;
-
-using MyKitchen.BL;
 using MyKitchen.Data;
 using MyKitchen.Models;
+using MyKitchen.Models.BL;
 using MyKitchen.Models.Meals;
 using MyKitchen.Services;
 

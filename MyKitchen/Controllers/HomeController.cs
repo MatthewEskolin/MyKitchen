@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyKitchen.Data;
 using MyKitchen.Models;
@@ -13,36 +9,17 @@ namespace MyKitchen.Controllers
 {
     public class HomeController : Controller
     {
-        ApplicationDbContext ctx { get; set; }
-
+        ApplicationDbContext Ctx { get; set; }
 
         public HomeController(ApplicationDbContext pctx)
         {
-            var errorarray = new int[4];
-          //  var runtimerror = errorarray[34];
-
-            ctx = pctx;
+            Ctx = pctx;
         }
 
         [Route("Home")]
         public IActionResult Index()
         {
-            //Let's store in the database the time we last cooked our own meal, and track how many meals we cooked overtime
-            //var ctx = new DataContext
-          //  var ctx = new ApplicationDbContext();
-
-
-
-     
-            ViewBag.BagItem1 = "Browser Link Change Test";
-
-            //CAN WE CREATE A model contains food items and a lost
-
-
-            var viewModel = new HomeIndexVM()
-
-;
-
+            var viewModel = new HomeIndexVM();
             return View(viewModel);
         }
 
@@ -51,7 +28,7 @@ namespace MyKitchen.Controllers
         public IActionResult SelectFoodItem(int id)
         {
 
-            var item = ctx.FoodItems.FirstOrDefault(x => x.FoodItemID == id);
+            var item = Ctx.FoodItems.FirstOrDefault(x => x.FoodItemID == id);
             return View(item);
 
         }
@@ -60,7 +37,7 @@ namespace MyKitchen.Controllers
         public PartialViewResult IndexGrid()
         {
             // Only grid query values will be available here.
-            return PartialView("_IndexGrid", ctx.FoodItems);
+            return PartialView("_IndexGrid", Ctx.FoodItems);
         }
 
 
@@ -87,12 +64,12 @@ namespace MyKitchen.Controllers
         {
             FoodItem newItem = viewModel1.NewFoodItem;
                        
-            ctx.Add(newItem);
-            ctx.SaveChanges();
+            Ctx.Add(newItem);
+            Ctx.SaveChanges();
 
             var newModel = new HomeIndexVM()
             {
-                FoodItemList = ctx.FoodItems.ToList()
+                FoodItemList = Ctx.FoodItems.ToList()
 
             };
 
@@ -105,8 +82,6 @@ namespace MyKitchen.Controllers
         [HttpPost]
         public IActionResult NewGroceryTrip(FoodItem newFood)
         {
-
-          
             return View();
         }
     }

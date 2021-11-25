@@ -28,6 +28,9 @@ namespace MyKitchen.Controllers
 
         (IEnumerable<Meal> meals, PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user,string mealName,string orderBy);
 
+        IEnumerable<Meal> GetFavoriteMealsForUser(ApplicationUser user);
+
+
         int CountForUser(ApplicationUser user,string mealName);
     }
 }

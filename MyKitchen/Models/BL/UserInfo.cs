@@ -1,9 +1,8 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using MyKitchen.Data;
 
-namespace MyKitchen.BL
+namespace MyKitchen.Models.BL
 {
     public class UserInfo
     {

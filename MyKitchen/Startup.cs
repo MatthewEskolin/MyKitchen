@@ -12,9 +12,9 @@ using Microsoft.Extensions.Hosting;
 using MyKitchen.Controllers;
 using MyKitchen.Models;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
-using MyKitchen.BL;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System;
+using MyKitchen.Models.BL;
 using MyKitchen.Services;
 
 namespace MyKitchen
@@ -55,7 +55,10 @@ namespace MyKitchen
             services.AddTransient<IFoodReccomendationService, FoodRecommendationService>();
             services.AddTransient<IMealRepository, EfMealRepository>();
             services.AddTransient<IEmailSender,EmailSender>();
+
             services.AddTransient<UserInfo>();
+            services.AddTransient<CalendarService>();
+
             services.AddTransient<MyKitchen.Services.IMealImageService,MyKitchen.Services.AzureBlobMealImageService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -94,7 +97,13 @@ namespace MyKitchen
             //     mvc.AddRazorRuntimeCompilation();
             // }
 
-            services.AddRazorPages();
+            var rp = services.AddRazorPages();
+
+            if (_env.IsDevelopment())
+            {
+                rp.AddRazorRuntimeCompilation();
+            }
+                
             services.AddControllersWithViews().AddNewtonsoftJson();
             
             services.AddSession(options =>

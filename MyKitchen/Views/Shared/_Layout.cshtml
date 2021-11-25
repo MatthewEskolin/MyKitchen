@@ -1,14 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using MyKitchen.Data
-@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
-@inject SignInManager<ApplicationUser> SignInManager
+@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet _javaScriptSnippet
+@inject SignInManager<ApplicationUser> _signInManager
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - What Should I Eat?</title>
+    <title>MyKitchen - @ViewData["Title"]</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -22,7 +22,7 @@
               integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="/>
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
-    @Html.Raw(JavaScriptSnippet.FullScript)
+    @Html.Raw(_javaScriptSnippet.FullScript)
 </head>
 <body>
     <header>
@@ -36,11 +36,12 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
 
-                    @if(SignInManager.IsSignedIn(User))
+
+                    @if(_signInManager.IsSignedIn(User))
                     {
                         <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Dashboard">Dashboard</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Calendar" asp-action="Index">Calendar</a>
