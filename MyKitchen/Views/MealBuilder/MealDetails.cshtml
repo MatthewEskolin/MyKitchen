@@ -21,8 +21,8 @@
   <div class="float-left">
     <form asp-action="SaveMealName">
     <input asp-for="Meal.MealName" type="text" />
-    <input asp-action="SaveMealName" type="submit" value="Save">
-    <input asp-action="Cancel_SaveMealName" type="submit" value="Cancel">
+    <input asp-action="SaveMealName" class="btn btn-success" type="submit" value="Save">
+    <input asp-action="Cancel_SaveMealName" class="btn btn-secondary" type="submit" value="Cancel">
     <input type="hidden" asp-for="Meal.MealID" />
     </form>
   </div>
@@ -87,7 +87,7 @@ else
     </div>
        <div class=""> 
             <input type="submit" value="Save" class="btn btn-success" />
-            <input type="submit" asp-action="Index" class="btn btn-secondary" value="Cancel" />
+            <input type="submit" asp-action="Index" class="btn btn-secondary" value="Back" />
 
         </div> 
         <input asp-for="Meal.MealID" value="@Model.Meal.MealID" type="hidden">

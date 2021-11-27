@@ -79,22 +79,6 @@ namespace MyKitchen.Controllers
             return View("Index",viewModel);
         }
 
-
-        // [HttpGet]
-        // [Route("[controller]/[action]/{int}")]
-        // public IActionResult Index(int currentPage)
-        // {
-        //     var meal = mealRepository.GetMealsForUser(currentPage, PageSize, this.CurrentUser.User, string.Empty, DefaultSortProperty);
-
-        //     return base.View("Index", new MealBuilderIndexViewModel()
-        //     {
-        //         Meals = meal.meals,
-        //         MealListPagingInfo = meal.pagingInfo
-        //     });
-        // }
-
-
-
         private string GetMealsSort(string newSort, string currentSort, bool toggle)
         {
             var rtn = string.Empty;
@@ -250,21 +234,21 @@ namespace MyKitchen.Controllers
             return View("Index", viewModel1);
         }
 
-        public IActionResult GetImage([FromQuery]string imageName)
+        public async Task<IActionResult> GetImage([FromQuery]string imageName)
         {
                 BlobServiceClient blobServiceClient = new(_configuration.GetConnectionString("saMyKitchen"));
                 BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient("fileuploads");
                 BlobClient blobClient = blobContainerClient.GetBlobClient(imageName);
 
-                var memoryStream = new MemoryStream();
-                blobClient.DownloadTo(memoryStream);
+                if(await blobClient.ExistsAsync())
+                {
+                    var memoryStream = new MemoryStream();
+                    blobClient.DownloadTo(memoryStream);
+                    return File(memoryStream.GetBuffer(),"image/jpg");
 
-                return File(memoryStream.GetBuffer(),"image/jpg");
+                }
 
-
-                // var image = System.IO.File.OpenRead("C:\\test\\random_image.jpeg");
-                // return File(image, "image/jpeg");
-
+                return NotFound($"Image {imageName} not found");
 
         }
 
@@ -308,8 +292,10 @@ namespace MyKitchen.Controllers
             var meal = mealRepository.Find(pmeal.Meal.MealID);
 
 
-            var viewModel = new MealBuilderMealDetails_VM();
-            viewModel.Meal = meal;
+            var viewModel = new MealBuilderMealDetails_VM
+            {
+                Meal = meal
+            };
 
             return View("MealDetails",viewModel);
 
