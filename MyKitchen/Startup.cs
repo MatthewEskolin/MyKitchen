@@ -216,30 +216,6 @@ app.Use((context, next) =>
             });
 
 
-//             app.UseMvc(routes =>
-//             {
-//                 routes.MapRoute(
-//                     name: "default",
-//                     template: "{controller=WhatShouldIEat}/{action=DisplayCurrentPrediction}/{id?}");
-
-//                 routes.MapRoute(
-//                     name:"foodItemDetail",
-//                     template: "{controller=FoodItems}/{action=Details}/{id}");
-
-
-//                 // routes.MapRoute(
-//                 //     name:"mealDetails",
-//                 //     template:"{controller}/{action}/{MealId}"
-
-// //                );
-
-
-                
-//             });
-
-
-
-
         }
     }
 }
