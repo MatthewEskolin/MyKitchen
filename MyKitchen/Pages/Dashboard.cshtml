@@ -24,14 +24,16 @@
                             <div class="mb-4">
                                 @if (@Model.TodayHasItems)
                                 {
+                                    @:<ul>
                                     foreach (var meal in @Model.TodaysMeals)
                                     {
-                                        @:@meal.MealName
+                                        @:<li>@meal.MealName</li>
                                     }
                                     foreach (var item in @Model.TodaysItems)
                                     {
-                                        @:@item.FoodItemName
+                                        @:<li>@item.FoodItemName</li>
                                     }
+                                    @:</ul>
 
                                 }
                                 else
@@ -44,15 +46,16 @@
                                 @if (@Model.TomorrowHasItems)
                                 {
 
-                                    //Display List of Food Item
+                                    @:<ul>
                                     foreach (var meal in @Model.TomorrowsMeals)
                                     {
-                                        @:@meal.MealName
+                                        @:<li>@meal.MealName</li>
                                     }
                                     foreach (var item in @Model.TomorrowsItems)
                                     {
-                                        @:@item.FoodItemName
+                                        @:<li>@item.FoodItemName</li>
                                     }
+                                    @:</ul>
 
                                 }
                                 else
