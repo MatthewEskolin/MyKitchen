@@ -38,7 +38,7 @@ namespace MyKitchen.Data.Calendar
 
         public DateTime CreateDate { get; set; }
 
-        public virtual FoodItem FoodItems { get; set; }
+        public virtual FoodItem FoodItem { get; set; }
 
         public virtual Meal Meal {get; set;}
 

@@ -22,12 +22,17 @@
                             <h4 class="text-left">Menu</h4>
                             <div class="title-banner w-100 rounded p-1">Today</div>
                             <div class="mb-4">
-                                @if (@Model.TodaysMeals.Count > 0)
+                                @if (@Model.TodayHasItems)
                                 {
                                     foreach (var meal in @Model.TodaysMeals)
                                     {
                                         @:@meal.MealName
                                     }
+                                    foreach (var item in @Model.TodaysItems)
+                                    {
+                                        @:@item.FoodItemName
+                                    }
+
                                 }
                                 else
                                 {
@@ -36,13 +41,19 @@
                             </div>
                             <div class="title-banner w-100 rounded p-1">Tomorrow</div>
                             <div class="mb-5">
-                                @if (@Model.TomorrowsMeals.Count > 0)
+                                @if (@Model.TomorrowHasItems)
                                 {
+
                                     //Display List of Food Item
                                     foreach (var meal in @Model.TomorrowsMeals)
                                     {
                                         @:@meal.MealName
                                     }
+                                    foreach (var item in @Model.TomorrowsItems)
+                                    {
+                                        @:@item.FoodItemName
+                                    }
+
                                 }
                                 else
                                 {
@@ -66,8 +77,10 @@
                                     <ul>
                                         @foreach (var meal in @Model.FavoriteMeals)
                                         {
-                                        
-                                            <li>@meal.MealName</li>
+                                            <li>
+                                                @meal.MealName
+                                                @* Link to a new Meal Details Page in Razor Page or should we link to MVC Page - I think it makes sense to link to new dedicated page *@
+                                            </li>
                                         }
                                     </ul>
                                 }

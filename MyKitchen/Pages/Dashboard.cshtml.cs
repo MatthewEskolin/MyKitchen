@@ -20,6 +20,14 @@ namespace MyKitchen.Pages
         public List<Meal> TomorrowsMeals { get; set; }
         public List<Meal> FavoriteMeals { get; set; }
 
+        //Meal Items
+        public List<FoodItem> TodaysItems { get; set; }
+        public List<FoodItem> TomorrowsItems { get; set; }
+
+        public bool TodayHasItems => TodaysItems.Count > 0 || TodaysMeals.Count > 0;
+        public bool TomorrowHasItems => TomorrowsItems.Count > 0 || TomorrowsMeals.Count > 0;
+
+
         public DashboardModel(UserInfo usr,ApplicationDbContext ctx, CalendarService calendarService,IMealRepository mealRepo)
         {
             this.CalendarService = calendarService;
@@ -30,11 +38,20 @@ namespace MyKitchen.Pages
 
         public void OnGet()
         {
+            //Get Meals
             var upcomingMeals = CalendarService.GetUpcomingMeals();
+
+            //Get Food Items
+            var upcomingItems = CalendarService.GetUpcomingItems();
+
+            //Get Favorite Meals
             FavoriteMeals = MealRepo.GetFavoriteMealsForUser(this.CurrentUser.User).ToList();
 
             TodaysMeals = upcomingMeals.TodaysMeals;
             TomorrowsMeals = upcomingMeals.TomorrowsMeals;
+
+            TodaysItems = upcomingItems.TodaysItems;
+            TomorrowsItems = upcomingItems.TomorrowsItems;
 
 
             //How do we transform events into meals

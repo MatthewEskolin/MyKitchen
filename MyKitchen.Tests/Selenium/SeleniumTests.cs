@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using MyKitchen.Tests.Utilities;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -58,7 +59,9 @@ namespace MyKitchen.Tests.Selenium
 
             //Next, Write a selenium test here to login as that user
 
+
             //Verify that the user is successfully logged in and redirected inside the app
+            Task.Delay(3000).Wait();
 
 
 
