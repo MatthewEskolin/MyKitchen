@@ -94,5 +94,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\BL\" />
+    <Folder Include="Pages\TestPages\" />
   </ItemGroup>
 </Project>

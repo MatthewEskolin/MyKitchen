@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyKitchen.Controllers;
+using MyKitchen.Data;
 using MyKitchen.Models;
 using MyKitchen.Services;
 
@@ -13,42 +16,69 @@ namespace MyKitchen.Pages.PageRouteTest
         {
             this.MealRepo = mealRo;
             this.ImageService = imageService;
-
         }
 
-        public IMealImageService ImageService { get; set; }
+        private IMealImageService ImageService { get; set; }
 
-        public IMealRepository MealRepo { get; set; }
+        private IMealRepository MealRepo { get; set; }
 
-        public string TestProperty { get; set; }
+        //Properties Bound from Forms
+        [BindProperty]
+        public string MealName { get; set; }
+        [BindProperty]
+        public int MealId { get; set; }
 
-        //OnGet is Required Here to 
+
+
+        //Flags
+        public bool EditMealMode { get; set; }
+        public bool MealSavedMsg { get; set; }
+
+        public Meal Meal { get; set; }
+        public List<string> Images { get; set; }
+
+        //OnGet is Required Here by Convention
         public void OnGetShowDetails(int mealId)
         {
-
-            throw new NotImplementedException();
-            //load meal model using what we have in Meal Details
-
-            //var meal = MealRepo.Find(mealId);
-            
-            //var images = ImageService.LoadImages(mealID);
-
-            //var viewModel = new MealBuilderMealDetails_VM();
-
-            //viewModel.Meal = meal;
-            //viewModel.EditMealMode = editMode;
-            //viewModel.MealImages = images;
-
-
-            //return View(viewModel);
-            //TestProperty = mealId.ToString();
+            LoadPageProperties(mealId);
         }
 
-        public void OnPostShowDetails()
+        protected void LoadPageProperties(int mealId)
         {
-            int t = 2134;
-            t++;
+            this.Meal = MealRepo.Find(mealId);
+            Images = ImageService.LoadImages(mealId);
+        }
+
+        public void OnGetEditMealName(int mealId)
+        {
+            EditMealMode = true;
+            LoadPageProperties(mealId);
+            this.MealName = Meal.MealName;
 
         }
+
+        public void OnPostSaveMealName()
+        {
+            LoadPageProperties(this.MealId);
+
+            this.Meal.MealName = this.MealName;
+            MealRepo.SaveChanges();
+
+            EditMealMode = false;
+        }
+
+        public void OnPostUpdateMeal([FromForm] Meal meal)
+        {
+            LoadPageProperties(meal.MealID);
+            this.Meal.Recipe = meal.Recipe;
+            MealRepo.SaveChanges();
+
+            //TODO Show Meal Saved Banner
+            //show meal saved = true;
+            MealSavedMsg = true;
+
+        }
+
+
     }
 }

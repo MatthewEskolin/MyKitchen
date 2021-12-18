@@ -1,7 +1,205 @@
 ﻿@page
 @model MyKitchen.Pages.PageRouteTest.MealDetailsModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 @{
+    ViewData["Title"] = "Meal Details";
 }
 
-Test Property = @this.Model.TestProperty
-Meal Details Here
+@*Test Property = @this.Model.TestProperty
+*@
+<style type="text/css">
+.editImage {
+  height:35px;
+  width:35px;
+}
+</style>
+
+<div class="container">
+
+    <div id="dvMealSavedAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Holy guacamole!</strong> Meal Successfully Saved.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>    
+    
+
+    @if(@Model.EditMealMode)
+{
+<div class="page-header">
+  <div class="float-left">
+    <form asp-page="" asp-page-handler="SaveMealName">
+    <input asp-for="MealName" type="text" />
+    <input asp-action="SaveMealName" class="btn btn-success" type="submit" value="Save">
+    <input asp-action="Cancel_SaveMealName" class="btn btn-secondary" type="submit" value="Cancel">
+    <input type="hidden" asp-for="MealId" />
+    </form>
+  </div>
+  <div class="clearfix"></div>
+</div> 
+}
+else
+{
+<div class="page-header">
+  <div class="float-left">
+  <h2>@Model.Meal.MealName</h2> 
+  </div>
+  <div class="float-left">
+      <a asp-page="" asp-page-handler="EditMealName" asp-route-mealId="@Model.Meal.MealID">
+      <img class="editImage" src="~/images/editpencil_120034.png" asp-append-version="true"/>
+      </a>
+  </div>
+  <div class="clearfix"></div>
+</div>
+} 
+
+
+
+
+    <hr />
+
+        @if(Model.Meal.MealFoodItems.Count == 0)
+        {
+            @* var mealId = Model.Meal.MealID; *@
+            <div>
+            <span>This meal doesn't have any food in it yet.</span>
+            </div>
+            <div>
+              <a asp-action="SelectFoodItemsForMeal" asp-route-mealId="@Model.Meal.MealID">Click Here To Continue to site</a>  to add food
+            </div>
+        }
+
+    <form method="POST">
+        <a asp-page="" asp-page-handler="SelectFoodItemsForMeal" asp-route-mealId="@Model.Meal.MealID">Add More Food</a>
+        <a asp-page="" asp-page-handler="DeleteMeal" asp-route-mealId="@Model.Meal.MealID">Delete Meal</a>
+    </form>
+
+    <form method="POST">
+
+    <ul>
+    @foreach (var item in @Model.Meal.MealFoodItems)
+    {
+        var foodItem = item.FoodItems.FoodItemName;
+        <li>@foodItem <input type="submit" value="delete" text="X" asp-action="DeleteFoodItemFromMeal" asp-route-mealFoodItemId="@item.MealFoodItemId" /></li>
+    }
+    </ul>
+
+    <input id="mealID" name="MealID" value="@Model.Meal.MealID" type="hidden" />
+    </form>
+
+    <form asp-page-handler="UpdateMeal">
+    <div class="form-group">
+        <label asp-for="Meal.Recipe"></label>
+        <textarea rows="12" id="taRecipe" asp-for="Meal.Recipe" class="form-control w-75"></textarea>
+
+    </div>
+       <div class=""> 
+           <input type="submit" value="Save" class="btn btn-success" />
+          
+           <a asp-controller="MealBuilder" asp-action="Index" class="btn btn-secondary">Back</a>
+
+        </div> 
+        <input asp-for="Meal.MealID" value="@Model.Meal.MealID" type="hidden">
+    </form>
+
+
+    Upload Images
+    <form id="form" name="form" action="/uploader" enctype="multipart/form-data" method="post">
+  <div class="buttons">
+    <div class="upload-button">
+      
+      <input type="hidden" id="file-upload-form-mealID" name="MealID" value="@Model.Meal.MealID" />
+      <input id="files" name="files" type="file" size="1" multiple onchange="uploadFiles('files');" />
+    </div>
+  </div>
+
+
+<div id="_ImageList">
+@{
+    @foreach(var img in Model.Images)
+    {
+        <img class="foodImage" src="@img" />
+    }
+}
+</div>
+</form>
+
+
+
+
+
+@section scripts {
+
+    <script type="text/javascript">
+
+        //*Show Alert on Successful Save *//
+        //ToString().ToLower() should convert False to false or True to true so javascript understands it.
+        if (@Model.MealSavedMsg.ToString().ToLower()) {
+            $('#dvMealSavedAlert').show();
+        } else {
+            $('#dvMealSavedAlert').hide();
+        }
+
+            jQuery.fn.extend({
+            autoHeight: function () {
+                function autoHeight_(element) {
+                    return jQuery(element).css({
+                        'height': 'auto',
+                        'overflow-y': 'hidden'
+                    }).height(element.scrollHeight);
+                }
+                return this.each(function () {
+                    autoHeight_(this).on('input', function () {
+                        autoHeight_(this);
+                    });
+                });
+            }
+        });
+        $('#taRecipe').autoHeight();
+
+
+        function uploadFiles(inputId) {
+            var input = document.getElementById(inputId);
+            var files = input.files;
+            var formData = new FormData();
+
+            for (var i = 0; i != files.length; i++) {
+                formData.append("files", files[i]);
+            }
+
+            var fileUploadFormMealID = document.getElementById("file-upload-form-mealID");
+            formData.append("MealID", $(fileUploadFormMealID).val());
+
+            $.ajax(
+                {
+                    url: "/MealBuilder/UploadFile",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: "POST",
+                    success: function (data) {
+                        $('#_ImageList').html(data); 
+
+                        @* $('#_ImageList').load('MealBuilder/LoadImages'); *@
+                        //'//PartialView'); 
+                        console.info("files-uploaded");
+          
+                        alert("Files Uploaded!");
+                    },
+                    complete:function(){
+                        console.info("upload complete");
+                    }
+                }
+            );
+        }
+
+
+    </script>
+
+}
+
+<!-- close container-->
+</div>
+
+

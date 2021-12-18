@@ -86,8 +86,9 @@ else
 
     </div>
        <div class=""> 
-            <input type="submit" value="Save" class="btn btn-success" />
-            <input type="submit" asp-action="Index" class="btn btn-secondary" value="Back" />
+           <input type="submit" value="Save" class="btn btn-success" />
+          
+           <a asp-controller="MealBuilder" asp-action="Index" class="btn btn-secondary">Back</a>
 
         </div> 
         <input asp-for="Meal.MealID" value="@Model.Meal.MealID" type="hidden">

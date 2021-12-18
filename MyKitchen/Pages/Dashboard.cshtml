@@ -27,7 +27,9 @@
                                     @:<ul>
                                     foreach (var meal in @Model.TodaysMeals)
                                     {
-                                        @:<li>@meal.MealName</li>
+                                        @:<li>
+                                        <a asp-page="/PageRouteTest/MealDetails" asp-page-handler="ShowDetails" asp-route-mealId="@meal.MealID">@meal.MealName</a>
+                                        @:</li>
                                     }
                                     foreach (var item in @Model.TodaysItems)
                                     {
@@ -49,7 +51,9 @@
                                     @:<ul>
                                     foreach (var meal in @Model.TomorrowsMeals)
                                     {
-                                        @:<li>@meal.MealName</li>
+                                        @:<li>
+                                            <a asp-page="/PageRouteTest/MealDetails" asp-page-handler="ShowDetails" asp-route-mealId="23">@meal.MealName</a>
+                                        @:</li>
                                     }
                                     foreach (var item in @Model.TomorrowsItems)
                                     {
