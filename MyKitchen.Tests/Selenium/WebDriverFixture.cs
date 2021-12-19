@@ -16,6 +16,7 @@ namespace MyKitchen.Tests.Selenium
         public WebDriverFixture()
         {
             Driver = new ChromeDriver();
+
         }
 
         public void Dispose()

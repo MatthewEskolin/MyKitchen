@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyKitchen.WarmUp", "MyKitchen.WarmUp\MyKitchen.WarmUp.csproj", "{99568B60-18F9-48CF-9346-9139EBE8D861}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{CE8C2234-7244-488E-BD3B-5D430773A968}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE8C2234-7244-488E-BD3B-5D430773A968}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE8C2234-7244-488E-BD3B-5D430773A968}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99568B60-18F9-48CF-9346-9139EBE8D861}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99568B60-18F9-48CF-9346-9139EBE8D861}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99568B60-18F9-48CF-9346-9139EBE8D861}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99568B60-18F9-48CF-9346-9139EBE8D861}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
