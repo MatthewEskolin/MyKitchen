@@ -9,6 +9,10 @@ var warmup = new AppWarmUp();
 warmup.RunWarmup();
 
 
-
-
+//TEST API
+for (int i = 0; i < 50; i++)
+{
+    var wm = new AppWarmUp();
+    warmup.RunWarmup();
+}
 

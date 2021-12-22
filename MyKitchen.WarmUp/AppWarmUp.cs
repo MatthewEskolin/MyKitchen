@@ -43,6 +43,17 @@ namespace MyKitchen.WarmUp
             driver.Navigate().GoToUrl("https://whatshouldieat.azurewebsites.net/");
             Console.WriteLine(driver.Title);
 
+
+            //Login
+
+            //Calendar
+
+            //Dashboard
+
+            //Meals
+
+
+
             // Always call `quit` to ensure your session cleans up properly and you're not charged for unused time
             driver.Quit();
 
