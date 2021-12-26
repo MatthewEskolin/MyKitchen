@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MyKitchen.Tests.Shared\MyKitchen.Tests.Shared.csproj" />
     <ProjectReference Include="..\MyKitchen\MyKitchen.csproj" />
   </ItemGroup>
 

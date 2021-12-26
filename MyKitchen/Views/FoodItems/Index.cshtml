@@ -20,24 +20,24 @@
 
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().FoodItemName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().FoodDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().Cost)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().FoodGroupID)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().FoodItemName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().FoodDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().Cost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().FoodGroupID)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.FoodItems) {
+    @foreach (var item in Model.FoodItems) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.FoodItemName)
@@ -57,6 +57,11 @@
                 <a asp-action="Delete" asp-route-id="@item.FoodItemID">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
+
+@section Selenium
+{
+    <div class="e2e-page-fooditems-action-index"></div>
+}

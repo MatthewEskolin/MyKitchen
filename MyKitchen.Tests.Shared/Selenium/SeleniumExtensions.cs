@@ -32,6 +32,28 @@ namespace MyKitchen.Tests.Shared.Selenium
             return driver.FindElement(by);
         }
 
+        public static IWebElement FindByClassName(this RemoteWebDriver driver, string className)
+        {
+            var by = By.ClassName(className);
+
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
+            wait.IgnoreExceptionTypes(typeof(NoSuchElementException));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(by));
+            return driver.FindElement(by);
+        }
+
+        public static IWebElement FindByClassName(this WebDriver driver, string className)
+        {
+            var by = By.ClassName(className);
+
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
+            wait.IgnoreExceptionTypes(typeof(NoSuchElementException));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(by));
+            return driver.FindElement(by);
+        }
+
+
+
 
     }
 }

@@ -1,18 +1,25 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MyKitchen.WarmUp;
 
-Console.WriteLine("Hello, World!");
-
-
-//We would like to use SeleniumRemoteWebDriver to make a call to Browserless.IO
-var warmup = new AppWarmUp();
-warmup.RunWarmup();
-
-
-//TEST API
-for (int i = 0; i < 50; i++)
+using IHost host = Host.CreateDefaultBuilder(args)
+    .ConfigureAppConfiguration((hostingContext, configuration) =>
 {
-    var wm = new AppWarmUp();
-    warmup.RunWarmup();
-}
+    configuration.Sources.Clear();
+    IHostEnvironment env = hostingContext.HostingEnvironment;
+    configuration.AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
+    configuration.Build();
 
+
+}).Build();
+
+var config = host.Services.GetRequiredService<IConfiguration>();
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+// Application code should start here.
+Console.WriteLine("App Started");
+
+var warmup = new AppWarmUp(config);
+warmup.RunWarmup();
+await host.RunAsync();

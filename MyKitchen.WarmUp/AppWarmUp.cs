@@ -1,18 +1,39 @@
-﻿using OpenQA.Selenium.Chrome;
+﻿using Microsoft.Extensions.Configuration;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
+using MyKitchen.Tests.Shared.Selenium;
+using OpenQA.Selenium;
 
 namespace MyKitchen.WarmUp
 {
     public class AppWarmUp:IDisposable
     {
-        protected RemoteWebDriver driver { get; set; }
+        private WebDriver Driver { get; set; }
+        private IConfiguration Config { get; set; }
 
-        public AppWarmUp()
+        private string BaseUrl { get; set; }
+
+        protected bool IsDevelopment { get; set; }
+
+        public AppWarmUp(IConfiguration configuration)
         {
+          this.Config = configuration;
+          var isDevelopment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") == "Development";
 
+          //Initialize Driver. If development use chrome non-headless. If Prod, use browserless.io because we can't run chrome in azure app service.
+          if (isDevelopment)
+          {
+              Driver = new ChromeDriver();
+          }
+          else
+          {
+              InitBrowserlessIoChrome();
+          }
+
+          this.BaseUrl = Config.GetValue<string>("Url");
         }
 
-        public void RunWarmup()
+        private void InitBrowserlessIoChrome()
         {
             var options = new ChromeOptions();
             // Set launch args similar to puppeteer's for best performance
@@ -35,39 +56,62 @@ namespace MyKitchen.WarmUp
 
             // Note we set our token here, with `true` as a third arg
             options.AddAdditionalOption("browserless:token", "1b502a4c-b4f0-41ac-8020-4e85f98b90a2");
+            Driver = new RemoteWebDriver(new Uri("https://chrome.browserless.io/webdriver"), options.ToCapabilities() );
 
-            driver = new RemoteWebDriver(
-                new Uri("https://chrome.browserless.io/webdriver"), options.ToCapabilities()
-            );
+            Console.WriteLine($"Driver Started - Session ID = {Driver.SessionId}");
 
-            driver.Navigate().GoToUrl("https://whatshouldieat.azurewebsites.net/");
-            Console.WriteLine(driver.Title);
+        }
 
 
-            //Login
+        public void RunWarmup()
+        {
 
-            //Calendar
+            Driver.Navigate().GoToUrl($"{BaseUrl}");
 
-            //Dashboard
-
-            //Meals
-
+            Console.WriteLine(Driver.Title);
 
 
-            // Always call `quit` to ensure your session cleans up properly and you're not charged for unused time
-            driver.Quit();
+            //Login //
 
-            //api token = 1b502a4c-b4f0-41ac-8020-4e85f98b90a2
+            //enter email
+            var email = Driver.FindByClassName("e2e-login-email");
+            email.SendKeys("mjeskolin@gmail.com");
 
+            //enter password
+            var password = Driver.FindByClassName("e2e-login-password");
+            password.SendKeys("123123");
 
-            //Create Selenium WebDriver Instance
-            //RemoteWebDriver driver = new ChromeDriver();
+            //click login button
+            var loginButton = Driver.FindByClassName("e2e-login-button");
+            loginButton.Click();
 
+            //wait for login to complete - look for e2e-login-complete class
+            var loginComplete = Driver.FindByClassName("e2e-login-complete");
+            Console.WriteLine(Driver.Title);
+
+            GoToPage("/Calendar", "e2e-page-mealbuilder-action-index");
+            GoToPage("/Dashboard", "e2e-razorpage-dashboard");
+            GoToPage("/MealBuilder", "e2e-page-mealbuilder-action-index");
+            GoToPage("/FoodItems", "e2e-page-fooditems-action-index");
+
+            Driver.Quit();
 
         }
 
         public void Dispose()
         {
         }
+
+        public  void GoToPage(string relurl)
+        {
+            Driver?.Navigate().GoToUrl($"{this.BaseUrl}/{relurl}");
+        }
+
+        public void GoToPage(string relurl, string className)
+        {
+            GoToPage(relurl);
+            Driver?.FindByClassName("e2e-page-mealbuilder-action-index");
+        }
+
     }
 }
