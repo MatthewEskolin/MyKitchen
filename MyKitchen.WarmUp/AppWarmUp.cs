@@ -100,6 +100,7 @@ namespace MyKitchen.WarmUp
 
         public void Dispose()
         {
+            Driver.Quit();
         }
 
         public  void GoToPage(string relurl)
