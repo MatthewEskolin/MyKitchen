@@ -23,7 +23,13 @@ namespace MyKitchen.WarmUp
           //Initialize Driver. If development use chrome non-headless. If Prod, use browserless.io because we can't run chrome in azure app service.
           if (isDevelopment)
           {
-              Driver = new ChromeDriver();
+              ChromeOptions options = new ChromeOptions();
+
+              //fewer log messages than default 3=Fatal Only, 0 = Info
+              options.AddArgument("--log-level=1");
+
+              Driver = new ChromeDriver(options);
+
           }
           else
           {
@@ -56,6 +62,10 @@ namespace MyKitchen.WarmUp
 
             // Note we set our token here, with `true` as a third arg
             options.AddAdditionalOption("browserless:token", "1b502a4c-b4f0-41ac-8020-4e85f98b90a2");
+
+            //50 second timeout to keep costs low.
+            options.AddAdditionalOption("browserless:timeout", "50000");
+
             Driver = new RemoteWebDriver(new Uri("https://chrome.browserless.io/webdriver"), options.ToCapabilities() );
 
             Console.WriteLine($"Driver Started - Session ID = {Driver.SessionId}");
@@ -89,10 +99,10 @@ namespace MyKitchen.WarmUp
             var loginComplete = Driver.FindByClassName("e2e-login-complete");
             Console.WriteLine(Driver.Title);
 
-            GoToPage("/Calendar", "e2e-page-mealbuilder-action-index");
+            GoToPage("/Calendar/Index", "e2e-page-calendar-action-index");
             GoToPage("/Dashboard", "e2e-razorpage-dashboard");
-            GoToPage("/MealBuilder", "e2e-page-mealbuilder-action-index");
-            GoToPage("/FoodItems", "e2e-page-fooditems-action-index");
+            GoToPage("/MealBuilder/Index", "e2e-page-mealbuilder-action-index");
+            GoToPage("/FoodItems/Index", "e2e-page-fooditems-action-index");
 
             Driver.Quit();
 
@@ -105,13 +115,13 @@ namespace MyKitchen.WarmUp
 
         public  void GoToPage(string relurl)
         {
-            Driver?.Navigate().GoToUrl($"{this.BaseUrl}/{relurl}");
+            Driver?.Navigate().GoToUrl($"{this.BaseUrl}{relurl}");
         }
 
         public void GoToPage(string relurl, string className)
         {
             GoToPage(relurl);
-            Driver?.FindByClassName("e2e-page-mealbuilder-action-index");
+            Driver?.FindByClassName(className);
         }
 
     }

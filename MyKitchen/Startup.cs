@@ -208,6 +208,10 @@ app.Use((context, next) =>
                 );
 
                 endPoints.MapControllerRoute(
+                    name: "index_default",
+                    pattern: "{controller}/{action=Index}");
+
+                endPoints.MapControllerRoute(
                     name:"foodItemDetail",
                     pattern:"{controller=FoodItems}/{action=Details}/{id}"
                 );
