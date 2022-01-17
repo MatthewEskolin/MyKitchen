@@ -15,12 +15,7 @@ namespace MyKitchen.KeepAlive
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
             log.LogInformation( "We still need to add the actual logic. right now this function app is not doing anything. This message should be logged very 5 minutes.");
 
-
-
             //try to make call to app-warmup task
-
-
-
         }
     }
 
