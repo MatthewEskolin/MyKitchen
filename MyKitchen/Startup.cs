@@ -14,6 +14,7 @@ using MyKitchen.Models;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System;
+using Exceptionless;
 using MyKitchen.Models.BL;
 using MyKitchen.Services;
 
@@ -132,11 +133,15 @@ namespace MyKitchen
                 options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
 
-
+            //Add Service for be.exceptionless.io to capture unhandled exceptions and log messages
+            //TODO move exceptionless key to keyvault?
+            services.AddExceptionless("DH6fPIxLEPFttMehKPEf90er0p3w7Xw4fIA9wzNE");
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseExceptionless();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

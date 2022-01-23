@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,9 @@ namespace MyKitchen.Controllers
             {
                 configuration = config;
             }
+
+
+
 
         public async Task<IActionResult> EmailTest()
         {
@@ -41,6 +45,13 @@ namespace MyKitchen.Controllers
 
             return View();
         }
+
+        public IActionResult GenerateException()
+        {
+            throw new InvalidOperationException("Hello World Exceptionless");
+
+        }
+
 
         public IActionResult Index1()
         {
