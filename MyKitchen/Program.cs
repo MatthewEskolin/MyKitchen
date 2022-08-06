@@ -16,12 +16,12 @@ namespace MyKitchen
     {
         public static void Main(string[] args)
         {
-            var host = CreateWebHostBuilder(args).Build();
+            IWebHost host = CreateWebHostBuilder(args).Build();
 
-            using (var scope = host.Services.CreateScope())
+            using (IServiceScope scope = host.Services.CreateScope())
             {
 
-                var services = scope.ServiceProvider;
+                IServiceProvider services = scope.ServiceProvider;
 
                 try
                 {
