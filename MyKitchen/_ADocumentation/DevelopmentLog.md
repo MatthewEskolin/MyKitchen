@@ -22,7 +22,9 @@ work on improving logging by using System Diagnostic Tracing
 ## 12/13/2019
 -work to make an ajax call when getting the next perdiction, so we don't have to reload the entire page.
 
-
+## 08/06/2022
+To  improve our understanding of telemetry tools as well as our development workflow, I would like to see on startup logs show up about what envrionment
+I'm in, what database I'm using, what .NET envrionment (prod, development) I'm using, etc
 
 
 

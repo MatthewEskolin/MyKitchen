@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Security.Principal;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureKeyVault;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +18,11 @@ namespace MyKitchen
     {
         public static void Main(string[] args)
         {
+            //var sqlConnection = new SqlConnection(@"Server =localhost\SQLEXPRESS; Initial Catalog = MyKitchen; Trusted_Connection = true; ");
+            //sqlConnection.Open();
+            //sqlConnection.Close();
+
+
             IWebHost host = CreateWebHostBuilder(args).Build();
 
             using (IServiceScope scope = host.Services.CreateScope())
@@ -36,11 +43,14 @@ namespace MyKitchen
                 }
             }
 
+
+
             host.Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+           
+                   WebHost.CreateDefaultBuilder(args)
 
                    .ConfigureAppConfiguration((context,config) =>
                     {
@@ -79,6 +89,8 @@ namespace MyKitchen
                     {
                         x.ClearProviders();
                         x.AddApplicationInsights();
+                        x.AddDebug();
+                        x.AddConsole();
 
                     })
                     // .UseUrls("https://mykitchen.azurewebsites.com")

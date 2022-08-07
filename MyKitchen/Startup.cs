@@ -83,9 +83,10 @@ namespace MyKitchen
             );
 
             //Application Insights
-            services.AddApplicationInsightsTelemetry();
+            //services.AddApplicationInsightsTelemetry();
             //add control key so we can view live metrics in the Azure Portal in Application Insights <
-            services.ConfigureTelemetryModule<QuickPulseTelemetryModule>((module, o) => module.AuthenticationApiKey = "3ef7lulsu5s5tei6c1q258kg1glf7psn2scldi5u");
+            ////disabled 8.7.2022  services.ConfigureTelemetryModule<QuickPulseTelemetryModule>((module, o) => module.AuthenticationApiKey = "3ef7lulsu5s5tei6c1q258kg1glf7psn2scldi5u");
+
 
 
             // var mvc = services.AddMvc()
