@@ -88,7 +88,7 @@ namespace MyKitchen
                     UseStartup<Startup>().ConfigureLogging(x =>
                     {
                         x.ClearProviders();
-                        x.AddApplicationInsights();
+                        //x.AddApplicationInsights();
                         x.AddDebug();
                         x.AddConsole();
 

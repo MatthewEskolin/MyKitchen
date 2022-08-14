@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using MyKitchen.Data
-@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet _javaScriptSnippet
+@* inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet _javaScriptSnippet *@
 @inject SignInManager<ApplicationUser> _signInManager
 
 <!DOCTYPE html>
@@ -22,7 +22,7 @@
               integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="/>
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
-    @Html.Raw(_javaScriptSnippet.FullScript)
+    @* @Html.Raw(_javaScriptSnippet.FullScript)  *@
 </head>
 <body>
 <header>

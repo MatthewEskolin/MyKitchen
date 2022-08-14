@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyKitchen.Controllers;
 using MyKitchen.Models;
-using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
+//using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System;
 using Exceptionless;
