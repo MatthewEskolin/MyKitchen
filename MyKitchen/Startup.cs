@@ -106,7 +106,8 @@ namespace MyKitchen
                 rp.AddRazorRuntimeCompilation();
             }
                 
-            services.AddControllersWithViews().AddNewtonsoftJson();
+            services.AddControllersWithViews()
+                    .AddNewtonsoftJson();
             
             services.AddSession(options =>
             {
@@ -118,10 +119,7 @@ namespace MyKitchen
 
             services.Configure<MvcOptions>(options => { options.EnableEndpointRouting = false; });
 
-            //TODO re-enable service worker once we figure out how to have this not interfere with debugging..
-            //services.AddProgressiveWebApp();
 
-            //Add Authentication
             services.AddAuthentication()
             .AddFacebook(options =>
             {

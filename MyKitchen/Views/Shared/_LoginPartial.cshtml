@@ -7,7 +7,16 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+        
+@*        <a asp-page="/PageRouteTest/MealDetails" asp-page-handler="ShowDetails" asp-route-mealId="23">TEST</a>
+        <a asp-page="" asp-page-handler="EditMealName" asp-route-mealId="@Model.Meal.MealID">        
+*@
+        <a asp-page="/Settings">
+            <img class="editImage" src="~/images/Windows_Settings_app_icon.png" style="width: 80px;" asp-append-version="true"/>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity.Name!</a>
     </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("DisplayCurrentPrediction", "WhatShouldIEat", new { area = "" })">

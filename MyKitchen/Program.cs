@@ -35,6 +35,8 @@ namespace MyKitchen
             var addr = Host.ServerFeatures.Get<IServerAddressesFeature>();
             var addrString = addr.Addresses.Aggregate((current, next) => current + "," + next);
 
+
+            Logger.LogTrace($"ASPNETCORE_ENVIRONMENT={Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}");
             Logger.LogInformation($"Program Running at {addrString}");
             
 
@@ -76,12 +78,18 @@ namespace MyKitchen
                     {
                         var builtConfig = config.Build();
 
+
                         var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+                  
+
                         var isDevelopment = environment == Environments.Development;
 
                         if(!isDevelopment)
                         {
                             //Todo update to use AzureDefaultCredential
+                            //Todo why not use a developent keyvault?
+
                             var azureServicetokenProvider = new AzureServiceTokenProvider();
                             var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServicetokenProvider.KeyVaultTokenCallback));
 

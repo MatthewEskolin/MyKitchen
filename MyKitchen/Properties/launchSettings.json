@@ -1,6 +1,8 @@
 {
   "profiles": {
     "MyKitchen": {
+      "launchBrowser": true,
+      "launchUrl": "https://localhost:5001/",
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

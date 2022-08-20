@@ -26,7 +26,10 @@ work on improving logging by using System Diagnostic Tracing
 To  improve our understanding of telemetry tools as well as our development workflow, I would like to see on startup logs show up about what envrionment
 I'm in, what database I'm using, what .NET envrionment (prod, development) I'm using, etc
 
+## 08/20/2022
+Try to get app running locally
 
-
+## Add a settings gear where we can change the image next to our meals /  need to get a deployment pipeline confident and working!
+next continue to work on settings and getting the  red box to appear around the selected meal do it  now.
 
 
