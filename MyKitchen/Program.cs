@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Security.Principal;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureKeyVault;
@@ -16,40 +20,56 @@ namespace MyKitchen
 {
     public class Program
     {
+        private static IWebHost Host { get; set; }
+        private static ILogger Logger { get; set; }
+
+
         public static void Main(string[] args)
         {
-            //var sqlConnection = new SqlConnection(@"Server =localhost\SQLEXPRESS; Initial Catalog = MyKitchen; Trusted_Connection = true; ");
-            //sqlConnection.Open();
-            //sqlConnection.Close();
 
+            //I would really like to cleanup my logs, as well as transition to the new .NET 6 WebApplicationBuilder
+            Host = CreateWebHostBuilder(args).Build();
+            SeedDataBase();
+            InitLogger();
 
-            IWebHost host = CreateWebHostBuilder(args).Build();
+            var addr = Host.ServerFeatures.Get<IServerAddressesFeature>();
+            var addrString = addr.Addresses.Aggregate((current, next) => current + "," + next);
 
-            using (IServiceScope scope = host.Services.CreateScope())
-            {
+            Logger.LogInformation($"Program Running at {addrString}");
+            
 
-                IServiceProvider services = scope.ServiceProvider;
-
-                try
-                {
-                    var context = services.GetRequiredService<MyKitchen.Data.ApplicationDbContext>();
-                    DbInitializer.Initialize(context);
-
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occured while seeding the database.");
-                }
-            }
-
-
-
-            host.Run();
+            Host.Run();
         }
 
+        private static void SeedDataBase()
+        {
+            using IServiceScope scope = Host.Services.CreateScope();
+            IServiceProvider services = scope.ServiceProvider;
+
+            try
+            {
+                var context = services.GetRequiredService<MyKitchen.Data.ApplicationDbContext>();
+                DbInitializer.Initialize(context);
+
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An error occured while seeding the database.");
+            }
+        }
+
+        public static void InitLogger()
+        {
+            using IServiceScope scope = Host.Services.CreateScope();
+            IServiceProvider services = scope.ServiceProvider;
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            Logger = logger;
+        }
+        
+
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-           
+         
                    WebHost.CreateDefaultBuilder(args)
 
                    .ConfigureAppConfiguration((context,config) =>
@@ -61,6 +81,7 @@ namespace MyKitchen
 
                         if(!isDevelopment)
                         {
+                            //Todo update to use AzureDefaultCredential
                             var azureServicetokenProvider = new AzureServiceTokenProvider();
                             var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServicetokenProvider.KeyVaultTokenCallback));
 
