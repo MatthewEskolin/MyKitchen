@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace MyKitchen.Pages
 {
-    public class MealImageDisplay
+
+    public class MealImageDisplay//:MJESelectList
     {
         public string ImagePath { get; set; }
         public bool IsSelected { get; set; }
@@ -12,23 +14,44 @@ namespace MyKitchen.Pages
 
     public class SettingsModel : PageModel
     {
-        public List<string> Images { get; set; } = new();
+
+        [BindProperty]
+        public string  Image { get; set; }
+        public List<MealImageDisplay> Images { get; set; } = new();
+
+        public string SystemMessage { get; set; }
 
         public SettingsModel()
         {
-            //Load List of Icons
-            var image1 = @"healing food.png";
-            var image2 = @"plate-with-orange-pattern.svg";
-
-            Images.Add(image1);
-            Images.Add(image2);
 
         }
 
         public void OnGet()
         {
-            //Show as radio button list
+            //Initialize Settings Page
+            LoadFilesFromDb();
 
+            Image = Images.FirstOrDefault(x => x.IsSelected)?.ImagePath;
+
+
+        }
+
+        public void OnPostSaveSettings()
+        {
+
+            SystemMessage = "Settings Saved";
+            LoadFilesFromDb();
+        }
+
+        public void LoadFilesFromDb()
+        {
+            var image1 = @"healing food.png";
+            var image2 = @"plate-with-orange-pattern.svg";
+
+            Images.Add(new MealImageDisplay(){ImagePath = image1});
+            Images.Add(new MealImageDisplay(){ImagePath = image2});
+
+            Images[0].IsSelected = true;
 
         }
     }

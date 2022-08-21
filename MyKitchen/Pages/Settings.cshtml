@@ -25,24 +25,31 @@
     }
 </style>
 
+<div class="alert-warning">@Model.SystemMessage</div>
+
 <div><h3>Settings</h3></div>
 
 <!-- Show Available Meal Icons Here-->
 
 <div class="optionContainer">
     
-    Meal Image (showsin meal list):
-
+    Meal Image (shows in meal list):
+    <form method="post">
     @foreach (var image  in Model.Images)
     {
         <text>&nbsp;&nbsp;</text>
 
                 <label style="margin-right: 20px;">
-                    <input type="radio" name="image" value="@image">
-                    <img src="/images/@image" style="width: 80px;" alt="Option 1">
+                    <input type="radio" asp-for="Image" value="@image.ImagePath"  />
+                    <img src="/images/@image.ImagePath" style="width: 80px;" alt="Option 1">
                 </label>
     }
 
+    <div>
+        <input class="btn btn-primary" asp-page-handler="SaveSettings" Value="Save" type="submit"/>
+    </div>
+
+    </form>
 </div>
 
 

@@ -32,4 +32,5 @@ Try to get app running locally
 ## Add a settings gear where we can change the image next to our meals /  need to get a deployment pipeline confident and working!
 next continue to work on settings and getting the  red box to appear around the selected meal do it  now.
 
-
+## 08/21/2022
+Can we get the settings to save appropriately to the DB? - need to keep working on this!
