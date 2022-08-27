@@ -26,9 +26,10 @@ namespace MyKitchen
 
         public static void Main(string[] args)
         {
-
+            CreateWebHostBuilder(args).Build();
             //I would really like to cleanup my logs, as well as transition to the new .NET 6 WebApplicationBuilder
-            Host = CreateWebHostBuilder(args).Build();
+          //  Host = CreateWebHostBuilder(args);//.Build();
+
             SeedDataBase();
             InitLogger();
 
