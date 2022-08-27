@@ -6,6 +6,9 @@ namespace MyKitchen.Data
     public class ApplicationUser : IdentityUser
     {
         public string FavoriteFood { get; set; }
+
+
+
     }
 
 }

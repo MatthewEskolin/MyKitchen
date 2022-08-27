@@ -33,11 +33,21 @@ namespace MyKitchen
             InitLogger();
 
             var addr = Host.ServerFeatures.Get<IServerAddressesFeature>();
-            var addrString = addr.Addresses.Aggregate((current, next) => current + "," + next);
+
+            if (addr != null && addr.Addresses.Count > 0)
+            {
+                var addrString = addr.Addresses.Aggregate((current, next) => current + "," + next);
+                Logger.LogInformation($"Program Running at {addrString}");
+            }
+            else
+            {
+                Logger.LogInformation("Do not know how to determine host url...");
+            }
+
 
 
             Logger.LogTrace($"ASPNETCORE_ENVIRONMENT={Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}");
-            Logger.LogInformation($"Program Running at {addrString}");
+
             
 
             Host.Run();

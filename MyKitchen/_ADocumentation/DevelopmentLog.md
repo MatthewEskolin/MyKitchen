@@ -34,3 +34,8 @@ next continue to work on settings and getting the  red box to appear around the 
 
 ## 08/21/2022
 Can we get the settings to save appropriately to the DB? - need to keep working on this!
+
+#08/22/2022 - whenw e return get the db  connection working for the user settings please!
+
+#08/27/2022 - fix prod
+
