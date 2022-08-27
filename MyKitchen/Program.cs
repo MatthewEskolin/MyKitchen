@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
-using System.Security.Principal;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureKeyVault;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,61 +21,24 @@ namespace MyKitchen
 
 
         public static void Main(string[] args)
-        {
-            CreateWebHostBuilder(args).Build();
-            //I would really like to cleanup my logs, as well as transition to the new .NET 6 WebApplicationBuilder
-          //  Host = CreateWebHostBuilder(args);//.Build();
+        { 
+            //TODO Refactor Startup to use new .NET 6 WebApplicationBuilder
+            //TODO Cleanup Logs
+            
+            Host = CreateWebHostBuilder(args).Build();
 
             SeedDataBase();
+
             InitLogger();
 
-            var addr = Host.ServerFeatures.Get<IServerAddressesFeature>();
-
-            if (addr != null && addr.Addresses.Count > 0)
-            {
-                var addrString = addr.Addresses.Aggregate((current, next) => current + "," + next);
-                Logger.LogInformation($"Program Running at {addrString}");
-            }
-            else
-            {
-                Logger.LogInformation("Do not know how to determine host url...");
-            }
-
-
+            LogRunningUrls();
 
             Logger.LogTrace($"ASPNETCORE_ENVIRONMENT={Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}");
-
-            
+            Logger.LogTrace("Starting  Host...");
 
             Host.Run();
         }
 
-        private static void SeedDataBase()
-        {
-            using IServiceScope scope = Host.Services.CreateScope();
-            IServiceProvider services = scope.ServiceProvider;
-
-            try
-            {
-                var context = services.GetRequiredService<MyKitchen.Data.ApplicationDbContext>();
-                DbInitializer.Initialize(context);
-
-            }
-            catch (Exception ex)
-            {
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "An error occured while seeding the database.");
-            }
-        }
-
-        public static void InitLogger()
-        {
-            using IServiceScope scope = Host.Services.CreateScope();
-            IServiceProvider services = scope.ServiceProvider;
-            var logger = services.GetRequiredService<ILogger<Program>>();
-            Logger = logger;
-        }
-        
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
          
@@ -135,5 +94,52 @@ namespace MyKitchen
                     })
                     // .UseUrls("https://mykitchen.azurewebsites.com")
             ;
+
+        private static void LogRunningUrls()
+        {
+            var addr = Host.ServerFeatures.Get<IServerAddressesFeature>();
+
+            if (addr != null && addr.Addresses.Count > 0)
+            {
+                var addrString = addr.Addresses.Aggregate((current, next) => current + "," + next);
+                Logger.LogInformation($"Program Running at {addrString}");
+            }
+            else
+            {
+                Logger.LogInformation("Do not know how to determine host url...");
+            }
+
+        }
+
+        private static void SeedDataBase()
+        {
+            using IServiceScope scope = Host.Services.CreateScope();
+            IServiceProvider services = scope.ServiceProvider;
+
+            try
+            {
+                var context = services.GetRequiredService<MyKitchen.Data.ApplicationDbContext>();
+                DbInitializer.Initialize(context);
+
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An error occured while seeding the database.");
+            }
+        }
+
+        public static void InitLogger()
+        {
+            using IServiceScope scope = Host.Services.CreateScope();
+            IServiceProvider services = scope.ServiceProvider;
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            Logger = logger;
+        }
+
+
+
+
+
     }
 }

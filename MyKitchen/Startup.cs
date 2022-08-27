@@ -1,5 +1,4 @@
-﻿using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,13 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyKitchen.Controllers;
 using MyKitchen.Models;
-//using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System;
-using System.Collections.Generic;
 using Exceptionless;
-using Microsoft.AspNetCore.Hosting.Server;
-using Microsoft.AspNetCore.Hosting.Server.Features;
 using MyKitchen.Models.BL;
 using MyKitchen.Services;
 
@@ -27,7 +22,7 @@ namespace MyKitchen
     public class Startup
     {
         private readonly IWebHostEnvironment _env;
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration,IWebHostEnvironment environment)
         {
@@ -42,7 +37,7 @@ namespace MyKitchen
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
+                options.CheckConsentNeeded = _ => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
@@ -55,12 +50,17 @@ namespace MyKitchen
             });
 
             services.AddTransient<IMyKitchenDataContext>(provider => provider.GetService<ApplicationDbContext>());
+
             services.AddTransient<IFoodItemRepository, EFFoodItemRepository>();
+
             services.AddTransient<IFoodReccomendationService, FoodRecommendationService>();
+
             services.AddTransient<IMealRepository, EfMealRepository>();
+
             services.AddTransient<IEmailSender,EmailSender>();
 
             services.AddTransient<UserInfo>();
+
             services.AddTransient<CalendarService>();
 
             services.AddTransient<MyKitchen.Services.IMealImageService,MyKitchen.Services.AzureBlobMealImageService>();
@@ -85,13 +85,11 @@ namespace MyKitchen
                 }
             );
 
+
             //Application Insights
             //services.AddApplicationInsightsTelemetry();
             //add control key so we can view live metrics in the Azure Portal in Application Insights <
             ////disabled 8.7.2022  services.ConfigureTelemetryModule<QuickPulseTelemetryModule>((module, o) => module.AuthenticationApiKey = "3ef7lulsu5s5tei6c1q258kg1glf7psn2scldi5u");
-
-
-
             // var mvc = services.AddMvc()
             //         .AddFluentValidation()
             //         .AddNewtonsoftJson();
@@ -140,10 +138,6 @@ namespace MyKitchen
             services.AddExceptionless("DH6fPIxLEPFttMehKPEf90er0p3w7Xw4fIA9wzNE");
 
           }
-
-
-
-
 
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
