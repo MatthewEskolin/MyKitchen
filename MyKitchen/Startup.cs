@@ -73,6 +73,8 @@ namespace MyKitchen
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddTransient<IMyKitchenDataService, MyKitchenDataService>();
+
             services.Configure<IdentityOptions>(options =>
                 {
                     options.Password.RequireDigit = false;

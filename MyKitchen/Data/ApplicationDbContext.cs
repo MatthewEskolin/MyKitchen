@@ -56,6 +56,13 @@ namespace MyKitchen.Data
             builder.Entity<vwsUserMealsAndFoodItem>().HasNoKey();
 
         }
+
+
+        //Add other Database Methods here
+        
+
+
+
     }
 
 }

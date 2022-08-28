@@ -1,14 +1,68 @@
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using MyKitchen;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using MyKitchen.Data;
+using MyKitchen.Models.BL;
 
-namespace MyKitchen.Services {
+namespace MyKitchen.Services
+{
 
-    public class EmailSender : IEmailSender
+    public interface IMyKitchenDataService
+    {
+        Task UpdateSettingsAsync(string settings);
+
+    }
+
+    public class MyKitchenDataService : IMyKitchenDataService
+    {
+        public ApplicationDbContext _ctx { get; set; }
+
+        private ILogger _Logger;
+
+        private MyKitchen.Models.BL.UserInfo  _userInfo;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public MyKitchenDataService(ILogger<MyKitchenDataService> logger, ApplicationDbContext ctx, UserInfo userInfo, UserManager<ApplicationUser> userManager)
+        {
+            _Logger = logger;
+            _ctx = ctx;
+            _userInfo = userInfo;
+            _userManager = userManager;
+        }
+
+        public async Task UpdateSettingsAsync(string settings)
+        {
+            var user = await _userManager.FindByIdAsync(_userInfo.User.Id);
+
+            user.MealImage = settings;
+            user.FavoriteFood = "food test";
+
+            user.PhoneNumber = "222";
+
+            IdentityResult result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                //Success
+            }
+            else
+            {
+                _Logger.LogError($"Failed to Update User {result.Errors}");
+            }
+
+
+
+        }
+    }
+
+
+public class EmailSender : IEmailSender
     {
             
         public IConfiguration Configuration { get; }

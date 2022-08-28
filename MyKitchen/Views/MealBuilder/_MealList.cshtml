@@ -1,5 +1,5 @@
 ﻿@model MealBuilderIndexViewModel
-
+@inject MyKitchen.Models.BL.UserInfo AppUser
 
 <form method="GET" asp-action="Index">
 <div page-model="@Model.MealListPagingInfo" page-action="Index" page-classes-enabled="true"
@@ -22,7 +22,7 @@
     {
         <tr>
             <td>
-                <img src="/images/plate-with-orange-pattern.svg" style="width: 70px;"/>
+                <img src="@GetMealImage()" style="width: 70px;"/>
             </td>
             <td>
                 @item.MealName
@@ -61,6 +61,20 @@
   public string GetFavoritesClass(bool isFavorite) 
     {
         return isFavorite ? "bg-fav" : "bg-nofav";
+    }
+
+    public string GetMealImage()
+    {
+        var defaultImage = @"/images/plate-with-orange-pattern.svg";
+
+        if (!String.IsNullOrEmpty(AppUser.User.MealImage))
+        {
+            var customImage = $"/images/{this.AppUser.User.MealImage}";
+            return customImage;
+        }
+
+        return defaultImage;
+
     }
 
 

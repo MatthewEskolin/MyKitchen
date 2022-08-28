@@ -7,6 +7,7 @@ namespace MyKitchen.Data
     {
         public string FavoriteFood { get; set; }
 
+        public string MealImage { get; set; } 
 
 
     }
