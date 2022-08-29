@@ -39,3 +39,9 @@ Can we get the settings to save appropriately to the DB? - need to keep working 
 
 #08/27/2022 - fix prod
 
+#08/28/2022 - create a shopping list witht he ability to export to amazon list  api
+#the purpose of this is to make finding what we need at the grocery store more efficient.
+
+
+
+
