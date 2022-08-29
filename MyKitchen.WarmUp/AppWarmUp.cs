@@ -8,8 +8,8 @@ namespace MyKitchen.WarmUp
 {
     public class AppWarmUp:IDisposable
     {
-        private WebDriver Driver { get; set; }
-        private IConfiguration Config { get; set; }
+        private WebDriver Driver { get; set; } = null!;
+        private IConfiguration Config { get; set; } = null!;
 
         private string BaseUrl { get; set; }
 
@@ -37,6 +37,12 @@ namespace MyKitchen.WarmUp
           }
 
           this.BaseUrl = Config.GetValue<string>("Url");
+        }
+
+        public AppWarmUp()
+        {
+            InitBrowserlessIoChrome();
+            this.BaseUrl =  "https://whatshouldieat.azurewebsites.net";
         }
 
         private void InitBrowserlessIoChrome()
