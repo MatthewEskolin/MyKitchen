@@ -14,16 +14,19 @@ using MyKitchen.Models.BL;
 namespace MyKitchen.Services
 {
 
+
+    ///
+    ///
     public interface IMyKitchenDataService
     {
+        //Settings
         Task UpdateSettingsAsync(string settings);
-
     }
+
 
     public class MyKitchenDataService : IMyKitchenDataService
     {
         public ApplicationDbContext _ctx { get; set; }
-
         private ILogger _Logger;
 
         private MyKitchen.Models.BL.UserInfo  _userInfo;
