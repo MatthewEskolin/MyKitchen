@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/MyKitchen/bin/Debug/net5.0/MyKitchen.dll",
+            "program": "${workspaceFolder}/MyKitchen/bin/Debug/net6.0/MyKitchen.dll",
             "args": [],
             "cwd": "${workspaceFolder}/MyKitchen",
             "stopAtEntry": false,
