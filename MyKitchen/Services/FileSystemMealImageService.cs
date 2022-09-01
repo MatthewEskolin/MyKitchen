@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using MyKitchen.Controllers;
 using MyKitchen.Data;
 
 namespace MyKitchen.Services
@@ -13,9 +14,9 @@ namespace MyKitchen.Services
     {
 
         IWebHostEnvironment _env;
-        ApplicationDbContext _ctx;
+        IMyKitchenDataContext _ctx;
 
-        public FileSystemMealImageService(ApplicationDbContext ctx, IWebHostEnvironment env)
+        public FileSystemMealImageService(IMyKitchenDataContext ctx, IWebHostEnvironment env)
         {
             _env = env;
             _ctx = ctx;

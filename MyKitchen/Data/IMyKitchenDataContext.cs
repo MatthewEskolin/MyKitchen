@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyKitchen.Data;
@@ -14,11 +15,11 @@ namespace MyKitchen.Controllers
 
         DbSet<MealFoodItems> MealFoodItems { get; set; }
         DbSet<FoodItem> FoodItems { get; set; }
-
         DbSet<Events> Events { get; set; }
-
+        DbSet<FileUpload> FileUploads {get; set;}
         DbSet<vwsMealsAndFoodItems> vwsMealsAndFoodItems { get; set; }
         DbSet<FoodGroup> FoodGroups { get; set; }
+        DbSet<vwsUserMealsAndFoodItem> vwsUserMealsAndFoodItems { get; set; }
 
         int SaveChanges();
 

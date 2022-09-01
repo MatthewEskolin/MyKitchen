@@ -27,9 +27,9 @@ namespace MyKitchen.Data
         public DbSet<FileUpload> FileUploads {get; set;}
 
 
-
         public DbSet<UserFoodItem> UserFoodItems {get; set;}
 
+        public DbSet<GroceryListItem> GroceryListItems {get; set;}
 
         public DbSet<Events> Events { get; set; }
 
