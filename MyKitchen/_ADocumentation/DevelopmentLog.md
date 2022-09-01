@@ -35,12 +35,12 @@ next continue to work on settings and getting the  red box to appear around the 
 ## 08/21/2022
 Can we get the settings to save appropriately to the DB? - need to keep working on this!
 
-#08/22/2022 - whenw e return get the db  connection working for the user settings please!
+# 08/22/2022 - whenw e return get the db  connection working for the user settings please!
 
-#08/27/2022 - fix prod
+# 08/27/2022 - fix prod
 
-#08/28/2022 - create a shopping list witht he ability to export to amazon list  api
-#the purpose of this is to make finding what we need at the grocery store more efficient.
+# 09/01/2022 
+- create a shopping list witht he ability to export to amazon list  api the purpose of this is to make finding what we need at the grocery store more efficient.
 
 
 

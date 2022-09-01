@@ -35,6 +35,7 @@ Can the app encourage users to start cooking? what about food meditations? can w
 * Consider adding the ability to add ingredients to food items
 * consider adding the ability to create meals from multiple food items
 
-
+## 9/01/2022
+* Natural Foods - Vegetables - Less added Sugar
 
 
