@@ -17,7 +17,6 @@ namespace MyKitchen.Data
 
         public ApplicationDbContext(){}
 
-
         public DbSet<Meal> Meals { get; set; }
 
         public DbSet<LastCookedMeal> LastCookedMeal { get; set; }

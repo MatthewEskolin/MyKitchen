@@ -11,6 +11,7 @@ namespace MyApp.Namespace
 
     public class GroceryListModel : PageModel
     {
+        public string NewGroceryItem {get; set;}
         public void OnGet()
         {
 
@@ -27,7 +28,7 @@ namespace MyApp.Namespace
     public class GroceryListService : IGroceryListService {
 
 
-        public GroceryListService()
+        public GroceryListService(){}
 
         public async Task AddItemAsync(){
             return ;
