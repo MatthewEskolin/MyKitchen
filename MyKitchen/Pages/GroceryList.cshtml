@@ -5,10 +5,14 @@
 
 
 <!-- Input for adding directly to grocery list -->
-<input asp-for="NewGroceryItem"> 
+<input asp-for="NewItem"> 
 
 <!-- Grid with List for adding items to grocery list -->
-
-<div>
-
-</div>
+@foreach(var item in @Model.GroceryList)
+{
+    <div>
+        <div>@item</div>
+        <div class="dvDone"></div>
+        <div class="dvDelete"></div>
+    </div>
+}
