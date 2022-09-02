@@ -6,7 +6,7 @@ namespace MyKitchen.Models.BL
 {
     public class UserInfo
     {
-        //the current user can be pulled from the HttpContext -> this should happen once per request which is handles by IsTransient in the constructor.
+            //the current user can be pulled from the HttpContext -> this should happen once per request which is handles by IsTransient in the constructor.
             public UserManager<ApplicationUser> manager {get; set;}
 
             public ApplicationUser User {get; set;}

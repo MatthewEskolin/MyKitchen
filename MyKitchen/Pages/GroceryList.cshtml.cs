@@ -1,44 +1,28 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace MyApp.Namespace
+namespace MyKitchen.Pages
 {
-
-    public class GroceryListItem{
-        public string Item {get; set;}
-    }
-
     public class GroceryListModel : PageModel
     {
-        public List<GroceryListItem> GroceryList {get; set;}
+        public List<GroceryListItem> GroceryList {get; set;} = new();
         public string NewItem {get; set;}
-        public void OnGet()
+
+        IGroceryListService GroceryListSvc;
+
+        public GroceryListModel(IGroceryListService glService)
         {
-
+            GroceryListSvc = glService;
         }
 
+        public async Task OnGetAsync()
+        {
+            //Load Users Grocery List
+            GroceryList = await GroceryListSvc.GetGroceryListForUserAsync();
+            return;
 
-
-    }
-
-    public interface IGroceryListService {
-
-    }
-
-    public class GroceryListService : IGroceryListService {
-
-
-        public GroceryListService(){}
-
-        public async Task AddItemAsync(){
-
-            await Task.CompletedTask;
-
-            return ;
         }
-
 
     }
 }
