@@ -15,6 +15,7 @@ using System;
 using Exceptionless;
 using MyKitchen.Models.BL;
 using MyKitchen.Services;
+using MyKitchen.Pages;
 
 namespace MyKitchen
 {
@@ -56,10 +57,11 @@ namespace MyKitchen
             services.AddTransient<IFoodReccomendationService, FoodRecommendationService>();
 
             services.AddTransient<IMealRepository, EfMealRepository>();
+            services.AddTransient<IGroceryListService, GroceryListService>();
 
             services.AddTransient<IEmailSender,EmailSender>();
 
-            services.AddTransient<UserInfo>();
+            services.AddScoped<UserInfo>();
 
             services.AddTransient<CalendarService>();
 

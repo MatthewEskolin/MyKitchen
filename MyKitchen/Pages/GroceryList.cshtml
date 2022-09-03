@@ -4,16 +4,20 @@
 }
 
 
+<div class="alert alert-info">@Model.SystemMessage</div>
+
 <!-- Input for adding directly to grocery list -->
 <input asp-for="NewItem"> 
 
 <!-- Grid with List for adding items to grocery list -->
+<form asp-page-handler="AddNewItem">
 @foreach(var item in @Model.GroceryList)
 {
     <div>
-        <div>@item</div>
-        <div class="dvDone"></div>
-        <div class="dvDelete"></div>
+        <div>@item.Item</div>
+        <div class="dvDone"><input value="Done" asp-page-handler="Submit" asp-route-id="@item.GroceryListItemID" class="btn-primary" type="submit"></div>
+        <div class="dvDelete"><input value="Delete" asp-page-handler="Delete" asp-route-id="@item.GroceryListItemID" class="btn-secondary" type="submit"></div>
     </div>
 }
+</form>
 

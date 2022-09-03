@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MyKitchen.Data;
+using MyKitchen.Models.BL;
 
 namespace MyKitchen.Pages
 {
     public class GroceryListService : IGroceryListService {
 
-        private ApplicationUser User { get;  set; }
+        private UserInfo User { get;  set; }
 
-        public GroceryListService(ApplicationUser user){
+        public GroceryListService(UserInfo user){
 
             this.User = user;
         }
@@ -23,9 +24,9 @@ namespace MyKitchen.Pages
         public async Task<List<GroceryListItem>> GetGroceryListForUserAsync()
         {
             var rtn = new List<GroceryListItem>(){
-                new GroceryListItem(){ Item = "Green Olives"  },
-                new GroceryListItem(){ Item = "Radish"  },
-                new GroceryListItem(){ Item = "Beets"  }
+                new GroceryListItem(){ Item = "Green Olives" ,GroceryListItemID = -1 },
+                new GroceryListItem(){ Item = "Radish"  , GroceryListItemID = -2},
+                new GroceryListItem(){ Item = "Beets",GroceryListItemID = -3  }
            };
 
            await Task.CompletedTask;
