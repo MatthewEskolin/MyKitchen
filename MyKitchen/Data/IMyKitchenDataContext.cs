@@ -20,11 +20,11 @@ namespace MyKitchen.Controllers
         DbSet<vwsMealsAndFoodItems> vwsMealsAndFoodItems { get; set; }
         DbSet<FoodGroup> FoodGroups { get; set; }
         DbSet<vwsUserMealsAndFoodItem> vwsUserMealsAndFoodItems { get; set; }
+        public DbSet<GroceryListItem> GroceryListItems {get; set;}
 
         int SaveChanges();
 
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
-
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
 
     }

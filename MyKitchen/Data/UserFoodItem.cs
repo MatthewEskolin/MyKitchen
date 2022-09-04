@@ -22,12 +22,5 @@ namespace MyKitchen.Data
 
     }
 
-    public class GroceryListItem
-    {
-        [Key]
-        public int GroceryListItemID {get; set;}
 
-        [MaxLength(200)]
-        public string Name {get; set;}
-    }
 }

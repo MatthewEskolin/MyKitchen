@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using MyKitchen.Data;
 
 namespace MyKitchen.Pages
 {
@@ -10,6 +12,8 @@ namespace MyKitchen.Pages
     }
     public class GroceryListModel :BaseModel 
     {
+        //TODO should list be stored in session so we don't have to keep loading it twice on every post?
+
         public List<GroceryListItem> GroceryList {get; set;} = new();
         public string NewItem {get; set;}
 
@@ -32,7 +36,12 @@ namespace MyKitchen.Pages
 
         public async Task OnPostSubmit(int id)
         {
-            await Task.CompletedTask;
+            await LoadGroceryList();
+            var item = this.GroceryList.Where(x => x.GroceryListItemID == id).FirstOrDefault();
+
+            await GroceryListSvc.ShopItem(item);
+
+            await LoadGroceryList();
             SystemMessage = $"Submited ID {id}";
 
         }
