@@ -13,7 +13,7 @@ namespace MyKitchen.Pages
         private UserInfo User { get;  set; }
         protected IMyKitchenDataContext Context {get; set;}
 
-        public List<GroceryListItem> GroceryItems {get; set;} = new();
+        public List<GroceryListItem> GroceryList { get; set; }
 
         public GroceryListService(UserInfo user, IMyKitchenDataContext ctx){
 
@@ -27,13 +27,20 @@ namespace MyKitchen.Pages
             await Context.SaveChangesAsync();
 
             //Update Service List with change
-            this.GroceryItems = Context.GroceryListItems.ToList();;
+            this.GroceryList = Context.GroceryListItems.ToList();;
 
             return;
         }
 
-        public async Task<List<GroceryListItem>> GetGroceryListForUserAsync()
+
+
+        public  async Task<List<GroceryListItem>> LoadGroceryList()
         {
+            //If list needs to  be refreshed from DB, load from DB - else use Context
+            if (this.GroceryList == null) { }
+
+
+            Context.GroceryListItems.Where(x => x.UserID == this.User.User.Id);
             //Loads from Db
 
             var rtn = new List<GroceryListItem>()
@@ -43,7 +50,7 @@ namespace MyKitchen.Pages
                 new GroceryListItem(){ Item = "Beets",GroceryListItemID = -3  }
             };
 
-            this.GroceryItems = rtn;
+            this.GroceryList = rtn;
 
             await Task.CompletedTask;
 
@@ -57,16 +64,21 @@ namespace MyKitchen.Pages
 
             var id = item.GroceryListItemID;
             MyKitchen.Data.GroceryListItem gItem = await Context.GroceryListItems.Where(x => x.GroceryListItemID == id).FirstOrDefaultAsync();
-            gItem.Shopped = true;
+            if (gItem != null) gItem.Shopped = true;
             await Context.SaveChangesAsync();
 
-            this.GroceryItems = Context.GroceryListItems.ToList();
+            this.GroceryList = Context.GroceryListItems.ToList();
 
         }
 
         public async Task DeleteItem(GroceryListItem item)
         {
-            await Task.CompletedTask;
+            var id = item.GroceryListItemID;
+            MyKitchen.Data.GroceryListItem gItem = await Context.GroceryListItems.Where(x => x.GroceryListItemID == id).FirstOrDefaultAsync();
+            if (gItem != null) Context.GroceryListItems.Remove(gItem);
+            await Context.SaveChangesAsync();
+
+            this.GroceryList = Context.GroceryListItems.ToList();
         }
     }
 }

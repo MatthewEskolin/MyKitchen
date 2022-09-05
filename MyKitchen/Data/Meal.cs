@@ -15,6 +15,7 @@ namespace MyKitchen.Data
         public ApplicationUser AppUser {get; set;}
 
         [Display(Name="Meal Name")]
+        [MaxLength(100)]
         public string MealName { get; set; }
 
         public bool IsFavorite {get; set;}

@@ -14,7 +14,11 @@ namespace MyKitchen.Pages
     {
         //TODO should list be stored in session so we don't have to keep loading it twice on every post?
 
-        public List<GroceryListItem> GroceryList {get; set;} = new();
+        /// <summary>
+        /// should mirror list in Service
+        /// </summary>
+        public List<GroceryListItem> GroceryList {get; set;}
+
         public string NewItem {get; set;}
 
 
@@ -24,24 +28,27 @@ namespace MyKitchen.Pages
         public GroceryListModel(IGroceryListService glService)
         {
             GroceryListSvc = glService;
+
+
+            //Initialize Service
+            LoadGroceryList().GetAwaiter().GetResult();
+
+            //can we keep this updated?
+            this.GroceryList = GroceryListSvc.GroceryList;
         }
 
         public async Task OnGetAsync()
         {
-            //Load Users Grocery List
-            await LoadGroceryList();
-            return;
-
         }
 
         public async Task OnPostSubmit(int id)
         {
-            await LoadGroceryList();
-            var item = this.GroceryList.Where(x => x.GroceryListItemID == id).FirstOrDefault();
+
+            var item = this.GroceryList.FirstOrDefault(x => x.GroceryListItemID == id);
 
             await GroceryListSvc.ShopItem(item);
 
-            await LoadGroceryList();
+
             SystemMessage = $"Submited ID {id}";
 
         }
@@ -54,9 +61,11 @@ namespace MyKitchen.Pages
             await LoadGroceryList();
         }
 
-        private async Task LoadGroceryList()
+        private async Task<List<GroceryListItem>> LoadGroceryList()
         {
-            GroceryList = await GroceryListSvc.GetGroceryListForUserAsync();
+
+            GroceryList = await this.GroceryListSvc.LoadGroceryList();
+            return GroceryList;
 
         }
     }

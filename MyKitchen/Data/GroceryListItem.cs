@@ -7,11 +7,13 @@ namespace MyKitchen.Data
 
         [Key]
         public int GroceryListItemID {get; set;}
+
+        [MaxLength(100)]
         public string Item {get; set;}
         public bool Shopped {get; set;}
 
         [ForeignKey("User")]
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         public ApplicationUser User {get; set;}
 
     }

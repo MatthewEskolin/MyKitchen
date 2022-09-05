@@ -57,7 +57,7 @@ namespace MyKitchen
             services.AddTransient<IFoodReccomendationService, FoodRecommendationService>();
 
             services.AddTransient<IMealRepository, EfMealRepository>();
-            services.AddTransient<IGroceryListService, GroceryListService>();
+            services.AddScoped<IGroceryListService, GroceryListService>();
 
             services.AddTransient<IEmailSender,EmailSender>();
 

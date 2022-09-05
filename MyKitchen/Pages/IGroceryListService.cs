@@ -6,7 +6,8 @@ namespace MyKitchen.Pages
 {
     public interface IGroceryListService {
 
-        public Task<List<GroceryListItem>> GetGroceryListForUserAsync();
+        public List<GroceryListItem> GroceryList { get; set; }
+        public Task<List<GroceryListItem>> LoadGroceryList();
         public Task ShopItem(GroceryListItem item);
         public Task DeleteItem(GroceryListItem item);
     }
