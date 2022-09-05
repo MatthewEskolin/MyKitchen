@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyKitchen.Data;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MyKitchen.Pages
 {
@@ -19,7 +21,7 @@ namespace MyKitchen.Pages
         /// </summary>
         public List<GroceryListItem> GroceryList {get; set;}
 
-        public string NewItem {get; set;}
+        //[Required(ErrorMessage = "Required")]
 
 
 
@@ -35,6 +37,24 @@ namespace MyKitchen.Pages
 
             //can we keep this updated?
             this.GroceryList = GroceryListSvc.GroceryList;
+
+            
+        }
+
+        public async Task OnPostAddNewItem([Required(ErrorMessage = "Enter Item Name")] string itemName)
+        {
+            //TODO validate for empty item
+
+            var newItem = new GroceryListItem()
+            {
+                Item = itemName
+            };
+
+            await GroceryListSvc.AddItem(newItem);
+
+            await LoadGroceryList();
+
+
         }
 
         public async Task OnGetAsync()
@@ -55,7 +75,7 @@ namespace MyKitchen.Pages
 
         public async Task OnPostDelete(int id)
         {
-            await Task.CompletedTask;
+            await GroceryListSvc.DeleteItem(id);
 
             SystemMessage = $"Deleted ID {id}";
             await LoadGroceryList();

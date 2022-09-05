@@ -4,11 +4,14 @@ using MyKitchen.Data;
 
 namespace MyKitchen.Pages
 {
-    public interface IGroceryListService {
+    public interface IGroceryListService
+    {
 
         public List<GroceryListItem> GroceryList { get; set; }
         public Task<List<GroceryListItem>> LoadGroceryList();
         public Task ShopItem(GroceryListItem item);
-        public Task DeleteItem(GroceryListItem item);
+        public Task DeleteItem(int id);
+        public Task AddItem(GroceryListItem item);
     }
+
 }
