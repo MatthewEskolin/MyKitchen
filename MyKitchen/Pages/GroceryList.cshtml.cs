@@ -59,6 +59,7 @@ namespace MyKitchen.Pages
 
         public async Task OnGetAsync()
         {
+            await Task.CompletedTask;
         }
 
         public async Task OnPostSubmit(int id)
