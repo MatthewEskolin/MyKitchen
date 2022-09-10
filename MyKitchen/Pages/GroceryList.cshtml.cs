@@ -43,6 +43,10 @@ namespace MyKitchen.Pages
 
         public async Task OnPostAddNewItem([Required(ErrorMessage = "Enter Item Name")] string itemName)
         {
+            if (!ModelState.IsValid)
+            {
+                SystemMessage = "Model Errors";
+            }
             //TODO validate for empty item
 
             var newItem = new GroceryListItem()
