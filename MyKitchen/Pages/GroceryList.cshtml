@@ -2,28 +2,28 @@
 @model MyKitchen.Pages.GroceryListModel
 @{
 }
-
-
-<div class="alert alert-info">@Model.SystemMessage</div>
-<form method="post">
-
-    <!-- Input for adding directly to grocery list -->
-    <input type="text" name="itemName"> <input value="Add" asp-page-handler="AddNewItem" type="submit" class="btn-primary btn"/>
-
-    <hr />
-    <!-- Grid with List for adding items to grocery list -->
-
-    @foreach (var item in @Model.GroceryList)
+<h2 style="color:#34568B;">Grocery List</h1>
+    @if (!String.IsNullOrEmpty(@Model.SystemMessage))
     {
-        <div>
-            <div>@item.Item</div>
-            <div>
-
-                <div style="display: inline;" class="dvDone"><input value="Done" asp-page-handler="Submit" asp-route-id="@item.GroceryListItemID" class="btn-primary" type="submit"></div>
-                <div style="display: inline;" class="dvDelete"><input value="Delete" asp-page-handler="Delete" asp-route-id="@item.GroceryListItemID" class="btn-secondary" type="submit"></div>
-            </div>
-
-        </div>
+        <div class="alert alert-info">@Model.SystemMessage</div>
     }
-</form>
+    <form method="post">
 
+        <!-- Input for adding directly to grocery list -->
+        <input type="text" class="col-4" name="itemName" style="height:40px;"> <input value="Add" asp-page-handler="AddNewItem"
+            type="submit" class="btn-primary btn" />
+
+        <hr />
+        <!-- Grid with List for adding items to grocery list -->
+
+        <div class="container">
+            @foreach (var item in @Model.GroceryList)
+            {
+                <div class="row">
+                    <div class="col-10">@item.Item</div>
+                    <div class="col-1 dvDone"> <input value="Done" asp-page-handler="Submit" asp-route-id="@item.GroceryListItemID" class="btn-primary" type="submit"> </div>
+                    <div class="col-1 dvDelete"><input value="Delete" asp-page-handler="Delete" asp-route-id="@item.GroceryListItemID" class="btn-secondary" type="submit"> </div>
+                </div>
+            }
+        </div>
+    </form>
