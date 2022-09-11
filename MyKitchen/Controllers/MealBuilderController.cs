@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,11 +29,8 @@ namespace MyKitchen.Controllers
         private readonly IFoodItemRepository foodItemRepository;
 
         private readonly IMealRepository mealRepository;
-
-        private ApplicationDbContext context;
         private UserInfo CurrentUser { get; set; }
-
-        public string DefaultSortProperty {get; set;} = "MealName";
+        private string DefaultSortProperty {get; set;} = "MealName";
 
         IWebHostEnvironment _env {get; set;}
         public IConfiguration _configuration { get; private set; }
@@ -42,12 +40,10 @@ namespace MyKitchen.Controllers
                                      IWebHostEnvironment env, 
                                      IFoodItemRepository foodItemRepo, 
                                      IMealRepository mealRepo, 
-                                     ApplicationDbContext ctx, 
                                      IConfiguration configuration,
                                      UserInfo user)
         {
             CurrentUser = user;
-            context = ctx;
             foodItemRepository = foodItemRepo;
             mealRepository = mealRepo;
             _env = env;
@@ -120,7 +116,7 @@ namespace MyKitchen.Controllers
 
         public IActionResult Create()
         {
-            var mealFactory = new MyKitchen.Data.MealFactory(context);
+            var mealFactory = new MyKitchen.Data.MealFactory();
             Meal meal = mealFactory.NewMeal();
 
             var viewModel = new MealBuilderCreateViewModel()
@@ -237,6 +233,7 @@ namespace MyKitchen.Controllers
 
         public async Task<IActionResult> GetImage([FromQuery]string imageName)
         {
+
                 BlobServiceClient blobServiceClient = new(_configuration.GetConnectionString("saMyKitchen"));
                 BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient("fileuploads");
                 BlobClient blobClient = blobContainerClient.GetBlobClient(imageName);
