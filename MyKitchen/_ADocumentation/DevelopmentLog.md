@@ -43,7 +43,11 @@ Can we get the settings to save appropriately to the DB? - need to keep working 
 - create a shopping list witht he ability to export to amazon list  api the purpose of this is to make finding what we need at the grocery store more efficient.
 
 # 09/09/2022
-- revisit prod and clean up some of our data?
+revisit prod and clean up some of our data? create badges on github?
+
+# 09/10/2022
+It is overwhelming seeing so many foods in our list - leads to decision fatigue - we need a queue where the list will be narrowed down to what 
+we actually want to eat in the coming days!
 
 
 

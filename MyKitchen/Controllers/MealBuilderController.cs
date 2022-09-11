@@ -26,9 +26,10 @@ namespace MyKitchen.Controllers
     public class MealBuilderController : Controller
     {
         private readonly IFoodItemRepository foodItemRepository;
-        private readonly IMealRepository mealRepository;
-        private ApplicationDbContext context;
 
+        private readonly IMealRepository mealRepository;
+
+        private ApplicationDbContext context;
         private UserInfo CurrentUser { get; set; }
 
         public string DefaultSortProperty {get; set;} = "MealName";

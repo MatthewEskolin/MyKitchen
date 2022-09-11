@@ -87,9 +87,10 @@ namespace MyKitchen
                    .UseStartup<Startup>().ConfigureLogging(x =>
                     {
                         x.ClearProviders();
-                        //x.AddApplicationInsights();
                         x.AddDebug();
                         x.AddConsole();
+                        x.AddEventLog();
+
 
                     })
                     // .UseUrls("https://mykitchen.azurewebsites.com")

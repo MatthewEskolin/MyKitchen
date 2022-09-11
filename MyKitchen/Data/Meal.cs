@@ -20,6 +20,8 @@ namespace MyKitchen.Data
 
         public bool IsFavorite {get; set;}
 
+        public bool IsQueued { get; set; }
+
         public string Recipe {get; set;}
         public ICollection<MealFoodItems> MealFoodItems { get; set; }
 
