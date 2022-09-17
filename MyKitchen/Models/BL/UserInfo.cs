@@ -7,7 +7,7 @@ namespace MyKitchen.Models.BL
     public class UserInfo
     {
             //the current user can be pulled from the HttpContext -> this should happen once per request which is handles by IsScoped at service registration
-            public UserManager<ApplicationUser> manager {get; set;}
+            private UserManager<ApplicationUser> manager {get; set;}
 
             public ApplicationUser User {get; set;}
 
@@ -23,4 +23,6 @@ namespace MyKitchen.Models.BL
 
         }
     }
+
+
 }

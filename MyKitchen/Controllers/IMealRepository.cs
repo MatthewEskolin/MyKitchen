@@ -19,14 +19,14 @@ namespace MyKitchen.Controllers
         Task SaveChangesAsync();
 
         int SaveChanges();
-        void Update(Meal foodItem);
+        void Update(Meal meal);
         void Remove(Meal foodItem);
         Meal GetRandomItem();
         IEnumerable<Meal> GetMeals();
         int Count();
         // IQueryable<Meal> GetMealsForUser(ApplicationUser user);
 
-        (IEnumerable<Meal> meals, PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user,string mealName,string orderBy);
+        (IEnumerable<Meal> meals, PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user,string mealNameSearch,string orderBy);
 
         IEnumerable<Meal> GetFavoriteMealsForUser(ApplicationUser user);
 

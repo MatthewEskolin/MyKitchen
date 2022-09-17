@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 using Azure.Storage.Blobs;
@@ -26,51 +23,68 @@ namespace MyKitchen.Controllers
     [Authorize]
     public class MealBuilderController : Controller
     {
-        private readonly IFoodItemRepository foodItemRepository;
+        private readonly IFoodItemRepository _foodItemRepository;
 
-        private readonly IMealRepository mealRepository;
-        private UserInfo CurrentUser { get; set; }
+        private readonly IMealRepository _mealRepository;
+
+        private readonly IMealImageService _imageService;
+
+        private readonly IUserInfo _user;
+
+        private readonly IHttpContextAccessor _contextAccessor;
+
+        private readonly UserInfo CurrentUser;
+
+        //private UserInfo CurrentUser { get; set; }
+
         private string DefaultSortProperty {get; set;} = "MealName";
 
-        IWebHostEnvironment _env {get; set;}
         public IConfiguration _configuration { get; private set; }
-        IMealImageService ImageService {get; set;}
+
 
         public MealBuilderController(IMealImageService imageService,
-                                     IWebHostEnvironment env, 
                                      IFoodItemRepository foodItemRepo, 
                                      IMealRepository mealRepo, 
                                      IConfiguration configuration,
-                                     UserInfo user)
+                                     IUserInfo user,
+                                     IHttpContextAccessor httpContextAccessor,
+                                     UserInfo user_old)
         {
-            CurrentUser = user;
-            foodItemRepository = foodItemRepo;
-            mealRepository = mealRepo;
-            _env = env;
+            //CurrentUser = user;
+            _foodItemRepository = foodItemRepo;
+            _mealRepository = mealRepo;
             _configuration = configuration;
-            ImageService = imageService;
+            _imageService = imageService;
+            _contextAccessor = httpContextAccessor;
+
+            _user = user;
+            CurrentUser =  user_old;
 
         }
 
         public int PageSize = 15;
 
+
         [HttpGet]
         public IActionResult Index(MealBuilderIndexViewModel model)
         {
-            HttpContext.Session.SetInt32("editMealName", 0); 
+            //Reset Session State
+            _contextAccessor.HttpContext?.Session.SetInt32("editMealName", 0); 
 
             string orderBy = this.GetMealsSort(model.NewSort,model.CurrentSort,model.ToggleSort);
 
-            var result = mealRepository.GetMealsForUser(model.CurrentPage, PageSize, this.CurrentUser.User,string.Empty,orderBy);
+            var result = _mealRepository.GetMealsForUser(model.CurrentPage, PageSize, CurrentUser.User,string.Empty,orderBy);
             
             var viewModel = new MealBuilderIndexViewModel()
             {
+
                 Meals = result.meals,
                 MealListPagingInfo = result.pagingInfo
             };
 
             //trim the _desc to get the lookup for sort order
             var lookup = Utilities.GridUtilities.Trim_desc(orderBy);
+
             viewModel.SortState[lookup] = orderBy;
 
             return View("Index",viewModel);
@@ -102,7 +116,7 @@ namespace MyKitchen.Controllers
 
         public IActionResult SearchMeals([FromForm]string searchText)
         {
-            var result = mealRepository.GetMealsForUser(1,PageSize,this.CurrentUser.User,searchText,DefaultSortProperty);
+            var result = _mealRepository.GetMealsForUser(1,PageSize,this.CurrentUser.User,searchText,DefaultSortProperty);
             
             var viewModel = new MealBuilderIndexViewModel()
             {
@@ -121,7 +135,7 @@ namespace MyKitchen.Controllers
 
             var viewModel = new MealBuilderCreateViewModel()
             {
-                FoodItems = foodItemRepository.GetFoodItems().ToList()
+                FoodItems = _foodItemRepository.GetFoodItems().ToList()
             };
 
             return View(viewModel);
@@ -137,7 +151,7 @@ namespace MyKitchen.Controllers
 
             if (ModelState.IsValid)
             {
-                await mealRepository.Add(meal);
+                await _mealRepository.Add(meal);
             }
 
             // return RedirectToAction("Details");
@@ -150,13 +164,13 @@ namespace MyKitchen.Controllers
             //possible to prevent user from passing their own arguments.
 
             var PageSize = 10;
-            var foodItems = foodItemRepository.GetFoodItemsForUser(this.CurrentUser.User);
+            var foodItems = _foodItemRepository.GetFoodItemsForUser(this.CurrentUser.User);
 
-            var meal = mealRepository.Find(mealId);
+            var meal = _mealRepository.Find(mealId);
             var viewModel = new MealBuilderSelectFoodItemsViewModel()
             {
                 FoodItems = foodItems.OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
-                PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = foodItemRepository.GetFoodItemsForUser(CurrentUser.User).Count() },
+                PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = _foodItemRepository.GetFoodItemsForUser(CurrentUser.User).Count() },
                 TheMeal = meal
 
             };
@@ -166,8 +180,8 @@ namespace MyKitchen.Controllers
 
         public IActionResult AddToMeal(int currentPage, int mealId, int id)
         {
-            var meal = mealRepository.Find(mealId);
-            FoodItem foodItem = foodItemRepository.Find(id).GetAwaiter().GetResult();
+            var meal = _mealRepository.Find(mealId);
+            FoodItem foodItem = _foodItemRepository.Find(id).GetAwaiter().GetResult();
 
             if (meal.ContainsFoodItem(foodItem.FoodItemID))
             {
@@ -176,7 +190,7 @@ namespace MyKitchen.Controllers
             else
             {
                 meal.AddFoodItemToMeal(foodItem.FoodItemID);
-                mealRepository.SaveChanges();
+                _mealRepository.SaveChanges();
                 ViewBag.Message = $"{foodItem.FoodItemName} Added to Meal.";
             }
 
@@ -184,8 +198,8 @@ namespace MyKitchen.Controllers
 
             var viewModel = new MealBuilderSelectFoodItemsViewModel()
             {
-                FoodItems = foodItemRepository.GetFoodItemsForUser(CurrentUser.User).OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
-                PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = foodItemRepository.GetFoodItems().Count() },
+                FoodItems = _foodItemRepository.GetFoodItemsForUser(CurrentUser.User).OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
+                PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = _foodItemRepository.GetFoodItems().Count() },
                 TheMeal = meal
 
             };
@@ -196,9 +210,9 @@ namespace MyKitchen.Controllers
         [Route("MealBuilder/MealDetails/{mealID}")]
         public IActionResult MealDetails(int mealID, [FromQuery]bool editMode)
         {
-            var meal = mealRepository.Find(mealID);
+            var meal = _mealRepository.Find(mealID);
             
-            var images = ImageService.LoadImages(mealID);
+            var images = _imageService.LoadImages(mealID);
 
             var viewModel = new MealBuilderMealDetails_VM();
 
@@ -211,11 +225,52 @@ namespace MyKitchen.Controllers
 
         }
 
+        public async Task<IActionResult> AddToQueue(int mealID)
+        {
+            var meal = _mealRepository.Find(mealID);
+
+            //security check, users can only  modify their own meals
+            if (meal.AppUser.Id != _user.Id)
+            {
+                //set system error message
+                return RedirectToAction("Index");
+            }
+
+            meal.IsQueued = true;
+            _mealRepository.Update(meal);
+            await _mealRepository.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+
+        }
+
+
+
+        public async Task<IActionResult> RemoveFromQueue(int mealID)
+        {
+            var meal = _mealRepository.Find(mealID);
+
+            //security check, users can only  modify their own meals
+            if (meal.AppUser.Id != _user.Id)
+            {
+                //set system error message
+                return RedirectToAction("Index");
+            }
+
+            meal.IsQueued = true;
+            _mealRepository.Update(meal);
+            await _mealRepository.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+
+        }
+
+
         public IActionResult DeleteMeal(int mealid)
         {
-            var meal = mealRepository.Find(mealid);
-            mealRepository.Remove(meal);
-            mealRepository.SaveChanges();
+            var meal = _mealRepository.Find(mealid);
+            _mealRepository.Remove(meal);
+            _mealRepository.SaveChanges();
 
             //possible to get previous page number here?
             var pageNum = 1;
@@ -224,8 +279,8 @@ namespace MyKitchen.Controllers
             var viewModel1 = new MealBuilderIndexViewModel()
             {
 
-                Meals = mealRepository.GetMealsForUser(pageNum, PageSize, this.CurrentUser.User,String.Empty,DefaultSortProperty).meals,
-                MealListPagingInfo = new PagingInfo() { CurrentPage = 1, ItemsPerPage = 15, TotalItems = mealRepository.Count() }
+                Meals = _mealRepository.GetMealsForUser(pageNum, PageSize, this.CurrentUser.User,String.Empty,DefaultSortProperty).meals,
+                MealListPagingInfo = new PagingInfo() { CurrentPage = 1, ItemsPerPage = 15, TotalItems = _mealRepository.Count() }
             };
 
             return View("Index", viewModel1);
@@ -254,9 +309,9 @@ namespace MyKitchen.Controllers
         {
             //TODO how to update using repository method, don't know...
 
-            var mealRec = mealRepository.Find(meal.MealID);
+            var mealRec = _mealRepository.Find(meal.MealID);
             mealRec.Recipe = meal.Recipe;
-            mealRepository.SaveChanges();
+            _mealRepository.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -272,9 +327,9 @@ namespace MyKitchen.Controllers
        public IActionResult SaveMealName([FromForm]MealBuilderMealDetails_VM pmeal){
 
             //Update the Meal Name in the DB, and stay on the Details Page.
-            var meal = mealRepository.Find(pmeal.Meal.MealID);
+            var meal = _mealRepository.Find(pmeal.Meal.MealID);
             meal.MealName = pmeal.Meal.MealName;
-            mealRepository.SaveChanges();
+            _mealRepository.SaveChanges();
 
             var viewModel = new MealBuilderMealDetails_VM();
 
@@ -287,7 +342,7 @@ namespace MyKitchen.Controllers
 
        public IActionResult Cancel_SaveMealName([FromForm]MealBuilderMealDetails_VM pmeal){
 
-            var meal = mealRepository.Find(pmeal.Meal.MealID);
+            var meal = _mealRepository.Find(pmeal.Meal.MealID);
 
 
             var viewModel = new MealBuilderMealDetails_VM
@@ -310,9 +365,9 @@ namespace MyKitchen.Controllers
         public IActionResult SetFavorite(int mealId, int isFav){
 
             //update meal to the appropriate value
-            var meal = mealRepository.Find(mealId);
+            var meal = _mealRepository.Find(mealId);
             meal.IsFavorite = CUtilities.IntToBool(isFav);
-            mealRepository.Update(meal);
+            _mealRepository.Update(meal);
 
             return new EmptyResult();
             
@@ -322,9 +377,9 @@ namespace MyKitchen.Controllers
         public IActionResult DeleteFoodItemFromMeal([FromForm]int MealID,[FromQuery]int mealFoodItemId)
         {
             // get Meal Entity and remove the food Item from the meal.
-            var meal = mealRepository.Find(MealID);
+            var meal = _mealRepository.Find(MealID);
             meal.RemoveFoodItemFromMeal(mealFoodItemId);
-            mealRepository.SaveChanges();
+            _mealRepository.SaveChanges();
 
             return RedirectToAction("MealDetails", new {mealId = MealID});
         }
@@ -335,10 +390,10 @@ namespace MyKitchen.Controllers
         {
             foreach (IFormFile source in files)
             {
-                this.ImageService.SaveImage(source,MealID);
+                this._imageService.SaveImage(source,MealID);
             }
 
-            var images = this.ImageService.LoadImages(MealID);
+            var images = this._imageService.LoadImages(MealID);
 
             return PartialView("_ImageList",images);
         }

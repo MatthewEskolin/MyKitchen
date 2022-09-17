@@ -30,26 +30,43 @@
 <div><h3>Settings</h3></div>
 
 <!-- Show Available Meal Icons Here-->
+<form method="post">
 
-<div class="optionContainer">
-    
-    Meal Image (shows in meal list):
-    <form method="post">
-    @foreach (var image  in Model.Images)
-    {
-        <text>&nbsp;&nbsp;</text>
 
-                <label style="margin-right: 20px;">
-                    <input type="radio" asp-for="Image" value="@image"  />
-                    <img src="/images/@image" style="width: 80px;" alt="Option 1">
-                </label>
-    }
+<div class="container">
+    <div class="row">
+        
+        Meal Image (shows in meal list):
 
-    <div>
-        <input class="btn btn-primary" asp-page-handler="SaveSettings" Value="Save" type="submit"/>
+        @foreach (var image  in Model.Images)
+        {
+            <text>&nbsp;&nbsp;</text>
+
+            <label style="margin-right: 20px;">
+                <input type="radio" asp-for="Image" value="@image"/>
+                <img src="/images/@image" style="width: 80px;" alt="Option 1">
+            </label>
+        }
+
+        <div>
+            <input class="btn btn-primary" asp-page-handler="SaveSettings" Value="Save" type="submit"/>
+        </div>       
+
+    </div>
+    <div class="row">
+        Number of Meals Per Page        
+        <select asp-for="MealsPerPage" asp-items="@(Model.MealsPerPageOptionsSelectList)"></select>
+        
+        
+
     </div>
 
-    </form>
+
+
+
 </div>
+
+
+</form>
 
 

@@ -1,4 +1,5 @@
-﻿@model MealBuilderIndexViewModel
+﻿@using MyKitchen.Data
+@model MealBuilderIndexViewModel
 @inject MyKitchen.Models.BL.UserInfo AppUser
 
 <form method="GET" asp-action="Index">
@@ -16,6 +17,7 @@
     <th scope="col">Satiety Profile</th>
     <th scope="col">Edit</th>
     <th scope="col"><a asp-action="Index" asp-route-toggleSort="true" asp-route-newSort='@Model.SortState["IsFavorite"]'>Favorite</a></th>
+    <th scope="col"></th> <!-- commands: queue;-->
     </thead>
     <tbody>
     @foreach(var item in Model.Meals)
@@ -25,12 +27,13 @@
                 <img src="@GetMealImage()" style="width: 70px;"/>
             </td>
             <td>
-                @item.MealName
+                @item.MealName @getQueuedDisplay(item)
+                
             </td>
             <td>
                 @foreach(var foodItem in item.MealFoodItems){
                     <ul>
-                    @foodItem.FoodItems.FoodItemName
+                    @foodItem.FoodItems.FoodItemName  
                     </ul>
                 }
             </td>
@@ -45,7 +48,11 @@
             <td>
                 
                 <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-isfavorite="@item.IsFavorite" class="@GetFavoritesClass(item.IsFavorite) favImage" onclick="SetFavorite(this,@item.MealID)" /> 
-                </td> </tr> }
+            </td> 
+            <td>
+                <a asp-action="AddToQueue" asp-route-mealId="@item.MealID">Add to Queue</a>
+            </td>
+        </tr> }
     </tbody>
 </table>
 
@@ -57,8 +64,8 @@
 
 </form>
 
-@functions{ 
-  public string GetFavoritesClass(bool isFavorite) 
+@functions{
+    public string GetFavoritesClass(bool isFavorite) 
     {
         return isFavorite ? "bg-fav" : "bg-nofav";
     }
@@ -77,5 +84,17 @@
 
     }
 
+
+    private string getQueuedDisplay(Meal meal)
+    {
+        if (meal.IsQueued)
+        {
+            return "[Queued]";
+
+        }
+
+        return string.Empty;
+
+    }
 
 }

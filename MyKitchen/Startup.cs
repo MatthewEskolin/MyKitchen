@@ -19,7 +19,6 @@ using MyKitchen.Pages;
 
 namespace MyKitchen
 {
-
     public class Startup
     {
         private readonly IWebHostEnvironment _env;
@@ -62,6 +61,8 @@ namespace MyKitchen
             services.AddTransient<IEmailSender,EmailSender>();
 
             services.AddScoped<UserInfo>();
+
+            services.AddScoped<IUserInfo>(UserFactory.GetUser);
 
             services.AddTransient<CalendarService>();
 

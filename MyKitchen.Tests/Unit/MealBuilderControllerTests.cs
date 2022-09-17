@@ -7,6 +7,7 @@ using MyKitchen.Controllers;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using MyKitchen.Models.BL;
 using MyKitchen.Services;
 
@@ -15,12 +16,6 @@ namespace MyKitchen.Tests
 
     public class MealBuilderControllerTests {
 
-
-        // public MealBuilderControllerTests(SharedTestContext fixture)
-        // {
-        //     this.Fixture = fixture;
-        // }
-
         [Fact]
         public void Index_PopulateViewModel()
         {
@@ -28,14 +23,14 @@ namespace MyKitchen.Tests
             //and test page size.
             var testPageSize = 3;
 
-            var userMock = new Mock<UserInfo>();
-            var applicationUserMock = new Mock<ApplicationUser>();
 
             var mkMealRepo = new Mock<IMealRepository>();
             var mkFoodItemRepo = new Mock<IFoodItemRepository>();
-            var dbmock = new Mock<ApplicationDbContext>();
             var mkImageService = new Mock<IMealImageService>();
-            var mkHostingEnv = new Mock<IWebHostEnvironment>();
+            var mkIuserinfo = new Mock<IUserInfo>();
+            var mkUserInfo = new Mock<UserInfo>();
+            var mkContextAccessor = new Mock<IHttpContextAccessor>();
+
             var mkConfiguration = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
 
             var meals = new List<Meal>(){
@@ -49,14 +44,16 @@ namespace MyKitchen.Tests
                         .Returns((meals,info));
 
 
+
+
             var controller = new MealBuilderController(mkImageService.Object,
-                                                       mkHostingEnv.Object,
                                                        mkFoodItemRepo.Object, 
                                                        mkMealRepo.Object,
-                                                       dbmock.Object,
                                                        mkConfiguration.Object,
-                                                       userMock.Object) 
-                                                       
+                                                       mkIuserinfo.Object,
+                                                       mkContextAccessor.Object,
+                                                       mkUserInfo.Object) 
+                                                      
                                                        {PageSize = testPageSize};
 
             //act
@@ -69,6 +66,8 @@ namespace MyKitchen.Tests
             Assert.Equal("Meal2", mealArray[1].MealName);
         }
 
+
+        //
 
 }
 }

@@ -5,19 +5,13 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Exceptionless.Models.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using MyKitchen.Controllers;
 using MyKitchen.Services;
 
 namespace MyKitchen.Pages
 {
-
-    //public class MealImageDisplay//:MJESelectList
-    //{
-    //    public string ImagePath { get; set; }
-    //    public bool IsSelected { get; set; }
-    //}
-
 
     public class SettingsModel : BasePageModel
     {
@@ -26,6 +20,16 @@ namespace MyKitchen.Pages
         [BindProperty]
         public string  Image { get; set; }
         public List<string> Images { get; set; } = new();
+
+
+        [BindProperty]
+        public int MealsPerPage { get; set; }
+
+        public List<int> MealsPerPageOptions { get; set; } = new() {10, 50, 100, 500, 1000};
+        public List<SelectListItem> MealsPerPageOptionsSelectList => MealsPerPageOptions.Select(x => new SelectListItem() {Value = x.ToString(), Text = x.ToString()}).ToList();
+
+
+
 
         public string SystemMessage { get; set; }
 

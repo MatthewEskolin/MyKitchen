@@ -124,7 +124,7 @@ namespace MyKitchen.Models
         }
 
 
-        public (IEnumerable<Meal> meals,PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user,string mealName,string orderBy)
+        public (IEnumerable<Meal> meals,PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user,string mealNameSearch,string orderBy)
         {
             var _context = this.context;
 
@@ -135,8 +135,8 @@ namespace MyKitchen.Models
   
             //Where Clause Conditions
 
-            if(!String.IsNullOrEmpty(mealName)){
-                cresult = cresult.Where(x => x.MealName.ToUpper().Contains(mealName.ToUpper()));
+            if(!String.IsNullOrEmpty(mealNameSearch)){
+                cresult = cresult.Where(x => x.MealName.ToUpper().Contains(mealNameSearch.ToUpper()));
             }                
 
             //Order By Conditions
@@ -154,7 +154,7 @@ namespace MyKitchen.Models
 
 
             //need to set the total item count;
-            var pagingInfo = new PagingInfo() { CurrentPage = pageNum,ItemsPerPage = pageSize,TotalItems = CountForUser(user,mealName)};
+            var pagingInfo = new PagingInfo() { CurrentPage = pageNum,ItemsPerPage = pageSize,TotalItems = CountForUser(user,mealNameSearch)};
 
             return (cresult, pagingInfo);
         }

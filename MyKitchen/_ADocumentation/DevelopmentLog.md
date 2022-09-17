@@ -49,5 +49,9 @@ revisit prod and clean up some of our data? create badges on github?
 It is overwhelming seeing so many foods in our list - leads to decision fatigue - we need a queue where the list will be narrowed down to what 
 we actually want to eat in the coming days!
 
+# 09/17/2022 
+Starting work on the Queue function unless we get distracted with cleanup/refactoring
+DOCS - mealbuildercontroller should allow a filter to only show queued -> need  to add button to 'remove from queue'
+
 
 
