@@ -13,11 +13,11 @@ namespace MyKitchen.Models
 
         IQueryable<FoodItem> GetFoodItems();
 
-        IQueryable<FoodItem> GetFoodItemsForUser(ApplicationUser user);
+        IQueryable<FoodItem> GetFoodItemsForUser(IUserInfo user);
 
         Task<int> Add(FoodItem foodItem);
         //Adds item for a specific user
-        Task<int> AddFoodForUser(ApplicationUser user, FoodItem foodItem);
+        Task<int> AddFoodForUser(IUserInfo user, FoodItem foodItem);
         Task<FoodItem> Find(int id);
         Task SaveChangesAsync();
         void Update(FoodItem foodItem);

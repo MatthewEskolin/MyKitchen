@@ -33,9 +33,6 @@ namespace MyKitchen.Controllers
 
         private readonly IHttpContextAccessor _contextAccessor;
 
-        private readonly UserInfo CurrentUser;
-
-        //private UserInfo CurrentUser { get; set; }
 
         private string DefaultSortProperty {get; set;} = "MealName";
 
@@ -47,8 +44,7 @@ namespace MyKitchen.Controllers
                                      IMealRepository mealRepo, 
                                      IConfiguration configuration,
                                      IUserInfo user,
-                                     IHttpContextAccessor httpContextAccessor,
-                                     UserInfo user_old)
+                                     IHttpContextAccessor httpContextAccessor)
         {
             //CurrentUser = user;
             _foodItemRepository = foodItemRepo;
@@ -58,7 +54,6 @@ namespace MyKitchen.Controllers
             _contextAccessor = httpContextAccessor;
 
             _user = user;
-            CurrentUser =  user_old;
 
         }
 
@@ -73,7 +68,7 @@ namespace MyKitchen.Controllers
 
             string orderBy = this.GetMealsSort(model.NewSort,model.CurrentSort,model.ToggleSort);
 
-            var result = _mealRepository.GetMealsForUser(model.CurrentPage, PageSize, CurrentUser.User,string.Empty,orderBy);
+            var result = _mealRepository.GetMeals(model.CurrentPage, PageSize, string.Empty,orderBy);
             
             var viewModel = new MealBuilderIndexViewModel()
             {
@@ -116,7 +111,9 @@ namespace MyKitchen.Controllers
 
         public IActionResult SearchMeals([FromForm]string searchText)
         {
-            var result = _mealRepository.GetMealsForUser(1,PageSize,this.CurrentUser.User,searchText,DefaultSortProperty);
+
+
+            var result = _mealRepository.GetMeals(1,PageSize,searchText,DefaultSortProperty);
             
             var viewModel = new MealBuilderIndexViewModel()
             {
@@ -147,7 +144,12 @@ namespace MyKitchen.Controllers
         public async Task<IActionResult> SaveNewMeal(MealBuilderCreateViewModel model)
         {
             var meal = model.Meal;
-            meal.AppUser = CurrentUser.User;
+
+            //get applicationuser from IUser
+            //TODO get rid of this..
+            var appUser = _user as ApplicationUser;
+
+            meal.AppUser = appUser;
 
             if (ModelState.IsValid)
             {
@@ -164,13 +166,13 @@ namespace MyKitchen.Controllers
             //possible to prevent user from passing their own arguments.
 
             var PageSize = 10;
-            var foodItems = _foodItemRepository.GetFoodItemsForUser(this.CurrentUser.User);
+            var foodItems = _foodItemRepository.GetFoodItemsForUser(this._user);
 
             var meal = _mealRepository.Find(mealId);
             var viewModel = new MealBuilderSelectFoodItemsViewModel()
             {
                 FoodItems = foodItems.OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
-                PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = _foodItemRepository.GetFoodItemsForUser(CurrentUser.User).Count() },
+                PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = _foodItemRepository.GetFoodItemsForUser(this._user).Count() },
                 TheMeal = meal
 
             };
@@ -198,7 +200,7 @@ namespace MyKitchen.Controllers
 
             var viewModel = new MealBuilderSelectFoodItemsViewModel()
             {
-                FoodItems = _foodItemRepository.GetFoodItemsForUser(CurrentUser.User).OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
+                FoodItems = _foodItemRepository.GetFoodItemsForUser(this._user).OrderBy(x => x.FoodItemName).Skip((currentPage - 1) * PageSize).Take(PageSize),
                 PagingInfo = new PagingInfo { CurrentPage = currentPage, ItemsPerPage = PageSize, TotalItems = _foodItemRepository.GetFoodItems().Count() },
                 TheMeal = meal
 
@@ -279,7 +281,7 @@ namespace MyKitchen.Controllers
             var viewModel1 = new MealBuilderIndexViewModel()
             {
 
-                Meals = _mealRepository.GetMealsForUser(pageNum, PageSize, this.CurrentUser.User,String.Empty,DefaultSortProperty).meals,
+                Meals = _mealRepository.GetMeals(pageNum, PageSize, String.Empty,DefaultSortProperty).meals,
                 MealListPagingInfo = new PagingInfo() { CurrentPage = 1, ItemsPerPage = 15, TotalItems = _mealRepository.Count() }
             };
 

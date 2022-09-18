@@ -53,5 +53,6 @@ we actually want to eat in the coming days!
 Starting work on the Queue function unless we get distracted with cleanup/refactoring
 DOCS - mealbuildercontroller should allow a filter to only show queued -> need  to add button to 'remove from queue'
 
-
+LEFT OFF: C:\src\gh\MyKitchen\MyKitchen\Controllers\MealBuilderController.cs get the queued only checkbox working - will likely need to create a new class that contains the searcharguments
+that we will bind to when posting the form
 

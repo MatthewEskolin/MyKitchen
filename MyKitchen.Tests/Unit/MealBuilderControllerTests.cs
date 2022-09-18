@@ -40,7 +40,7 @@ namespace MyKitchen.Tests
 
             var info = new PagingInfo();
 
-            mkMealRepo.Setup(x => x.GetMealsForUser(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<ApplicationUser>(),It.IsAny<string>(),It.IsAny<string>()))
+            mkMealRepo.Setup(x => x.GetMeals(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(),It.IsAny<string>()))
                         .Returns((meals,info));
 
 
@@ -51,8 +51,7 @@ namespace MyKitchen.Tests
                                                        mkMealRepo.Object,
                                                        mkConfiguration.Object,
                                                        mkIuserinfo.Object,
-                                                       mkContextAccessor.Object,
-                                                       mkUserInfo.Object) 
+                                                       mkContextAccessor.Object)
                                                       
                                                        {PageSize = testPageSize};
 

@@ -12,25 +12,15 @@ namespace MyKitchen.Controllers
     public interface IMealRepository
     {
         Task<int> Add(Meal foodItem);
-
-        Task<Meal> FindAsync(int id);
         Meal Find(int mealId);
 
         Task SaveChangesAsync();
-
         int SaveChanges();
         void Update(Meal meal);
         void Remove(Meal foodItem);
-        Meal GetRandomItem();
-        IEnumerable<Meal> GetMeals();
         int Count();
-        // IQueryable<Meal> GetMealsForUser(ApplicationUser user);
 
-        (IEnumerable<Meal> meals, PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user,string mealNameSearch,string orderBy);
-
-        IEnumerable<Meal> GetFavoriteMealsForUser(ApplicationUser user);
-
-
-        int CountForUser(ApplicationUser user,string mealName);
+        (IEnumerable<Meal> meals, PagingInfo pagingInfo) GetMeals(int pageNum, int pageSize, string mealNameSearch,string orderBy);
+        IEnumerable<Meal> GetFavoriteMeals();
     }
 }

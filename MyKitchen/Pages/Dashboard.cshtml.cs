@@ -45,7 +45,7 @@ namespace MyKitchen.Pages
             var upcomingItems = CalendarService.GetUpcomingItems();
 
             //Get Favorite Meals
-            FavoriteMeals = MealRepo.GetFavoriteMealsForUser(this.CurrentUser.User).ToList();
+            FavoriteMeals = MealRepo.GetFavoriteMeals().ToList();
 
             TodaysMeals = upcomingMeals.TodaysMeals;
             TomorrowsMeals = upcomingMeals.TomorrowsMeals;

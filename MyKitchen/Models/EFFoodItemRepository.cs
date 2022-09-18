@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Client;
 using MyKitchen.Data;
 
 namespace MyKitchen.Models
@@ -30,12 +31,14 @@ namespace MyKitchen.Models
         }
 
         //Adds an association between a food item and a user.
-        public async Task<int> AddFoodForUser(ApplicationUser user, FoodItem foodItem)
+        public async Task<int> AddFoodForUser(IUserInfo user, FoodItem foodItem)
         {
 
             var userFoodItem = new MyKitchen.Data.UserFoodItem();
             userFoodItem.FoodItemID = foodItem.FoodItemID;
-            userFoodItem.AppUser = user;
+
+            //TODO get rid of this can we use interface
+            userFoodItem.AppUser = user as ApplicationUser;
 
             _context.UserFoodItems.Add(userFoodItem);
             return await _context.SaveChangesAsync();
@@ -104,7 +107,7 @@ namespace MyKitchen.Models
         {
             return FoodItems.AsEnumerable();
         }
-        public IQueryable<FoodItem> GetFoodItemsForUser(ApplicationUser user)
+        public IQueryable<FoodItem> GetFoodItemsForUser(IUserInfo user)
         {
             
             // return _context.FoodItems.Include(x => x.FoodGroup).Where(_context.UserFoodItems.Where);

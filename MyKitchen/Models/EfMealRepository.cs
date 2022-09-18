@@ -7,16 +7,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using MyKitchen.Controllers;
 using MyKitchen.Data;
+using MyKitchen.Models.BL;
 
 namespace MyKitchen.Models
 {
     public class EfMealRepository : IMealRepository
     {
         private ApplicationDbContext context;
+        private UserInfo _user;
 
-        public EfMealRepository(ApplicationDbContext ctx)
+        public EfMealRepository(UserInfo user, ApplicationDbContext ctx)
         {
             context = ctx;
+            _user = user;
         }
 
         public Task<int> Add(Meal meal)
@@ -25,7 +28,7 @@ namespace MyKitchen.Models
 
             if (meal.MealFoodItems != null)
             {
-                //add meal items
+                //add meal items/
                 foreach (var foodItem in meal.MealFoodItems)
                 {
                     //add items to meal
@@ -88,10 +91,6 @@ namespace MyKitchen.Models
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Meal> GetMeals()
-        {
-            return context.Meals.AsEnumerable();
-        }
 
         private IEnumerable<Meal> GetEnumerable()
         {
@@ -103,6 +102,7 @@ namespace MyKitchen.Models
             return context.Meals.Count();
         }
 
+
         public Meal GetMealById(int mealId)
         {
             var meal = context.Meals.Where(x => x.MealID == mealId).Include(x => x.MealFoodItems).FirstOrDefault();
@@ -110,13 +110,13 @@ namespace MyKitchen.Models
 
         }
 
-        public IQueryable<Meal> GetMealsForUser(ApplicationUser user)
+        public IQueryable<Meal> GetMeals()
         {
             var _context = this.context;
 
             //figure out how to include a list of all food items in each meal as part of this query and look how it is performing the query.
             var cresult = (from meals in _context.Meals.Include(x => x.MealFoodItems).ThenInclude(x => x.FoodItems)
-                           where meals.AppUser.Id == user.Id select meals).AsQueryable();
+                           where meals.AppUser.Id == this._user.User.Id select meals).AsQueryable();
 
             return cresult;
 
@@ -124,13 +124,13 @@ namespace MyKitchen.Models
         }
 
 
-        public (IEnumerable<Meal> meals,PagingInfo pagingInfo) GetMealsForUser(int pageNum, int pageSize, ApplicationUser user,string mealNameSearch,string orderBy)
+        public (IEnumerable<Meal> meals,PagingInfo pagingInfo) GetMeals(int pageNum, int pageSize, string mealNameSearch,string orderBy)
         {
             var _context = this.context;
 
             //load meals with details for each food in the meal.
             var cresult = (from meals in _context.Meals.Include(x => x.MealFoodItems).ThenInclude(x => x.FoodItems)
-                           where meals.AppUser.Id == user.Id select meals);
+                           where meals.AppUser.Id == this._user.User.Id select meals);
 
   
             //Where Clause Conditions
@@ -154,20 +154,21 @@ namespace MyKitchen.Models
 
 
             //need to set the total item count;
-            var pagingInfo = new PagingInfo() { CurrentPage = pageNum,ItemsPerPage = pageSize,TotalItems = CountForUser(user,mealNameSearch)};
+            var pagingInfo = new PagingInfo() { CurrentPage = pageNum,ItemsPerPage = pageSize,TotalItems = CountForUser(mealNameSearch)};
 
             return (cresult, pagingInfo);
         }
 
-        public IEnumerable<Meal> GetFavoriteMealsForUser(ApplicationUser user)
+
+        public IEnumerable<Meal> GetFavoriteMeals()
         {
             
             //load meals with details for each food in the meal.
 
-            var results = (from meals in 
+            var results = (from meals in
                     context.Meals.Include(x => x.MealFoodItems)
                                  .ThenInclude(x => x.FoodItems)
-                where meals.AppUser.Id == user.Id 
+                where meals.AppUser.Id == this._user.User.Id
                 where meals.IsFavorite
                 select meals);
 
@@ -175,11 +176,11 @@ namespace MyKitchen.Models
         }
 
 
-        public int CountForUser(ApplicationUser user,string mealName)
+        public int CountForUser(string mealName)
         {
             var _context = this.context;
             var cresult = (from meals in _context.Meals.Include(x => x.MealFoodItems).ThenInclude(x => x.FoodItems)
-                           where meals.AppUser.Id == user.Id select meals).AsQueryable();
+                           where meals.AppUser.Id == this._user.User.Id select meals).AsQueryable();
                            
                            
             if(!String.IsNullOrEmpty(mealName))

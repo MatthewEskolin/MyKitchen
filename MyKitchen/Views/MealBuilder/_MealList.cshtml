@@ -2,6 +2,16 @@
 @model MealBuilderIndexViewModel
 @inject MyKitchen.Models.BL.UserInfo AppUser
 
+<style type="text/css">
+    span.queued {
+
+        border: 1px solid darkgreen;
+        background-color: darkgreen;
+        color: white;
+
+    }
+</style>
+
 <form method="GET" asp-action="Index">
 <div page-model="@Model.MealListPagingInfo" page-action="Index" page-classes-enabled="true"
      page-class="btn" page-class-normal="btn-secondary"
@@ -27,7 +37,7 @@
                 <img src="@GetMealImage()" style="width: 70px;"/>
             </td>
             <td>
-                @item.MealName @getQueuedDisplay(item)
+                @item.MealName @Html.Raw(getQueuedDisplay(item))
                 
             </td>
             <td>
@@ -50,7 +60,8 @@
                 <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-isfavorite="@item.IsFavorite" class="@GetFavoritesClass(item.IsFavorite) favImage" onclick="SetFavorite(this,@item.MealID)" /> 
             </td> 
             <td>
-                <a asp-action="AddToQueue" asp-route-mealId="@item.MealID">Add to Queue</a>
+                <div><a asp-action="AddToQueue" asp-route-mealId="@item.MealID">Add to Queue</a></div>
+                <div><a asp-action="RemoveFromQueue" asp-route-mealId="@item.MealID">Remove from Queue</a></div>
             </td>
         </tr> }
     </tbody>
@@ -87,14 +98,9 @@
 
     private string getQueuedDisplay(Meal meal)
     {
-        if (meal.IsQueued)
-        {
-            return "[Queued]";
-
-        }
-
-        return string.Empty;
-
+        return meal.IsQueued ? 
+                "<span class=\"queued\">[Queued]</span>" : 
+                 string.Empty;
     }
 
 }
