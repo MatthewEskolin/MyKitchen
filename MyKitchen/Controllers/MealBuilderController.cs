@@ -20,6 +20,9 @@ using Utilities;
 
 namespace MyKitchen.Controllers
 {
+    //Bind Classes
+
+
     [Authorize]
     public class MealBuilderController : Controller
     {
@@ -32,7 +35,6 @@ namespace MyKitchen.Controllers
         private readonly IUserInfo _user;
 
         private readonly IHttpContextAccessor _contextAccessor;
-
 
         private string DefaultSortProperty {get; set;} = "MealName";
 
@@ -58,6 +60,13 @@ namespace MyKitchen.Controllers
         }
 
         public int PageSize = 15;
+
+        //Model Binding Classes
+        public class SearchArgs
+        {
+            public string SearchText { get; set; }
+            public bool ShowQueuedOnly { get; set; }
+        }
 
 
         [HttpGet]
@@ -109,11 +118,10 @@ namespace MyKitchen.Controllers
             return rtn;
         }
 
-        public IActionResult SearchMeals([FromForm]string searchText)
+        public IActionResult SearchMeals([FromForm]SearchArgs searchArgs)
         {
 
-
-            var result = _mealRepository.GetMeals(1,PageSize,searchText,DefaultSortProperty);
+            var result = _mealRepository.GetMeals(1,PageSize,searchArgs.SearchText,DefaultSortProperty);
             
             var viewModel = new MealBuilderIndexViewModel()
             {
@@ -259,7 +267,7 @@ namespace MyKitchen.Controllers
                 return RedirectToAction("Index");
             }
 
-            meal.IsQueued = true;
+            meal.IsQueued = false;
             _mealRepository.Update(meal);
             await _mealRepository.SaveChangesAsync();
 

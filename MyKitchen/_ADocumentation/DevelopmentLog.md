@@ -56,3 +56,9 @@ DOCS - mealbuildercontroller should allow a filter to only show queued -> need  
 LEFT OFF: C:\src\gh\MyKitchen\MyKitchen\Controllers\MealBuilderController.cs get the queued only checkbox working - will likely need to create a new class that contains the searcharguments
 that we will bind to when posting the form
 
+# 09/24/2022
+-Get Remove from Queue Working
+-Add a search box for 'queued' to the dashboard
+
+
+

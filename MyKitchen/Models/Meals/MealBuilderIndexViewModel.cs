@@ -28,5 +28,8 @@ namespace MyKitchen.Models
 
         public bool ToggleSort {get; set;} = false;
 
+        //public bool ShowQueuedOnly { get; set; }
+
+
     }
 }
