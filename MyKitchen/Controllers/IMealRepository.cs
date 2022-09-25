@@ -20,7 +20,7 @@ namespace MyKitchen.Controllers
         void Remove(Meal foodItem);
         int Count();
 
-        (IEnumerable<Meal> meals, PagingInfo pagingInfo) GetMeals(int pageNum, int pageSize, string mealNameSearch,string orderBy);
+        (IEnumerable<Meal> meals, PagingInfo pagingInfo) SearchMeals(int pageNum, int pageSize, string orderBy, MealSearchArgs searchArgs);
         IEnumerable<Meal> GetFavoriteMeals();
     }
 }

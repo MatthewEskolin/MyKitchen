@@ -124,7 +124,7 @@ namespace MyKitchen.Models
         }
 
 
-        public (IEnumerable<Meal> meals,PagingInfo pagingInfo) GetMeals(int pageNum, int pageSize, string mealNameSearch,string orderBy)
+        public (IEnumerable<Meal> meals,PagingInfo pagingInfo) SearchMeals(int pageNum, int pageSize, string orderBy, MealSearchArgs searchArgs)
         {
             var _context = this.context;
 
@@ -135,9 +135,21 @@ namespace MyKitchen.Models
   
             //Where Clause Conditions
 
-            if(!String.IsNullOrEmpty(mealNameSearch)){
-                cresult = cresult.Where(x => x.MealName.ToUpper().Contains(mealNameSearch.ToUpper()));
-            }                
+            if (searchArgs != null)
+            {
+
+                if (!String.IsNullOrEmpty(searchArgs.MealName))
+                {
+                    cresult = cresult.Where(x => x.MealName.ToUpper().Contains(searchArgs.MealName.ToUpper()));
+                }
+
+                if (searchArgs.ShowQueuedOnly)
+                {
+                    cresult = cresult.Where(x => x.IsQueued);
+                }
+
+            }
+
 
             //Order By Conditions
             if(orderBy.EndsWith("_desc"))
@@ -154,7 +166,7 @@ namespace MyKitchen.Models
 
 
             //need to set the total item count;
-            var pagingInfo = new PagingInfo() { CurrentPage = pageNum,ItemsPerPage = pageSize,TotalItems = CountForUser(mealNameSearch)};
+            var pagingInfo = new PagingInfo() { CurrentPage = pageNum,ItemsPerPage = pageSize,TotalItems = CountForUser(searchArgs)};
 
             return (cresult, pagingInfo);
         }
@@ -176,18 +188,27 @@ namespace MyKitchen.Models
         }
 
 
-        public int CountForUser(string mealName)
+        public int CountForUser(MealSearchArgs searchArgs)
         {
             var _context = this.context;
             var cresult = (from meals in _context.Meals.Include(x => x.MealFoodItems).ThenInclude(x => x.FoodItems)
                            where meals.AppUser.Id == this._user.User.Id select meals).AsQueryable();
-                           
-                           
-            if(!String.IsNullOrEmpty(mealName))
+
+            if (searchArgs != null)
             {
-                cresult = cresult.Where(x => x.MealName.Contains(mealName));
-         
+                if(!String.IsNullOrEmpty(searchArgs.MealName))
+                {
+                    cresult = cresult.Where(x => x.MealName.Contains(searchArgs.MealName));
+                }
+
+                if (searchArgs.ShowQueuedOnly)
+                {
+                    cresult = cresult.Where(x => x.IsQueued);
+                }
             }
+
+
+                           
 
             return cresult.Count();
         }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MyKitchen.Controllers;
 using MyKitchen.Data;
 
 namespace MyKitchen.Models
@@ -28,6 +29,7 @@ namespace MyKitchen.Models
 
         public bool ToggleSort {get; set;} = false;
 
+        public MealSearchArgs DashboardSearchArgs { get; set; }
         //public bool ShowQueuedOnly { get; set; }
 
 

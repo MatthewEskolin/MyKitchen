@@ -40,10 +40,8 @@ namespace MyKitchen.Tests
 
             var info = new PagingInfo();
 
-            mkMealRepo.Setup(x => x.GetMeals(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(),It.IsAny<string>()))
+            mkMealRepo.Setup(x => x.SearchMeals(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<MealSearchArgs>()))
                         .Returns((meals,info));
-
-
 
 
             var controller = new MealBuilderController(mkImageService.Object,

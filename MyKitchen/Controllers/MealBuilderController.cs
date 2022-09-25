@@ -41,6 +41,7 @@ namespace MyKitchen.Controllers
         public IConfiguration _configuration { get; private set; }
 
 
+
         public MealBuilderController(IMealImageService imageService,
                                      IFoodItemRepository foodItemRepo, 
                                      IMealRepository mealRepo, 
@@ -61,12 +62,10 @@ namespace MyKitchen.Controllers
 
         public int PageSize = 15;
 
+        public MealSearchArgs SearchArgs { get; set; }
+
         //Model Binding Classes
-        public class SearchArgs
-        {
-            public string SearchText { get; set; }
-            public bool ShowQueuedOnly { get; set; }
-        }
+
 
 
         [HttpGet]
@@ -77,13 +76,15 @@ namespace MyKitchen.Controllers
 
             string orderBy = this.GetMealsSort(model.NewSort,model.CurrentSort,model.ToggleSort);
 
-            var result = _mealRepository.GetMeals(model.CurrentPage, PageSize, string.Empty,orderBy);
+            var result = _mealRepository.SearchMeals(model.CurrentPage, PageSize, orderBy, SearchArgs);
             
             var viewModel = new MealBuilderIndexViewModel()
             {
 
                 Meals = result.meals,
-                MealListPagingInfo = result.pagingInfo
+                MealListPagingInfo = result.pagingInfo,
+                
+                
             };
 
             //trim the _desc to get the lookup for sort order
@@ -118,18 +119,22 @@ namespace MyKitchen.Controllers
             return rtn;
         }
 
-        public IActionResult SearchMeals([FromForm]SearchArgs searchArgs)
+        public IActionResult SearchMeals(MealBuilderIndexViewModel model )
         {
+            var searchArgs = model.DashboardSearchArgs;
 
-            var result = _mealRepository.GetMeals(1,PageSize,searchArgs.SearchText,DefaultSortProperty);
-            
-            var viewModel = new MealBuilderIndexViewModel()
-            {
-                Meals = result.meals,
-                MealListPagingInfo = result.pagingInfo
-            };
+            var result = _mealRepository.SearchMeals(1,PageSize,DefaultSortProperty, searchArgs);
 
-            return View("Index",viewModel);
+            model.Meals = result.meals;
+            model.MealListPagingInfo = result.pagingInfo;
+
+            //var viewModel = new MealBuilderIndexViewModel()
+            //{
+            //    Meals = result.meals,
+            //    MealListPagingInfo = result.pagingInfo
+            //};
+
+            return View("Index",model);
         }
 
 
@@ -289,7 +294,7 @@ namespace MyKitchen.Controllers
             var viewModel1 = new MealBuilderIndexViewModel()
             {
 
-                Meals = _mealRepository.GetMeals(pageNum, PageSize, String.Empty,DefaultSortProperty).meals,
+                Meals = _mealRepository.SearchMeals(pageNum, PageSize, DefaultSortProperty, this.SearchArgs).meals,
                 MealListPagingInfo = new PagingInfo() { CurrentPage = 1, ItemsPerPage = 15, TotalItems = _mealRepository.Count() }
             };
 
@@ -410,6 +415,12 @@ namespace MyKitchen.Controllers
 
 
 
+    }
+
+    public class MealSearchArgs
+    {
+        public string MealName { get; set; }
+        public bool ShowQueuedOnly { get; set; }
     }
 
 }

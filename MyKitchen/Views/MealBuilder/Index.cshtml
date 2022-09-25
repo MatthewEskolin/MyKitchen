@@ -10,20 +10,20 @@
 
 <form id="fmSearchItems" name="fmSearchMeals" method="post" asp-action="SearchMeals">
 <div class="search-bar">
-  <input class="input-text" type="text" name="SearchText" placeholder="Search">
+  <input class="input-text" type="text" name="DashboardSearchArgs.MealName" placeholder="Search">
   <i class="icon fa fa-search" onclick="document.fmSearchMeals.submit()" style="cursor:pointer;"></i>
  
+  
+ Show Queued Only  @*<input id="ShowQueuedOnly" name="ShowQueuedOnly" type="checkbox" value="true"> *@
+                    @Html.CheckBoxFor(x => x.DashboardSearchArgs.ShowQueuedOnly)  
+
+@*  <div class="d-inline" style="margin-left: 10px;">Show Queued Only <input type="checkbox" id="ShowQueuedOnly" name="ShowQueuedOnly" checked /></div>*@
 @*  BOX 2 start
   @Html.CheckBoxFor(x => x.ShowQueuedOnly);
   BOX 2 end 
-  
-*@  Box3 Start
-  <input data-val="true" data-val-required="The ShowQueuedOnly field is required." id="ShowQueuedOnly" name="ShowQueuedOnly" type="checkbox" value="true"> 
-  Box3 End
+*@ 
   
 
-@*  <div class="d-inline" style="margin-left: 10px;">Show Queued Only <input type="checkbox" id="ShowQueuedOnly" name="ShowQueuedOnly" checked /></div>*@
-  
 </div>
 </form>
 
