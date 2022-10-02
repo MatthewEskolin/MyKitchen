@@ -69,5 +69,7 @@ that we will bind to when posting the form
 # 10/01/2022
 -Create a cool about page to discribe this product
     
+# 10/1/2022 
+-create alerts and push notifications if there is nothing on the calendar for the next 3 days
 
 
