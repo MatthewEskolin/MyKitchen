@@ -72,4 +72,12 @@ that we will bind to when posting the form
 # 10/1/2022 
 -create alerts and push notifications if there is nothing on the calendar for the next 3 days
 
+# 10/2/2022 
+-consider creating executive function tasks lists - display on dashboard
+-let's do a bit of refactoring to stay in the groove..
+-need more unit tests before we can do major refactoring
+
+
+
+
 
