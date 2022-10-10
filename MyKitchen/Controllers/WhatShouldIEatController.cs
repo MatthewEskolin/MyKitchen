@@ -17,7 +17,7 @@ namespace MyKitchen.Controllers
         }
 
         //This should be the default action for the homepage
-        [Route("", Order = 0)]
+        // [Route("", Order = 0)]
         public IActionResult DisplayCurrentPrediction()
         {
             var viewModel = new DisplayCurrentPredictionViewModel() {FoodEntityName = FoodRecService.GetNextRecommendation()};

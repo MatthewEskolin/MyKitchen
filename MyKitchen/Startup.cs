@@ -214,9 +214,14 @@ app.Use((context, next) =>
                 endPoints.MapControllers();
 
                 //for template based routing
+                // endPoints.MapControllerRoute(
+                //     name:"default",
+                //     pattern:"{controller=WhatShouldIEat}/{action=DisplayCurrentPrediction}/{id?}"
+                // );
+
                 endPoints.MapControllerRoute(
                     name:"default",
-                    pattern:"{controller=WhatShouldIEat}/{action=DisplayCurrentPrediction}/{id?}"
+                    pattern:"{controller}/{action=DisplayCurrentPrediction}/{id?}"
                 );
 
                 endPoints.MapControllerRoute(
