@@ -38,7 +38,7 @@ namespace MyKitchen.Controllers
 
         private string DefaultSortProperty {get; set;} = "MealName";
 
-        public IConfiguration _configuration { get; private set; }
+        private readonly IConfiguration _configuration;
 
 
 
