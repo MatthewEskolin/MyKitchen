@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ namespace MyKitchen.Controllers
             return View();
         }
 
-        public IActionResult SearchForItems([FromForm]string searchText, [FromForm]string cbShowMealsOnly)
+        public IActionResult SearchForItems([FromForm]string searchText, [FromForm]string cbShowMealsOnly,[FromForm]string cbShowQueuedonly)
         {
 
             //if showing meals only, want to exclude the Food Items from the search result;
@@ -38,6 +39,15 @@ namespace MyKitchen.Controllers
             {
                 items = items.Where(x => x.ItemType == "MEAL");
             }
+
+            if (cbShowQueuedonly == "on")
+            {
+                //items = items.Where(x => x.)
+                throw new NotImplementedException(
+                    "Where does the on  and off come from? can we consolidate these parameters into a single searchargs class?");
+
+            }
+
 
             return new JsonResult(items.ToList());
         }

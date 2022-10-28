@@ -80,6 +80,11 @@ that we will bind to when posting the form
 # 10/06/2022
 -cleanup and removing unused code - constant refactoring
 -we should create a public library of .NET tools and publish it
+# 10/09/2022
+    -learning entity framework! can we do a write-up about this?
+        //https://learn.microsoft.com/en-us/ef/core/modeling/backing-field?tabs=data-annotations
+        //TODO is it possible have entity framework write to a
+        //Backing fields allow EF to read and/or write to a field rather than a property.This can be useful when encapsulation in the class is being used to restrict the use of and/or enhance the semantics around access to the data by application code, but the value should be read from and/or written to the database without using those restrictions/enhancements.
 
 # 10/27/2022
 -try fixing calendar on prod
