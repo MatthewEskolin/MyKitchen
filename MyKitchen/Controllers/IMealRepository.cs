@@ -19,7 +19,6 @@ namespace MyKitchen.Controllers
         void Update(Meal meal);
         void Remove(Meal foodItem);
         int Count();
-
         (IEnumerable<Meal> meals, PagingInfo pagingInfo) SearchMeals(int pageNum, int pageSize, string orderBy, MealSearchArgs searchArgs);
         IEnumerable<Meal> GetFavoriteMeals();
     }
