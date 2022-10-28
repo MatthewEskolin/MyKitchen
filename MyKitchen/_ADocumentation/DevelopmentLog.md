@@ -77,7 +77,12 @@ that we will bind to when posting the form
 -let's do a bit of refactoring to stay in the groove..
 -need more unit tests before we can do major refactoring
 
+# 10/06/2022
+-cleanup and removing unused code - constant refactoring
+-we should create a public library of .NET tools and publish it
 
+# 10/27/2022
+-try fixing calendar on prod
 
 
 
