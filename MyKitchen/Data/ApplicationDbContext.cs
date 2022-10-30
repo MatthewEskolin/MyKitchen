@@ -1,13 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using MyKitchen.Controllers;
 using MyKitchen.Data.Calendar;
 
 namespace MyKitchen.Data
 {
+    //For Changing  Connection String to run producction efcore migrations
+    //the connection string is stored in user secrets so we don't have to store it in source control
+    public class ScaffoldProdContext : ApplicationDbContext
+    {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            //Read Connection String from environment variable
+
+
+            string scaffoldConnStr = @"Data Source=mykitchen.database.windows.net;Database=MyKitchen;Integrated Security=false;User ID=matteskolin;Password=gIdzkGEfkcIcNXtElb4T!!;";
+            optionsBuilder.UseSqlServer(scaffoldConnStr);
+        }
+    }
+
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser> , IMyKitchenDataContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
@@ -56,9 +72,6 @@ namespace MyKitchen.Data
 
         }
 
-
-        //Add other Database Methods here
-        
 
 
 

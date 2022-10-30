@@ -49,6 +49,7 @@ namespace MyKitchen
                 });
             });
 
+
             services.AddTransient<IMyKitchenDataContext>(provider => provider.GetService<ApplicationDbContext>());
 
             services.AddTransient<IFoodItemRepository, EFFoodItemRepository>();
