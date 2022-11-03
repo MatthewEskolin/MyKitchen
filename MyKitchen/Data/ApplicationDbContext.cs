@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,22 +13,47 @@ namespace MyKitchen.Data
 {
     //For Changing  Connection String to run producction efcore migrations
     //the connection string is stored in user secrets so we don't have to store it in source control
-    public class ScaffoldProdContext : ApplicationDbContext
+    public class scaffoldprodcontext :ApplicationDbContext 
     {
+
+        public scaffoldprodcontext(DbContextOptions<ApplicationDbContext> options, IConfiguration config) : base(options,config)
+        {
+            Debugger.Launch();
+            int gothere = 0;
+            gothere++;
+        }
+
+        public DbSet<MigrationJunkTestInherit> DerivedJunk { get; set; }
+
+
+        //protected override void onconfiguring(dbcontextoptionsbuilder optionsbuilder)
+        //{
+        //    //read connection string from environment variable
+
+
+        //    string scaffoldconnstr = @"data source=mykitchen.database.windows.net;database=mykitchen;integrated security=false;user id=matteskolin;password=gidzkgefkcicnxtelb4t!!;";
+        //    optionsbuilder.usesqlserver(scaffoldconnstr);
+        //}
+    }
+
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser> , IMyKitchenDataContext
+    {
+        private IConfiguration Config;
+
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //Read Connection String from environment variable
 
 
-            string scaffoldConnStr = @"Data Source=mykitchen.database.windows.net;Database=MyKitchen;Integrated Security=false;User ID=matteskolin;Password=gIdzkGEfkcIcNXtElb4T!!;";
+            string scaffoldConnStr = @"Data Source=mykitchen.database.windows.net;Database=MyKitchen;Integrated Security=false;User ID=matteskolin;Password=gIdzkGEfkcIcNXtElb4T!!3456A;";
             optionsBuilder.UseSqlServer(scaffoldConnStr);
         }
-    }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser> , IMyKitchenDataContext
-    {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration cofnig): base(options)
         {
+            this.Config = cofnig;
 
         }
 
@@ -73,8 +99,20 @@ namespace MyKitchen.Data
         }
 
 
+        public DbSet<MigrationJunkTestBase> BaseJunk { get; set; }
 
 
     }
 
+    public class MigrationJunkTestBase
+    {
+        public int ID { get; set; } 
+        public string Name { get; set; }
+    }
+
+    public class MigrationJunkTestInherit
+    {
+        public int ID { get; set; } 
+        public string Name { get; set; }
+    }
 }
