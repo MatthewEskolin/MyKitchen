@@ -86,10 +86,11 @@ namespace MyKitchen
                     //}).
                    .UseStartup<Startup>().ConfigureLogging(x =>
                     {
-                        x.ClearProviders();
-                        x.AddDebug();
-                        x.AddConsole();
-                        x.AddEventLog();
+                      //  x.ClearProviders();
+                        //x.AddDebug();
+                        //x.AddConsole();
+                        //x.AddEventLog();
+                        //x.AddAzureWebAppDiagnostics();
 
 
                     })

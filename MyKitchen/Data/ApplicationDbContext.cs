@@ -42,14 +42,14 @@ namespace MyKitchen.Data
 
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //Read Connection String from environment variable
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    //Read Connection String from environment variable
 
 
-            string scaffoldConnStr = @"Data Source=mykitchen.database.windows.net;Database=MyKitchen;Integrated Security=false;User ID=matteskolin;Password=gIdzkGEfkcIcNXtElb4T!!3456A;";
-            optionsBuilder.UseSqlServer(scaffoldConnStr);
-        }
+        //    string scaffoldConnStr = @"Data Source=mykitchen.database.windows.net;Database=MyKitchen;Integrated Security=false;User ID=matteskolin;Password=gIdzkGEfkcIcNXtElb4T!!3456A;";
+        //    optionsBuilder.UseSqlServer(scaffoldConnStr);
+        //}
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration cofnig): base(options)
         {

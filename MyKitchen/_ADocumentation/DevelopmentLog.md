@@ -92,5 +92,16 @@ that we will bind to when posting the form
 # 10/29/2022
 -get the saffolder working
 
+# 11/02/2022
+Fixed Production SQL Password
+For Next Time, AddAzureWebAppDiagnostics Check to see if the azure streaming  logs are working
+For Next Time, need to come back and fix the calendar
+
+# 11/03/2022
+fix calendar locally
+
+
+
+
 
 
