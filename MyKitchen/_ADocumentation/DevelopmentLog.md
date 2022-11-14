@@ -98,7 +98,13 @@ For Next Time, AddAzureWebAppDiagnostics Check to see if the azure streaming  lo
 For Next Time, need to come back and fix the calendar
 
 # 11/03/2022
-fix calendar locally
+fix calendar locally 
+
+# 11/13/2022
+it would be cool if we got a user to sign up for this - write a blog post and try to get a user to signup
+
+
+
 
 
 

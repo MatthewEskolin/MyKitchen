@@ -57,6 +57,9 @@ namespace MyKitchen.Data
 
         }
 
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) { }
+
+
         public ApplicationDbContext(){}
 
         public DbSet<Meal> Meals { get; set; }
