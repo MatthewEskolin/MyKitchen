@@ -106,7 +106,7 @@ it would be cool if we got a user to sign up for this - write a blog post and tr
 *test this next time we work on this!
 
 # 11/26/2022
-We want sign up with "google" to work
+We want sign up with "google" to work - need to work onn changing IdentiyUser to ApplicationUser in external login page...
 
 
 
