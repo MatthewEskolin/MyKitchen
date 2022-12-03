@@ -102,10 +102,11 @@ fix calendar locally
 
 # 11/13/2022
 it would be cool if we got a user to sign up for this - write a blog post and try to get a user to signup
-*tried to make it so "sign in with google" will work for existing acounts that have not been previously assoiated with google..
+*tried to make it so "sign in with google" will work for existing acounts that have not been previously  associated with google..
 *test this next time we work on this!
 
 # 11/26/2022
+We want sign up with "google" to work
 
 
 
