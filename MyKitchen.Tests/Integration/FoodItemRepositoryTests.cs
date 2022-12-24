@@ -12,7 +12,8 @@ namespace MyKitchen.Tests
 {
     public class FoodItemRepositoryTests
     {
-  [Fact]
+
+        [Fact]
         public void CanAddFoodItem()
         {
             //dependencies
@@ -73,8 +74,6 @@ namespace MyKitchen.Tests
             //assert
             Assert.True(true);
         }
-         
-
 
 
     }
