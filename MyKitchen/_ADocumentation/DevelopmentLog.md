@@ -112,7 +112,9 @@ We want sign up with "google" to work - need to work onn changing IdentiyUser to
 [need to fix signup] [need to fix landing page] [add highlights for next 3 days on calendar]
 [I think it would be better if we handled the calendar with REACT!]
 
-
+# 12/25/2022 
+    continue working on react test project - maybe should be a seperate branch - having react 
+https://medium.com/@tysonnero/iteratively-migrating-asp-net-mvc-razor-to-react-typescript-e0330fe81b4e read this for how to add react calendar!
 
 
 
