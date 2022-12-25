@@ -108,6 +108,11 @@ it would be cool if we got a user to sign up for this - write a blog post and tr
 # 11/26/2022
 We want sign up with "google" to work - need to work onn changing IdentiyUser to ApplicationUser in external login page...
 
+# 12/25/2022
+[need to fix signup] [need to fix landing page] [add highlights for next 3 days on calendar]
+[I think it would be better if we handled the calendar with REACT!]
+
+
 
 
 
