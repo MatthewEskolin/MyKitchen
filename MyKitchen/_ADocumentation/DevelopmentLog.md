@@ -116,6 +116,8 @@ We want sign up with "google" to work - need to work onn changing IdentiyUser to
     continue working on react test project - maybe should be a seperate branch - having react 
 https://medium.com/@tysonnero/iteratively-migrating-asp-net-mvc-razor-to-react-typescript-e0330fe81b4e read this for how to add react calendar!
 
+# 01/10/2022
+    continue with react test project
 
 
 
