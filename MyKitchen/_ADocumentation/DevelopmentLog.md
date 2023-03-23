@@ -119,6 +119,8 @@ https://medium.com/@tysonnero/iteratively-migrating-asp-net-mvc-razor-to-react-t
 # 01/10/2022
     continue with react test project
 
+# 03/23/2023
+    consider blazor branch
 
 
 
