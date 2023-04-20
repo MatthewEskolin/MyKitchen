@@ -119,10 +119,11 @@ https://medium.com/@tysonnero/iteratively-migrating-asp-net-mvc-razor-to-react-t
 # 01/10/2022
 continue with react test project
 
-# 03/23/2023j
+# 03/23/2023
 consider blazor branch
-
-
+# 04/20/2023
+Really Enjoyed this reddit post as it relates to dedication to programming
+Hobby/Job/Career/Career+/Hobby+/Career+Hobby+/P=L/EIDISLO from https://www.reddit.com/r/csharp/comments/v2osjd/generating_random_modern_houses_an_example_from/
 
 
 
