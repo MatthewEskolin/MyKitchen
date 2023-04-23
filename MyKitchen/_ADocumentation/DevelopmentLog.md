@@ -125,6 +125,7 @@ consider blazor branch
 Really Enjoyed this reddit post as it relates to dedication to programming
 Hobby/Job/Career/Career+/Hobby+/Career+Hobby+/P=L/EIDISLO from https://www.reddit.com/r/csharp/comments/v2osjd/generating_random_modern_houses_an_example_from/
 
-
+# 04/23/2023
+Why did my last release break? Consider rewriting entire app in blazor again
 
 
