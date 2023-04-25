@@ -129,3 +129,6 @@ Hobby/Job/Career/Career+/Hobby+/Career+Hobby+/P=L/EIDISLO from https://www.reddi
 Why did my last release break? Consider rewriting entire app in blazor again
 
 
+# 4/25/2023
+why is my nuget connection broken? need to try in visual studio proper
+
