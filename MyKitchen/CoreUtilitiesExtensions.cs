@@ -14,7 +14,11 @@ namespace MyKitchen
 
             var addresses = server?.Features.Get<IServerAddressesFeature>();
 
+            
             return addresses?.Addresses ?? Array.Empty<string>();
         }
     }
 }
+
+
+//test setup vs 2022 new pc
