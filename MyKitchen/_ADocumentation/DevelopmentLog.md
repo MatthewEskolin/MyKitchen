@@ -132,3 +132,5 @@ Why did my last release break? Consider rewriting entire app in blazor again
 # 4/25/2023
 why is my nuget connection broken? need to try in visual studio proper
 
+# 4/28/2023
+now in proper, debating if I should sqllite locally..
