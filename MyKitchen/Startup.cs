@@ -26,6 +26,7 @@ namespace MyKitchen
 
         public Startup(IConfiguration configuration,IWebHostEnvironment environment)
         {
+            //push from vs
 
             _env = environment;
             Configuration = configuration;
