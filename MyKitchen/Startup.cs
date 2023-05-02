@@ -49,7 +49,7 @@ namespace MyKitchen
                     builder.EnableRetryOnFailure(3, TimeSpan.FromSeconds(5), null);
                 });
 
-                options.UseSqlLite
+                
             });
 
 

@@ -96,4 +96,7 @@
     <Folder Include="Models\BL\" />
     <Folder Include="Pages\TestPages\" />
   </ItemGroup>
+  <ItemGroup>
+	  <ProjectReference Include="..\..\NetGeneralLibrary\NetGeneralLibrary\NetGeneralLibrary\NETGeneralLibrary.csproj" />
+  </ItemGroup>
 </Project>

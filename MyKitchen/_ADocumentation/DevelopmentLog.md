@@ -134,3 +134,9 @@ why is my nuget connection broken? need to try in visual studio proper
 
 # 4/28/2023
 now in proper, debating if I should sqllite locally..
+
+# 4/30/2023
+Would still like to rewrite the entire app using web assembly blazor
+
+# 05/02/2023
+Before doing this, seperate the UI from the business logic best we can
