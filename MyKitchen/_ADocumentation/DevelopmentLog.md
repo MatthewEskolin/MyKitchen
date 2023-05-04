@@ -139,4 +139,7 @@ now in proper, debating if I should sqllite locally..
 Would still like to rewrite the entire app using web assembly blazor
 
 # 05/02/2023
-Before doing this, seperate the UI from the business logic best we can
+Before doing this, seperate the UI from the business logic best we can - or just dive in with a new branch
+
+# 05/04/2023
+Having Issues with NETGeneralLibrary - pipeline build in github is failling
