@@ -12,9 +12,9 @@ This app is a tool I created to help me spend less time thinking about what to e
 
 ## Existing Features
 * Meal Planning Calendar
-* What should I eat next advisor 
-* Create a personal database of your favorite meals
-* Food Database - Combine foods to build customizable meals  
+* Meal Recommendation Engine
+* Meal Database 
+* Food Database 
 
 ## Learning Focus
 * I am using this project to improve my knowledge of programming in .NET 
