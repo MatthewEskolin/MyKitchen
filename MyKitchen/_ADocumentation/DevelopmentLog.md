@@ -145,4 +145,4 @@ Before doing this, seperate the UI from the business logic best we can - or just
 Having Issues with NETGeneralLibrary - pipeline build in github is failling
 
 # 05/05/2023
-Put NETGeneralLibrary in Nuget? will that resolve it
+Put NETGeneralLibrary in Nuget? will that resolve it. creat public library
