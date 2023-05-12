@@ -149,4 +149,4 @@ Put NETGeneralLibrary in Nuget? will that resolve it.
 https://learn.microsoft.com/en-us/nuget/nuget-org/publish-a-package
 
 # 05/10/2023 
-Checkin
+Checkin2
