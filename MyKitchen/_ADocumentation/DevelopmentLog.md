@@ -152,4 +152,4 @@ https://learn.microsoft.com/en-us/nuget/nuget-org/publish-a-package
 Checkin2
 
 # 05/20/2023
-Research Nuger?
+Research Nuget

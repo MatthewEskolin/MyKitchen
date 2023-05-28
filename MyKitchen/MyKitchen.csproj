@@ -83,6 +83,7 @@
     <PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" Version="3.2.6" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.8" />
+    <PackageReference Include="NETGeneralLibrary" Version="1.0.0" />
     <PackageReference Include="Sendgrid" Version="9.28.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
     <PackageReference Include="System.Diagnostics.Tracing" Version="4.3.0" />
@@ -95,8 +96,5 @@
   <ItemGroup>
     <Folder Include="Models\BL\" />
     <Folder Include="Pages\TestPages\" />
-  </ItemGroup>
-  <ItemGroup>
-	  <ProjectReference Include="..\..\NetGeneralLibrary\NetGeneralLibrary\NetGeneralLibrary\NETGeneralLibrary.csproj" />
   </ItemGroup>
 </Project>
