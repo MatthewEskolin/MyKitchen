@@ -153,3 +153,6 @@ Checkin2
 
 # 05/20/2023
 Research Nuget
+
+# 5/19/2023
+Test Email Send - try running locally

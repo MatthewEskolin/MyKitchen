@@ -12,18 +12,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Dependencies\**" />
+    <Compile Remove="Migrations\scaffoldprodcontextMigrations\**" />
     <Compile Remove="Pages\Calendar\**" />
     <!-- <Compile Remove="Views\Home\**" /> -->
     <Compile Remove="Views\Shared\MvcGrid\**" />
     <Content Remove="Dependencies\**" />
+    <Content Remove="Migrations\scaffoldprodcontextMigrations\**" />
     <Content Remove="Pages\Calendar\**" />
     <!-- <Content Remove="Views\Home\**" /> -->
     <Content Remove="Views\Shared\MvcGrid\**" />
     <EmbeddedResource Remove="Dependencies\**" />
+    <EmbeddedResource Remove="Migrations\scaffoldprodcontextMigrations\**" />
     <EmbeddedResource Remove="Pages\Calendar\**" />
     <!-- <EmbeddedResource Remove="Views\Home\**" /> -->
     <EmbeddedResource Remove="Views\Shared\MvcGrid\**" />
     <None Remove="Dependencies\**" />
+    <None Remove="Migrations\scaffoldprodcontextMigrations\**" />
     <None Remove="Pages\Calendar\**" />
     <!-- <None Remove="Views\Home\**" /> -->
     <None Remove="Views\Shared\MvcGrid\**" />
@@ -50,6 +54,31 @@
     <Compile Remove="Data\Migrations\20191119213140_createviews2.Designer.cs" />
     <Compile Remove="Data\Migrations\20191119213312_fixviews.cs" />
     <Compile Remove="Data\Migrations\20191119213312_fixviews.Designer.cs" />
+    <Compile Remove="Migrations\20210314165209_reset migrations.cs" />
+    <Compile Remove="Migrations\20210314165209_reset migrations.Designer.cs" />
+    <Compile Remove="Migrations\20210314165651_string length.cs" />
+    <Compile Remove="Migrations\20210314165651_string length.Designer.cs" />
+    <Compile Remove="Migrations\20210319003647_createdate.cs" />
+    <Compile Remove="Migrations\20210319003647_createdate.Designer.cs" />
+    <Compile Remove="Migrations\20210319004018_createdate1.cs" />
+    <Compile Remove="Migrations\20210319004018_createdate1.Designer.cs" />
+    <Compile Remove="Migrations\20210704153714_favorite.cs" />
+    <Compile Remove="Migrations\20210704153714_favorite.Designer.cs" />
+    <Compile Remove="Migrations\20220901024113_grocerylist.cs" />
+    <Compile Remove="Migrations\20220901024113_grocerylist.Designer.cs" />
+    <Compile Remove="Migrations\20220901024309_empty.cs" />
+    <Compile Remove="Migrations\20220901024309_empty.Designer.cs" />
+    <Compile Remove="Migrations\20220905163905_grocerylist2.cs" />
+    <Compile Remove="Migrations\20220905163905_grocerylist2.Designer.cs" />
+    <Compile Remove="Migrations\20220905164108_maxlengths.cs" />
+    <Compile Remove="Migrations\20220905164108_maxlengths.Designer.cs" />
+    <Compile Remove="Migrations\20220910160506_isqueued.cs" />
+    <Compile Remove="Migrations\20220910160506_isqueued.Designer.cs" />
+    <Compile Remove="Migrations\20221028170206_isQueuedtoAvailableItemsView.cs" />
+    <Compile Remove="Migrations\20221028170206_isQueuedtoAvailableItemsView.Designer.cs" />
+    <Compile Remove="Migrations\20230529160009_Initial.cs" />
+    <Compile Remove="Migrations\20230529160009_Initial.Designer.cs" />
+    <Compile Remove="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.6.1" />
@@ -94,6 +123,7 @@
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="Models\BL\" />
     <Folder Include="Pages\TestPages\" />
   </ItemGroup>

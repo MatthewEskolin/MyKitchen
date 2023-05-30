@@ -11,7 +11,8 @@ namespace MyKitchen.Data
         public static void Initialize(ApplicationDbContext context)
         {
             // Uncomment the below line to run migrations during App Startup
-            // context.Database.Migrate();
+            context.Database.Migrate();
+            //context.Database.EnsureCreated();
 
             //Seed Tables with Initial Data.
 
