@@ -127,20 +127,34 @@ namespace MyKitchen
             });
 
 
+            //NOTE -> isn't this being set to true below call to adding endpoints?
             services.Configure<MvcOptions>(options => { options.EnableEndpointRouting = false; });
 
 
-            services.AddAuthentication()
-            .AddFacebook(options =>
+ 
+
+
+            if (_env.IsDevelopment())
             {
-                options.AppId = Configuration["Authentication:Facebook:AppId"];
-                options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            })
-            .AddGoogle(options =>
+                //skip social logins
+            }
+            else
             {
-                options.ClientId = Configuration["Authentication:Google:ClientId"];
-                options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
-            });
+               auth.AddFacebook(options =>
+                    {
+                        options.AppId = Configuration["Authentication:Facebook:AppId"];
+                        options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                    })
+                    .AddGoogle(options =>
+                    {
+                        options.ClientId = Configuration["Authentication:Google:ClientId"];
+                        options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+                    });
+
+            }
+
+
+
 
             //Add Service for be.exceptionless.io to capture unhandled exceptions and log messages
             //TODO move exceptionless key to keyvault?

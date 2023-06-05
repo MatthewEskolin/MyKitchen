@@ -103,33 +103,19 @@ namespace MyKitchen
 
             if (addr != null && addr.Addresses.Count > 0)
             {
-                var addrString = addr.Addresses.Aggregate((current, next) => current + "," + next);
-                Logger.LogInformation($"Program Running at {addrString}");
+                foreach (var address in addr.Addresses)
+                {
+                    Logger.LogInformation($"Program Running at {address}");
+                }
             }
             else
             {
-                Logger.LogInformation("Do not know how to determine host url...");
+                Logger.LogInformation("Could not Read Host URL");
             }
 
         }
 
-        private static void SeedDataBase()
-        {
-            using IServiceScope scope = Host.Services.CreateScope();
-            IServiceProvider services = scope.ServiceProvider;
 
-            try
-            {
-                var context = services.GetRequiredService<MyKitchen.Data.ApplicationDbContext>();
-                DbInitializer.Initialize(context);
-
-            }
-            catch (Exception ex)
-            {
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "An error occured while seeding the database.");
-            }
-        }
 
         public static void InitLogger()
         {
