@@ -24,6 +24,11 @@ public class Program
 
     public static void Main(string[] args)
     {
+        //we should be able to run in PROD mode
+        //Use to set to production
+        //setx ASPNETCORE_ENVIRONMENT Production /M
+        //to login az login --tenant ba6f651f-9fe1-4675-a765-278887f18618
+
         InitBuilder(args);
 
         InitEnvironment();
@@ -90,6 +95,18 @@ public class Program
         app.Logger.LogInformation("App is Built! Logging Ready!");
 
         app.UseExceptionless();
+
+        if (_env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
+        else
+        {
+            //TODO Test this and see where it redirects! could be very helpful whey debuggin prod errors
+            app.UseExceptionHandler("/Error");
+            app.UseHsts();
+        }
+
 
         app.Logger.LogCritical("Shutting Down.. still in dev!");
 
