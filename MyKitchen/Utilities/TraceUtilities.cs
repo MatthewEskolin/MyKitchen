@@ -1,7 +1,7 @@
 ﻿namespace MyKitchen.Utilities
 {
     public static class TraceUtilities
-    {
+    {/
         //For Logging before ILogger is available
         public static string TraceErrorIfNullOrEmpty(this string str,string name)
         {

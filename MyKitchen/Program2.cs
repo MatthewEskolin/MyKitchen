@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ using MyKitchen.Models.BL;
 using MyKitchen.Utilities;
 using Exceptionless;
 using Microsoft.Extensions.Logging;
-
+using MyKitchen.Middleware;
 
 namespace MyKitchen;
 
@@ -22,7 +23,7 @@ public class Program
     private static IWebHostEnvironment _env;
 
 
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         //we should be able to run in PROD mode
         //Use to set to production
@@ -37,7 +38,11 @@ public class Program
 
         AddDbContext();
 
-        //Add Transient Services
+        _builder.Services.AddScoped<UserInfo>();
+
+        _builder.Services.AddScoped<IUserInfo>(UserFactory.GetUser);
+
+    //    public MyKitchenDataService(ILogger<MyKitchenDataService> logger, ApplicationDbContext ctx, UserInfo userInfo, UserManager<ApplicationUser> userManager)
         _builder.Services.AddTransient<IMyKitchenDataContext>(provider => provider.GetService<ApplicationDbContext>());
 
         _builder.Services.AddTransient<IFoodItemRepository, EFFoodItemRepository>();
@@ -52,22 +57,22 @@ public class Program
 
         _builder.Services.AddTransient<IMealImageService, AzureBlobMealImageService>();
 
-        _builder.Services.AddTransient<IMyKitchenDataService, MyKitchenDataService>();
-
-        //Add Scoped Services
         _builder.Services.AddScoped<IGroceryListService, GroceryListService>();
 
-        _builder.Services.AddScoped<UserInfo>();
-
-        _builder.Services.AddScoped<IUserInfo>(UserFactory.GetUser);
 
 
         //Add Singleton Services
         _builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-        
-        //Add Other Services
 
+        //Add Other Services
+        //Add Identity Services
+        _builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+            .AddDefaultUI()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
+        _builder.Services.AddTransient<IMyKitchenDataService, MyKitchenDataService>();
 
         //-- Razor Pages
         AddRazorPages();
@@ -104,15 +109,48 @@ public class Program
         {
             //TODO Test this and see where it redirects! could be very helpful whey debuggin prod errors
             app.UseExceptionHandler("/Error");
-            app.UseHsts();
+            app.UseHttpsRedirection();
         }
 
+        app.UseRouting();
 
-        app.Logger.LogCritical("Shutting Down.. still in dev!");
+        app.UseStaticFiles();
 
+        app.UseCookiePolicy();
 
-        return;
+        app.UseSession();
 
+        app.UseAuthentication();
+
+        app.UseAuthorization();
+
+        app.UseMiddleware<EndpointLoggerMiddleware>();
+
+        app.UseEndpoints(endPoints =>
+        {
+
+            //for attribute routing
+            endPoints.MapControllers();
+
+            endPoints.MapControllerRoute(
+                name: "default",
+                pattern: "{controller}/{action=DisplayCurrentPrediction}/{id?}"
+            );
+            endPoints.MapControllerRoute(
+                name: "index_default",
+                pattern: "{controller}/{action=Index}");
+
+            endPoints.MapControllerRoute(
+                name: "foodItemDetail",
+                pattern: "{controller=FoodItems}/{action=Details}/{id}"
+            );
+
+            endPoints.MapRazorPages();
+        });
+
+        app.Logger.LogCritical("Calling app.RunAsync");
+
+        await app.RunAsync();
     }
 
     private static void AddAuthentication()
@@ -180,16 +218,12 @@ public class Program
 
     }
 
-    private static void SeedDatabase()
-    {
-        throw new NotImplementedException();
-    }
 
     private static void AddDbContext()
     {
         _builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlServer(_builder.Configuration.GetConnectionString("DefaultConnection"),
+            options.UseSqlServer(_builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty,
                 sb =>
                 {
                     sb.EnableRetryOnFailure(3, TimeSpan.FromSeconds(5), null);
@@ -243,7 +277,6 @@ public class Program
         _builder = WebApplication.CreateBuilder(args);
 
     }
-
 
 
     private static void SeedDataBase()
