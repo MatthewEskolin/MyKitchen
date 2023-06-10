@@ -12,11 +12,13 @@ using MyKitchen.Services;
 using MyKitchen.Models.BL;
 using MyKitchen.Utilities;
 using Exceptionless;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using MyKitchen.Middleware;
 
 namespace MyKitchen;
 
+[UsedImplicitly]
 public class Program
 {
     private static WebApplicationBuilder _builder;
@@ -279,23 +281,23 @@ public class Program
     }
 
 
-    private static void SeedDataBase()
-    {
-        //using IServiceScope scope = Host.Services.CreateScope();
-        //IServiceProvider services = scope.ServiceProvider;
+    //private static void SeedDataBase()
+    //{
+    //    //using IServiceScope scope = Host.Services.CreateScope();
+    //    //IServiceProvider services = scope.ServiceProvider;
 
-        //try
-        //{
-        //    var context = services.GetRequiredService<MyKitchen.Data.ApplicationDbContext>();
-        //    DbInitializer.Initialize(context);
+    //    //try
+    //    //{
+    //    //    var context = services.GetRequiredService<MyKitchen.Data.ApplicationDbContext>();
+    //    //    DbInitializer.Initialize(context);
 
-        //}
-        //catch (Exception ex)
-        //{
-        //    var logger = services.GetRequiredService<ILogger<Program>>();
-        //    logger.LogError(ex, "An error occured while seeding the database.");
-        //}
-    }
+    //    //}
+    //    //catch (Exception ex)
+    //    //{
+    //    //    var logger = services.GetRequiredService<ILogger<Program>>();
+    //    //    logger.LogError(ex, "An error occured while seeding the database.");
+    //    //}
+    //}
 
 }
 
