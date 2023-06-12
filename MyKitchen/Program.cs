@@ -1,6 +1,4 @@
-﻿using System.Configuration;
-
-namespace MyKitchen;
+﻿namespace MyKitchen;
 
 [UsedImplicitly]
 public class Program
