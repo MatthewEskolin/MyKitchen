@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MyKitchen.Data;
 using MyKitchen.Models.BL;
@@ -44,4 +46,36 @@ public class MyKitchenDataService : IMyKitchenDataService
 
 
     }
+
+    public async void TestSQLConnectivity()
+    {
+        try
+        {
+            using (SqlConnection connection = new SqlConnection("Server=VIVE\\SQLEXPRESS;Initial Catalog=MyKitchen;Trusted_Connection=true;TrustServerCertificate=True"))
+            {
+                connection.Open();
+                Console.WriteLine("Connection successful!");
+
+                // Perform additional database operations here
+
+                connection.Close();
+            }
+
+            Console.WriteLine("Database connectivity test successful.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to connect to the database: {ex.Message}");
+        }
+
+
+        _Logger.LogInformation($"START LOG{_ctx.Database.GetConnectionString()}");
+
+        await _ctx.Database.OpenConnectionAsync();
+        await _ctx.Database.CloseConnectionAsync();
+
+    }
+
+
+
 }

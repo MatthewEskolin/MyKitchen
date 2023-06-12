@@ -1,15 +1,18 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
 
 namespace MyKitchen.Middleware;
 
 public class EndpointLoggerMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly ILogger _logger;
 
-    public EndpointLoggerMiddleware(RequestDelegate next)
+    public EndpointLoggerMiddleware(RequestDelegate next, ILogger<EndpointLoggerMiddleware> logger)
     {
+        _logger = logger;
         _next = next;
     }
 
@@ -22,9 +25,10 @@ public class EndpointLoggerMiddleware
         {
             var routePattern = (endpoint as RouteEndpoint)?.RoutePattern?.RawText;
 
-            Console.WriteLine("Name: " + endpoint.DisplayName);
-            Console.WriteLine($"Route Pattern: {routePattern}");
-            Console.WriteLine("Metadata Types: " + string.Join(", ", endpoint.Metadata));
+
+            _logger.LogInformation("Name: " + endpoint.DisplayName);
+            _logger.LogInformation($"Route Pattern: {routePattern}");
+            _logger.LogInformation("Metadata Types: " + string.Join(", ", endpoint.Metadata));
         }
 
         await _next(context);

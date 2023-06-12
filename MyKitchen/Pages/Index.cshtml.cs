@@ -5,8 +5,16 @@ namespace MyApp.Namespace
 {
     public class IndexModel : PageModel
     {
+        private IMyKitchenDataService _ds;
+
+        public  IndexModel(IMyKitchenDataService ds)
+        {
+            _ds = ds;
+
+        }
         public void OnGet()
         {
+            _ds.TestSQLConnectivity();
         }
     }
 }

@@ -79,7 +79,7 @@
     <Compile Remove="Migrations\20230529160009_Initial.cs" />
     <Compile Remove="Migrations\20230529160009_Initial.Designer.cs" />
     <Compile Remove="Migrations\ApplicationDbContextModelSnapshot.cs" />
-    <Compile Remove="Program.cs" />
+    <Compile Remove="ProgramOld.cs" />
     <Compile Remove="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
