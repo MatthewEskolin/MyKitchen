@@ -8,5 +8,5 @@ public interface IMyKitchenDataService
 {
     //Settings
     Task UpdateSettingsAsync(string settings);
-    void TestSQLConnectivity();
+    Task TestSQLConnectivity();
 }

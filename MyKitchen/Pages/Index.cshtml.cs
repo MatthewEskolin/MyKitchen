@@ -12,9 +12,9 @@ namespace MyApp.Namespace
             _ds = ds;
 
         }
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            _ds.TestSQLConnectivity();
+            await _ds.TestSQLConnectivity();
         }
     }
 }

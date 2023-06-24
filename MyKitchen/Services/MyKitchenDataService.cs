@@ -47,7 +47,7 @@ public class MyKitchenDataService : IMyKitchenDataService
 
     }
 
-    public async void TestSQLConnectivity()
+    public async Task TestSQLConnectivity()
     {
         try
         {
@@ -70,6 +70,8 @@ public class MyKitchenDataService : IMyKitchenDataService
 
 
         _Logger.LogInformation($"START LOG{_ctx.Database.GetConnectionString()}");
+
+        _ctx.Database.SetConnectionString("Server=mykitchen.database.windows.net;Initial Catalog=MyKitchen;Persist Security Info=False;User ID=matteskolin;Password=sdf234F@#f!!3456AB;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
         await _ctx.Database.OpenConnectionAsync();
         await _ctx.Database.CloseConnectionAsync();
