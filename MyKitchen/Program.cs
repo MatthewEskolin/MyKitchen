@@ -265,7 +265,11 @@ public class Program
 
         try
         {
+            _app.Logger.LogInformation("Initializing Database..");
+
+
             var dbInitializer = _app.Services.GetRequiredService<DbInitializer>();
+            dbInitializer.Initialize();
         }
         catch (Exception ex)
         {

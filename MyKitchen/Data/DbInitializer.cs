@@ -1,22 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Linq;
 
 namespace MyKitchen.Data
 {
     public class DbInitializer
     {
-        public void Initialize(ApplicationDbContext context)
+        private readonly ApplicationDbContext _ctx;
+
+        public DbInitializer(ApplicationDbContext ctx)
         {
-            // Uncomment the below line to run migrations during App Startup
+            _ctx = ctx;
+        }
+
+        public void Initialize()
+        {
+            //RUN MIGRATIONS 
             //context.Database.Migrate();
             //context.Database.EnsureCreated();
-            //Seed Tables with Initial Data.
 
-            InitializeFoodItems(context);
-            InitializeFoodGroups(context);
+            InitializeFoodItems(_ctx);
+            InitializeFoodGroups(_ctx);
+
 
 
         }
