@@ -155,4 +155,4 @@ Checkin2
 Research Nuget
 
 # 5/19/2023
-Test Email Send - try running locally
+Test Email Send - try running locally and improve logging

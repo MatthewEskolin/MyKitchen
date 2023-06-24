@@ -1,19 +1,82 @@
-﻿namespace MyKitchen;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace MyKitchen;
 
 [UsedImplicitly]
 public class Program
 {
     private static WebApplicationBuilder _builder;
     private static IWebHostEnvironment _env;
+    private static WebApplication _app;
 
 
     public static async Task Main(string[] args)
     {
-        //we should be able to run in PROD mode
-        //Use to set to production
-        //setx ASPNETCORE_ENVIRONMENT Production /M
-        //to login az login --tenant ba6f651f-9fe1-4675-a765-278887f18618
+        _app = BuildApp(args);
+        
+        SeedDataBase();
 
+        ConfigureApp();
+
+        await _app.RunAsync();
+    }
+
+    private static void ConfigureApp()
+    {
+        _app.UseExceptionless();
+
+        if (_env.IsDevelopment())
+        {
+            _app.UseDeveloperExceptionPage();
+        }
+        else
+        {
+            //TODO Test this and see where it redirects! could be very helpful whey debuggin prod errors
+            _app.UseExceptionHandler("/Error");
+            _app.UseHttpsRedirection();
+        }
+
+        _app.UseRouting();
+
+        _app.UseStaticFiles();
+
+        _app.UseCookiePolicy();
+
+        _app.UseSession();
+
+        _app.UseAuthentication();
+
+        _app.UseAuthorization();
+
+        _app.UseMiddleware<EndpointLoggerMiddleware>();
+
+        _app.UseEndpoints(endPoints =>
+        {
+
+            //for attribute routing
+            endPoints.MapControllers();
+
+            endPoints.MapControllerRoute(
+                name: "default",
+                pattern: "{controller}/{action=DisplayCurrentPrediction}/{id?}"
+            );
+            endPoints.MapControllerRoute(
+                name: "index_default",
+                pattern: "{controller}/{action=Index}");
+
+            endPoints.MapControllerRoute(
+                name: "foodItemDetail",
+                pattern: "{controller=FoodItems}/{action=Details}/{id}"
+            );
+
+            endPoints.MapRazorPages();
+        });
+
+        _app.Logger.LogInformation("Calling app.RunAsync");
+    }
+
+    private static WebApplication BuildApp(string[] args)
+    {
         InitBuilder(args);
 
         InitEnvironment();
@@ -37,6 +100,8 @@ public class Program
         _builder.Services.AddTransient<IEmailSender, EmailSender>();
 
         _builder.Services.AddTransient<CalendarService>();
+
+        _builder.Services.AddTransient<DbInitializer>();
 
         _builder.Services.AddTransient<IMealImageService, AzureBlobMealImageService>();
 
@@ -76,65 +141,11 @@ public class Program
 
         _builder.Services.AddExceptionless(_builder.Configuration["Exceptionless:ApiKey"].TraceErrorIfNullOrEmpty("Exceptionless.ApiKey"));
 
-        //SeedDatabase();
-        var app = _builder.Build();
+        WebApplication app = _builder.Build();
 
-        //Logging is now available!
-        app.Logger.LogInformation("App is Built! Logging Ready!");
+        app.Logger.LogInformation("App is built, logging now available");
 
-        app.UseExceptionless();
-
-        if (_env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
-        else
-        {
-            //TODO Test this and see where it redirects! could be very helpful whey debuggin prod errors
-            app.UseExceptionHandler("/Error");
-            app.UseHttpsRedirection();
-        }
-
-        app.UseRouting();
-
-        app.UseStaticFiles();
-
-        app.UseCookiePolicy();
-
-        app.UseSession();
-
-        app.UseAuthentication();
-
-        app.UseAuthorization();
-
-        app.UseMiddleware<EndpointLoggerMiddleware>();
-
-        app.UseEndpoints(endPoints =>
-        {
-
-            //for attribute routing
-            endPoints.MapControllers();
-
-            endPoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller}/{action=DisplayCurrentPrediction}/{id?}"
-            );
-            endPoints.MapControllerRoute(
-                name: "index_default",
-                pattern: "{controller}/{action=Index}");
-
-            endPoints.MapControllerRoute(
-                name: "foodItemDetail",
-                pattern: "{controller=FoodItems}/{action=Details}/{id}"
-            );
-
-            endPoints.MapRazorPages();
-        });
-
-        app.Logger.LogCritical("Calling app.RunAsync");
-
-        await app.RunAsync();
-
+        return app;
 
     }
 
@@ -202,8 +213,6 @@ public class Program
         );
 
     }
-
-
     private static void AddDbContext()
     {
         _builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -212,7 +221,6 @@ public class Program
             options.UseSqlServer(_builder.Configuration.GetConnectionString("DefaultConnection")!);
         });
     }
-
     private static void ConfigureCookies()
     {
         //add services here
@@ -223,40 +231,13 @@ public class Program
             options.MinimumSameSitePolicy = SameSiteMode.None;
         });
     }
-
     private static void AddKeyVault()
     {
-        //configure the configuration to use a different Key Vault depending on whether we are in dev or prod
         var tokenProvider = new AzureServiceTokenProvider();
-
-
-        // Get the access token
-        //var token = tokenProvider.GetAccessTokenAsync("https://management.azure.com/").GetAwaiter().GetResult();
-
-
-        //// Decode the access token
-        //JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-        //JwtSecurityToken jwtToken = tokenHandler.ReadJwtToken(token);
-
-        //// Get the username claim
-        //var username = jwtToken.Claims.Where(c => c.Type == "unique_name").FirstOrDefault();
-
-
-        //if (!string.IsNullOrEmpty(username))
-        //{
-        //    Console.WriteLine("Username: " + username);
-        //}
-        //else
-        //{
-        //    Console.WriteLine("Failed to retrieve the username from the access token.");
-        //}
-
 
 
         var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(tokenProvider.KeyVaultTokenCallback));
         var keyUri = $"https://{_builder.Configuration["keyVaultName"]}.vault.azure.net/";
-
-
         try
         {
             _builder.Configuration.AddAzureKeyVault(keyUri, keyVaultClient, new DefaultKeyVaultSecretManager());
@@ -267,42 +248,31 @@ public class Program
         {
             Trace.WriteLine($"key vault failed to connect {ex} ");
             Environment.Exit(0);
-
         }
-
-
     }
-
     private static void InitEnvironment()
     {
         _env = _builder.Environment;
         Trace.WriteLine($"Environment = {_env.EnvironmentName}");
     }
-
     private static void InitBuilder(string[] args)
     {
         _builder = WebApplication.CreateBuilder(args);
 
     }
+    private static void SeedDataBase()
+    {
 
-
-    //private static void SeedDataBase()
-    //{
-    //    //using IServiceScope scope = Host.Services.CreateScope();
-    //    //IServiceProvider services = scope.ServiceProvider;
-
-    //    //try
-    //    //{
-    //    //    var context = services.GetRequiredService<MyKitchen.Data.ApplicationDbContext>();
-    //    //    DbInitializer.Initialize(context);
-
-    //    //}
-    //    //catch (Exception ex)
-    //    //{
-    //    //    var logger = services.GetRequiredService<ILogger<Program>>();
-    //    //    logger.LogError(ex, "An error occurred while seeding the database.");
-    //    //}
-    //}
+        try
+        {
+            var dbInitializer = _app.Services.GetRequiredService<DbInitializer>();
+        }
+        catch (Exception ex)
+        {
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "An error occurred while seeding the database.");
+        }
+    }
 
 }
 

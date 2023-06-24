@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MyKitchen.Data
 {
-    public static class DbInitializer
+    public class DbInitializer
     {
-        public static void Initialize(ApplicationDbContext context)
+        public void Initialize(ApplicationDbContext context)
         {
             // Uncomment the below line to run migrations during App Startup
             //context.Database.Migrate();
@@ -21,24 +21,21 @@ namespace MyKitchen.Data
 
         }
 
-
-
         private static void InitializeFoodGroups(ApplicationDbContext context)
         {
             if (context.FoodGroups.Any())
             {
-                return;//DB has been seeded.
-            }
+                return;            }
 
             var seedFoodGroups = new FoodGroup[]
             {
-                new FoodGroup(){Name = "Vegetables"},
-                new FoodGroup(){Name = "Fruits"},
-                new FoodGroup(){Name = "Grains"},
-                new FoodGroup(){Name = "Protein"},
-                new FoodGroup(){Name = "Dairy"},
-                new FoodGroup(){Name = "Oils"},
-                new FoodGroup(){Name = "Other Calories"}
+                new(){Name = "Vegetables"},
+                new(){Name = "Fruits"},
+                new(){Name = "Grains"},
+                new(){Name = "Protein"},
+                new(){Name = "Dairy"},
+                new(){Name = "Oils"},
+                new(){Name = "Other Calories"}
             };
 
             foreach (var item in seedFoodGroups)
