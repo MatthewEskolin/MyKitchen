@@ -155,6 +155,9 @@ Checkin2
 Research Nuget
 
 # 5/19/2023
+<<<<<<< HEAD
 Test Email Send - try running locally
 # 06/24/2023
 Trying to setup local envirnoment
+=======
+Test Email Send - try running locally and improve logging

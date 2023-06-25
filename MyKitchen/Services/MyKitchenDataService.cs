@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MyKitchen.Data;
 using MyKitchen.Models.BL;
@@ -44,4 +46,16 @@ public class MyKitchenDataService : IMyKitchenDataService
 
 
     }
+
+    public async Task TestSQLConnectivity()
+    {
+        _Logger.LogInformation($"START LOG{_ctx.Database.GetConnectionString()}");
+
+        await _ctx.Database.OpenConnectionAsync();
+        await _ctx.Database.CloseConnectionAsync();
+
+    }
+
+
+
 }
