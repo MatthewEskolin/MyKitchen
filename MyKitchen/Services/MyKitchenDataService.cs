@@ -49,29 +49,7 @@ public class MyKitchenDataService : IMyKitchenDataService
 
     public async Task TestSQLConnectivity()
     {
-        try
-        {
-            using (SqlConnection connection = new SqlConnection("Server=VIVE\\SQLEXPRESS;Initial Catalog=MyKitchen;Trusted_Connection=true;TrustServerCertificate=True"))
-            {
-                connection.Open();
-                Console.WriteLine("Connection successful!");
-
-                // Perform additional database operations here
-
-                connection.Close();
-            }
-
-            Console.WriteLine("Database connectivity test successful.");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Failed to connect to the database: {ex.Message}");
-        }
-
-
         _Logger.LogInformation($"START LOG{_ctx.Database.GetConnectionString()}");
-
-        _ctx.Database.SetConnectionString("Server=mykitchen.database.windows.net;Initial Catalog=MyKitchen;Persist Security Info=False;User ID=matteskolin;Password=sdf234F@#f!!3456AB;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
         await _ctx.Database.OpenConnectionAsync();
         await _ctx.Database.CloseConnectionAsync();
