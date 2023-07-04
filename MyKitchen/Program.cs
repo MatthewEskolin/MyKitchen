@@ -14,11 +14,28 @@ public class Program
     {
         _app = BuildApp(args);
         
-        SeedDataBase();
+//        SeedDataBase();
 
         ConfigureApp();
 
+
+        LogRunningApp();
         await _app.RunAsync();
+
+
+
+    }
+
+    private static void LogRunningApp()
+    {
+
+                // Get the running URL
+        var environment = _app.Services.GetRequiredService<IWebHostEnvironment>();
+        var url = $"{environment.WebRootPath}/{environment.ApplicationName}";
+
+        // Log the URL
+        var logger = _app.Services.GetRequiredService<ILogger<Program>>();
+        logger.LogInformation($"Running URL: {url}");
     }
 
     private static void ConfigureApp()
