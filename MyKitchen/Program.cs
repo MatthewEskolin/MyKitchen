@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-
+﻿
 namespace MyKitchen;
 
 [UsedImplicitly]
@@ -9,33 +8,15 @@ public class Program
     private static IWebHostEnvironment _env;
     private static WebApplication _app;
 
-
     public static async Task Main(string[] args)
     {
         _app = BuildApp(args);
-        
-//        SeedDataBase();
+
+        LogTester.TestLog(_app.Logger);
 
         ConfigureApp();
-
-
-        LogRunningApp();
+        SeedDataBase();
         await _app.RunAsync();
-
-
-
-    }
-
-    private static void LogRunningApp()
-    {
-
-                // Get the running URL
-        var environment = _app.Services.GetRequiredService<IWebHostEnvironment>();
-        var url = $"{environment.WebRootPath}/{environment.ApplicationName}";
-
-        // Log the URL
-        var logger = _app.Services.GetRequiredService<ILogger<Program>>();
-        logger.LogInformation($"Running URL: {url}");
     }
 
     private static void ConfigureApp()
@@ -124,8 +105,6 @@ public class Program
 
         _builder.Services.AddScoped<IGroceryListService, GroceryListService>();
 
-
-
         //Add Singleton Services
         _builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -158,6 +137,9 @@ public class Program
 
         _builder.Services.AddExceptionless(_builder.Configuration["Exceptionless:ApiKey"].TraceErrorIfNullOrEmpty("Exceptionless.ApiKey"));
 
+        //Logging
+        _builder.Logging.AddProvider(new CustomDebugLoggerProvider());
+
         WebApplication app = _builder.Build();
 
         app.Logger.LogInformation("App is built, logging now available");
@@ -165,6 +147,11 @@ public class Program
         return app;
 
     }
+
+
+
+
+
 
     private static void AddAuthentication()
     {
@@ -191,8 +178,6 @@ public class Program
                     options.ClientId = googleClientId;
                     options.ClientSecret = googleClientSecret;
                 });
-
-
         }
     }
 
@@ -237,6 +222,21 @@ public class Program
             Trace.WriteLine($"ConnectionString={_builder.Configuration.GetConnectionString("DefaultConnection")}");
             options.UseSqlServer(_builder.Configuration.GetConnectionString("DefaultConnection")!);
         });
+
+        //resolve options of type InitializeApplicationDbContext, transiently..
+        _builder.Services.AddTransient(provider =>
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<InitializeApplicationDbContext>();
+            optionsBuilder.UseSqlServer(_builder.Configuration.GetConnectionString("DefaultConnection"));
+            return optionsBuilder.Options;
+        });
+
+        _builder.Services.AddDbContext<InitializeApplicationDbContext>(options =>
+        {
+            Trace.WriteLine($"ConnectionString={_builder.Configuration.GetConnectionString("DefaultConnection")}");
+            options.UseSqlServer(_builder.Configuration.GetConnectionString("DefaultConnection")!);
+        }, ServiceLifetime.Transient);
+
     }
     private static void ConfigureCookies()
     {
@@ -277,13 +277,13 @@ public class Program
         _builder = WebApplication.CreateBuilder(args);
 
     }
+
     private static void SeedDataBase()
     {
 
         try
         {
             _app.Logger.LogInformation("Initializing Database..");
-
 
             var dbInitializer = _app.Services.GetRequiredService<DbInitializer>();
             dbInitializer.Initialize();
