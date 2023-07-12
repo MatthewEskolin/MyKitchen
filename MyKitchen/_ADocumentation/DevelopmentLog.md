@@ -155,7 +155,11 @@ Checkin2
 Research Nuget
 
 # 7.11.2023
+<<<<<<< HEAD
 New Format
 
 # 7.12.2023
 Checkin
+=======
+New Format
+>>>>>>> 3a33e32 (push)
