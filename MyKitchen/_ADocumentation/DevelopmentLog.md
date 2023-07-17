@@ -154,12 +154,5 @@ Checkin2
 # 05/20/2023
 Research Nuget
 
-# 7.11.2023
-<<<<<<< HEAD
-New Format
-
-# 7.12.2023
-Checkin
-=======
-New Format
->>>>>>> 3a33e32 (push)
+# 07/17/2023
+Need ability to add daily TASKS and integrate them with any.do!
