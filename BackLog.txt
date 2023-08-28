@@ -1,0 +1,2 @@
+-Create special calendar items for "COOK TODAY", "PREP", and "SHOP"
+-Save items from the grocery list so they can be readded when needed
