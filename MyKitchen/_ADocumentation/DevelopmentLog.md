@@ -157,4 +157,5 @@ Research Nuget
 # 7.16.2023
 Consolidate / Cleanup / Fix Bugs / Remove Unused Code
 
-
+# 07/17/2023
+Need ability to add daily TASKS and integrate them with any.do! 
