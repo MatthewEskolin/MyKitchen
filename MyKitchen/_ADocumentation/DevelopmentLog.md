@@ -154,12 +154,7 @@ Checkin2
 # 05/20/2023
 Research Nuget
 
-# 7.11.2023
-<<<<<<< HEAD
-New Format
+# 7.16.2023
+Consolidate / Cleanup / Fix Bugs / Remove Unused Code
 
-# 7.12.2023
-Checkin
-=======
-New Format
->>>>>>> 3a33e32 (push)
+

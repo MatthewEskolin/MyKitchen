@@ -79,7 +79,14 @@ public class Program
 
         InitEnvironment();
 
+
+
         AddKeyVault();
+
+        if (_env.IsDevelopment())
+        {
+            AddLocalConfig();
+        }
 
         AddDbContext();
 
@@ -148,9 +155,16 @@ public class Program
 
     }
 
+    private static void AddLocalConfig()
+    {
+        _builder.Configuration.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
 
 
+        //DEBUG CONNECTION STRING
+        Trace.WriteLine($"ConnectionString={_builder.Configuration.GetConnectionString("DefaultConnection")}");
 
+
+    }
 
 
     private static void AddAuthentication()
@@ -230,6 +244,10 @@ public class Program
             optionsBuilder.UseSqlServer(_builder.Configuration.GetConnectionString("DefaultConnection"));
             return optionsBuilder.Options;
         });
+
+
+        //DEBUG CONNECTION STRING
+        Trace.WriteLine($"ConnectionString={_builder.Configuration.GetConnectionString("DefaultConnection")}");
 
         _builder.Services.AddDbContext<InitializeApplicationDbContext>(options =>
         {

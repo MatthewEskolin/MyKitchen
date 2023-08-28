@@ -26,8 +26,6 @@ This app is a tool I created to help me spend less time thinking about what to e
 * Uses Azure Devops - Builds with yml scripts inside a build pipeline - Releases with 'Azure App Service Deploy' task into our azure subscription.
 * CI/CD is currently enabled to prod.
 
-
-
 ## Azure DevOps Organization
 
 This Project currently uses Azure Devops for Project Planning. 
