@@ -1,2 +1,3 @@
 -Create special calendar items for "COOK TODAY", "PREP", and "SHOP"
 -Save items from the grocery list so they can be readded when needed
+-Create Reminders in either any.do/amazon/sms to alert us when we need to plan, shop, prop, and cook
