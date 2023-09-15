@@ -298,7 +298,6 @@ public class Program
 
     private static void SeedDataBase()
     {
-
         try
         {
             _app.Logger.LogInformation("Initializing Database..");
