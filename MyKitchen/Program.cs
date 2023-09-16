@@ -309,7 +309,6 @@ public class Program
             _app.Logger.LogError(ex, "An error occurred while seeding the database.");
         }
     }
-
 }
 
 
