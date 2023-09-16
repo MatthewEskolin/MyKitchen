@@ -293,7 +293,6 @@ public class Program
     private static void InitBuilder(string[] args)
     {
         _builder = WebApplication.CreateBuilder(args);
-
     }
 
     private static void SeedDataBase()
