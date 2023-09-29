@@ -3,9 +3,12 @@
     "MyKitchen": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:5001/",
+      "launchUrl": "https://localhost:5000/",
+      "logging": {
+        "moduleLoad": false
+      },
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
   }

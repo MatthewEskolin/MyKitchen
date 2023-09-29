@@ -4,9 +4,9 @@ namespace MyKitchen.Data
 {
     public class DbInitializer
     {
-        private readonly ApplicationDbContext _ctx;
+        private readonly InitializeApplicationDbContext _ctx;
 
-        public DbInitializer(ApplicationDbContext ctx)
+        public DbInitializer(InitializeApplicationDbContext ctx)
         {
             _ctx = ctx;
         }
@@ -24,7 +24,7 @@ namespace MyKitchen.Data
 
         }
 
-        private static void InitializeFoodGroups(ApplicationDbContext context)
+        private static void InitializeFoodGroups(InitializeApplicationDbContext context)
         {
             if (context.FoodGroups.Any())
             {
@@ -49,7 +49,7 @@ namespace MyKitchen.Data
             context.SaveChanges();
         }
 
-        private static void InitializeFoodItems(ApplicationDbContext context)
+        private static void InitializeFoodItems(InitializeApplicationDbContext context)
         {
             if (context.FoodItems.Any())
             {

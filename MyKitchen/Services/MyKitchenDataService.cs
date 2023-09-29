@@ -49,10 +49,12 @@ public class MyKitchenDataService : IMyKitchenDataService
 
     public async Task TestSQLConnectivity()
     {
-        _Logger.LogInformation($"START LOG{_ctx.Database.GetConnectionString()}");
+        _Logger.LogInformation($"Testing SQL Connectivity to {_ctx.Database.GetConnectionString()}");
 
         await _ctx.Database.OpenConnectionAsync();
         await _ctx.Database.CloseConnectionAsync();
+
+        _Logger.LogInformation("DB Connection Sucess");
 
     }
 
