@@ -26,21 +26,46 @@ namespace MyKitchen.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(new SearchArgs());
         }
 
-        public IActionResult SearchForItems([FromForm]string searchText, [FromForm]string cbShowMealsOnly,[FromForm]string cbShowQueuedonly)
+        public IActionResult SearchForItems([FromForm]SearchArgs searchArgs)
         {
+            if (!String.IsNullOrEmpty(Request.Form["action"]))
+            {
+                var action = Request.Form["action"][0];
 
-            //if showing meals only, want to exclude the Food Items from the search result;
-            var items = ctx.vwsUserMealsAndFoodItems.Where(x => x.AppUserId == CurrentUser.User.Id && x.ItemName.Contains(searchText));
+                switch (action)
+                {
+                    case "next":
+                        //calculate new searchargs
+                        //searchArgs.PageIndex++;
+                        break;
 
-            if(cbShowMealsOnly == "on")
+                    case "previous":
+                        //calculate new searchargs
+                        //searchArgs.PageIndex--;
+                        break;
+
+                    default: throw new Exception("Invalid Form Submit");
+                }
+            };
+
+            var items = ctx.vwsUserMealsAndFoodItems.AsQueryable();
+
+            items = items.Where(x => x.AppUserId == CurrentUser.User.Id);
+
+            if(!String.IsNullOrEmpty(searchArgs.SearchText))
+            {
+                items = items.Where(x => x.ItemName.Contains(searchArgs.SearchText));
+            }
+
+            if(searchArgs.CbShowMealsOnly == "on")
             {
                 items = items.Where(x => x.ItemType == "MEAL");
             }
 
-            if (cbShowQueuedonly == "on")
+            if (searchArgs.CbShowQueuedOnly== "on")
             {
                 //items = items.Where(x => x.)
                 throw new NotImplementedException(
@@ -48,9 +73,42 @@ namespace MyKitchen.Controllers
 
             }
 
+            //paging 
+            var skipItems = (searchArgs.PageIndex - 1) * searchArgs.PageSize;
+            items = items
+                .Skip(skipItems)
+                .Take(searchArgs.PageSize);
 
-            return new JsonResult(items.ToList());
+
+            var rtn = items.ToList();
+
+            return new JsonResult(rtn);
         }
+
+
+        //public IActionResult SearchForItems([FromForm] string searchText, [FromForm] string cbShowMealsOnly, [FromForm] string cbShowQueuedonly)
+        //{
+
+        //    //if showing meals only, want to exclude the Food Items from the search result;
+        //    var items = ctx.vwsUserMealsAndFoodItems.Where(x => x.AppUserId == CurrentUser.User.Id && x.ItemName.Contains(searchText));
+
+        //    if (cbShowMealsOnly == "on")
+        //    {
+        //        items = items.Where(x => x.ItemType == "MEAL");
+        //    }
+
+        //    if (cbShowQueuedonly == "on")
+        //    {
+        //        //items = items.Where(x => x.)
+        //        throw new NotImplementedException(
+        //            "Where does the on  and off come from? can we consolidate these parameters into a single searchargs class?");
+
+        //    }
+
+
+        //    return new JsonResult(items.ToList());
+        //}
+
 
 
         //Gets all events in the database - not filtered by user - this shouldn't be used to view a users events.
@@ -69,8 +127,20 @@ namespace MyKitchen.Controllers
         //Gets Available Items for the current User.
         public JsonResult GetAvailableItems()
         {
-            var items = ctx.vwsUserMealsAndFoodItems.Where(x => x.AppUserId == CurrentUser.User.Id).ToList();;
-            return new JsonResult(items);
+            var searchArgs = new SearchArgs();
+
+            var items = ctx.vwsUserMealsAndFoodItems.Where(x => x.AppUserId == CurrentUser.User.Id);
+
+            //paging
+            var skipItems = (searchArgs.PageIndex - 1) * searchArgs.PageSize;
+            items = items
+                .Skip(skipItems)
+                .Take(searchArgs.PageSize);
+
+
+            var rtn = items.ToList();
+
+            return new JsonResult(rtn);
         }
 
         [HttpPost]
@@ -122,5 +192,34 @@ namespace MyKitchen.Controllers
 
             return new JsonResult(true);
         }
+
+
+
+
     }
+
+    public class SearchArgs
+    {
+        public string SearchText { get; set; }
+        public string CbShowMealsOnly { get; set; }
+        public string CbShowQueuedOnly { get; set; }
+        public int PageIndex { get; set; } = 1;
+        public int PageSize { get; set; } = 3;
+        public int TotalPages { get; set; } = 10;
+
+        public bool ShowNextButton()
+        {
+            return PageIndex < TotalPages;
+        }
+
+        public bool ShowPreviousButton()
+        {
+            return PageIndex > 1;
+        }
+
+
+        public int ModelTest { get; set; }
+
+    }
+
 }

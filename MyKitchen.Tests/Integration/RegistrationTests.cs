@@ -22,7 +22,7 @@ namespace MyKitchen.Tests
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddDefaultTokenProviders();
 
-                services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer( WithTestDatabase.MyConnectionString));
+                //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer( WithTestDatabase.MyConnectionString));
                 services.AddTransient<EFFoodItemRepository>();
                 services.AddTransient<EfMealRepository>();
 

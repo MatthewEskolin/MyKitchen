@@ -15,28 +15,28 @@ namespace MyKitchen.Tests
         public static void Run(Action<ApplicationDbContext> testFunc)
         {
 
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlServer(WithTestDatabase.MyConnectionString).Options;
+            //var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlServer(WithTestDatabase.MyConnectionString).Options;
 
-            using (var context = new MyKitchen.Data.ApplicationDbContext(options))
-            {
-                try
-                {
-                    //consider using Database.Migrate
-                    // await context.Database.EnsureCreatedAsync();
+            //using (var context = new MyKitchen.Data.ApplicationDbContext(options))
+            //{
+            //    try
+            //    {
+            //        //consider using Database.Migrate
+            //        // await context.Database.EnsureCreatedAsync();
                     
-                    // PrepareTestDatabase(context);
+            //        // PrepareTestDatabase(context);
                     
-                    testFunc(context);
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-                finally
-                {
-                    // CleanupTestDatabase(context);
-                }
-            }
+            //        testFunc(context);
+            //    }
+            //    catch (Exception)
+            //    {
+            //        throw;
+            //    }
+            //    finally
+            //    {
+            //        // CleanupTestDatabase(context);
+            //    }
+            //}
         }
     }
 

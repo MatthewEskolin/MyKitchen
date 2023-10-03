@@ -1,4 +1,4 @@
-﻿
+﻿@model MyKitchen.Controllers.SearchArgs
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,32 +6,55 @@
 
 
 <form id="fmSearchItems" name="searchForm" method="post" asp-action="SearchForItems">
+    <div class="search-bar">
+        <input class="input-text" type="text" name="searchText" placeholder="Search">
+        <i class="icon fa fa-search" style="cursor:pointer;" onclick="$('#fmSearchItems').submit()"></i>
+        Show Meals Only? <input type="checkbox" name="CbShowMealsOnly" value="1" />
+        Show Queued Only <input type="checkbox" name="CbShowQueuedOnly" value="1" />
+    </div>
 
+    <h1 id="h1draggable" class="draggable-event"></h1>
+    <div id="itemContainer"> </div>
 
-<div class="search-bar">
-  <input class="input-text" type="text" name="searchText" placeholder="Search">
-  <i class="icon fa fa-search" style="cursor:pointer;" onclick="$('#fmSearchItems').submit()"></i>
-  Show Meals Only? <input type="checkbox" name="cbShowMealsOnly" value="1"/>
-  Show Queued Only <input type="checkbox" name="cbShowQueuedOnly" value="1"/>
+    <!-- Pagination -->
+    <div class="pagination">
+@*        @if (Model.PageIndex > 1) { } @*    @for (int i = 1; i <= Model.TotalPages; i++) { } *@    @if (Model.PageIndex < Model.TotalPages) { }
+@**@
+
+<!-- Flex container for horizontal alignment -->
+<div class="button-container">
+    <!-- Wrap each input with a div and give them unique IDs or classes -->
+    <div id="previousButtonDiv">
+        <input type="submit" value="Previous" onclick="setAction('previous')" />
+    </div>
+
+    <div id="submitButtonDiv">
+        <input type="submit" name="" />
+    </div>
+
+    <div id="nextButtonDiv">
+        <input type="submit" value="Next" onclick="setAction('next')" />
+    </div>
 </div>
+    </div>
+
+    <input type="hidden" id="idPageSize" name="pageSize" value="@Model.PageSize" />
+    <input type="hidden" id="idPageIndex" name="pageIndex" value="@Model.PageIndex" />
+    <input type="hidden" name="action" value="" />
 </form>
 
 
-<h1 id="h1draggable" class="draggable-event"></h1>
-<div id="itemContainer">
-
-</div>
 
 <div style="clear: both;"></div>
 <div id="calendar">
 </div>
 
 
-<link rel="stylesheet" type="text/css" href="/lib/fullcalendar/core/main.min.css"/>
-<link rel="stylesheet" type="text/css" href="/lib/fullcalendar/daygrid/main.min.css"/>
+<link rel="stylesheet" type="text/css" href="/lib/fullcalendar/core/main.min.css" />
+<link rel="stylesheet" type="text/css" href="/lib/fullcalendar/daygrid/main.min.css" />
 
 @section Scripts
-{
+    {
 
     <script src="/lib/fullcalendar/core/main.min.js"></script>
     <script src="/lib/fullcalendar/daygrid/main.min.js"></script>
@@ -39,6 +62,42 @@
     @*<script src="/lib/superagent/superagent.js"></script>*@
 
     <script type="text/javascript">
+
+
+        function setAction(actionName) {
+            // Set the value of the hidden input field based on the clicked button
+            document.querySelector('input[name="action"]').value = actionName;
+
+            if (actionName == "next") {
+                var $elem = $("#idPageIndex");
+
+                var pageIndex = Number($("#idPageIndex").val());
+                var newValue = pageIndex + 1;
+
+                $elem.val(newValue);
+
+            }
+            if (actionName == "previous") {
+                var $elem = $("#idPageIndex");
+
+                var pageIndex = Number($("#idPageIndex").val());
+                var newValue = pageIndex - 1;
+
+                $elem.val(newValue);
+
+            }
+
+        }
+
+        function toggleDivVisibility(divId) {
+            var div = document.getElementById(divId);
+            if (div.style.display === "none") {
+                div.style.display = "block";
+            } else {
+                div.style.display = "none";
+            }
+        }
+
 
         //event fetching function
         //import { req } from 'superagent';
@@ -48,18 +107,18 @@
             {
                 url: "/calendar/GetEventsFeed",
                 method: 'GET',
-                failure: function() {
+                failure: function () {
                     alert('could not load items');
                 },
                 color: 'blue',
-                textColor:'black'
+                textColor: 'black'
             }
         ];
-        
+
         var theCalendar = null;
 
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             var events = [];
 
             GenerateCalendar(eventSources);
@@ -97,82 +156,78 @@
             $.ajax({
                 type: "GET",
                 url: "/calendar/GetAvailableItems",
-                success: function(data) {
+                success: function (data) {
 
                     window.availableItems = [];
 
                     $.each(data,
-                        function(i, v) {
+                        function (i, v) {
                             //for each item create a new div box;
 
                             window.availableItems.push(v);
 
                             var trimItemName = v.itemName.replace(/'/g, '$');
-                            //TODO figure out how to have single quotes in the item name without breaking javascript. 
-
-
+                            //TODO figure out how to have single quotes in the item name without breaking javascript.
 
                             var dataEvent = "{\"itemId\":" + v.itemId + ",\"title\":\"" + trimItemName + "\"" + ",\"itemType\":\"" + v.itemType + "\"}";
 
-                            //if meal 
+                            //if meal
 
-                            if(v.itemType == "MEAL"){
+                            if (v.itemType == "MEAL") {
 
                                 $("#itemContainer").append("<div class='draggableitem draggableitem-meal' data-event='" + dataEvent + "'>" + v.itemName + " </div>");
                             }
-                            else
-                           {
+                            else {
                                 $("#itemContainer").append("<div class='draggableitem draggableitem-foodItem' data-event='" + dataEvent + "'>" + v.itemName + " </div>");
-                           } 
+                            }
 
                         });
 
                 },
 
 
-                error: function(error) {
+                error: function (error) {
                     alert('failed' + error);
                 }
             });
 
-            //Set Up Search Ajax Call 
-             $("#fmSearchItems").submit(function(event){
+            //Set Up Search Ajax Call
+            $("#fmSearchItems").submit(function (event) {
 
                 var formData = $(this).serialize();
 
                 $.ajax({
-                    type :"POST",
-                    url:"/calendar/SearchForItems",
-                    data:formData
-                }).done(function(data){
+                    type: "POST",
+                    url: "/calendar/SearchForItems",
+                    data: formData
+                }).done(function (data) {
 
                     //replace existing draggable options with whatever is returned from the search
                     window.availableItems = [];
-                     $("#itemContainer").empty();
+                    $("#itemContainer").empty();
 
                     $.each(data,
-                        function(i, v) {
+                        function (i, v) {
                             //for each item create a new div box;
 
                             window.availableItems.push(v);
 
                             var trimItemName = v.itemName.replace(/'/g, '$');
-                            //TODO figure out how to have single quotes in the item name without breaking javascript. 
+                            //TODO figure out how to have single quotes in the item name without breaking javascript.
 
 
 
                             var dataEvent = "{\"itemId\":" + v.itemId + ",\"title\":\"" + trimItemName + "\"" + ",\"itemType\":\"" + v.itemType + "\"}";
 
-                            //if meal 
+                            //if meal
 
-                            if(v.itemType == "MEAL"){
+                            if (v.itemType == "MEAL") {
 
                                 $("#itemContainer").append("<div class='draggableitem draggableitem-meal' data-event='" + dataEvent + "'>" + v.itemName + " </div>");
                             }
-                            else
-                           {
+                            else {
                                 $("#itemContainer").append("<div class='draggableitem draggableitem-foodItem' data-event='" + dataEvent + "'>" + v.itemName + " </div>");
-                           } 
+                            }
 
                         });
 
@@ -216,30 +271,28 @@
                         //    alert('a day has been clicked!');
                         //}
 
-                        eventRender: function(info) {
+                        eventRender: function (info) {
 
-                                $(info.el).find('.fc-content').append("<img style='width:28px;height:28px;float:right;' id='svg-delete-event' src='/images/red-trash-delete-icon.svg' />");
+                            $(info.el).find('.fc-content').append("<img style='width:28px;height:28px;float:right;' id='svg-delete-event' src='/images/red-trash-delete-icon.svg' />");
 
-                                        if(info.event.extendedProps.mealID != null || info.event.extendedProps.itemType == "MEAL")
-                                        {
-                                             info.el.style.backgroundColor  = "orange"
-                                             info.el.style.color = "white";
-                                            }
-                                            else
-                                            {
-                                                 info.el.style.backgroundColor  = "blue"
-                                                 info.el.style.color = "white";
-                                            }
+                            if (info.event.extendedProps.mealID != null || info.event.extendedProps.itemType == "MEAL") {
+                                info.el.style.backgroundColor = "orange"
+                                info.el.style.color = "white";
+                            }
+                            else {
+                                info.el.style.backgroundColor = "blue"
+                                info.el.style.color = "white";
+                            }
 
-                                $(info.el).find("#svg-delete-event").click(function(event) {
+                            $(info.el).find("#svg-delete-event").click(function (event) {
 
-                                    //clicking delete should only trigger the click event for the trash can icon here, and should not trigger the click event for the entire event which would bring user to details view.
-                                    event.stopPropagation();
+                                //clicking delete should only trigger the click event for the trash can icon here, and should not trigger the click event for the entire event which would bring user to details view.
+                                event.stopPropagation();
 
-                                    //remove event from calendar
-                                    info.event.remove();
+                                //remove event from calendar
+                                info.event.remove();
 
-                                    //also remove from backend stroage
+                                //also remove from backend stroage
 
 
                                 $.ajax({
@@ -253,44 +306,43 @@
                                     }),
                                     type: "POST",
                                     contentType: 'application/json; charset=utf-8',
-                                    success: function(json) {
+                                    success: function (json) {
                                         console.log("Delete Event returned");
                                     },
-                                    failure: function(json) {
+                                    failure: function (json) {
                                         console.log("Delete Event failed.");
                                     }
 
                                 });
 
                             });
-                            
-                            @* .hide(); *@
+
+        @* .hide(); *@
 
 
-                            $(info.el).find("#svg-delete-event").mouseover(function(){ 
+                                $(info.el).find("#svg-delete-event").mouseover(function () {
 
-                                $(this).attr("src","/images/red-trash-delete-icon-hover.svg")
+                                    $(this).attr("src", "/images/red-trash-delete-icon-hover.svg")
+                                });
+
+
+                            $(info.el).find("#svg-delete-event").mouseout(function () {
+
+                                $(this).attr("src", "/images/red-trash-delete-icon.svg")
                             });
 
+                            $(info.el).find("#svg-delete-event").hide();
 
-                            $(info.el).find("#svg-delete-event").mouseout(function(){ 
+                        },
 
-                                $(this).attr("src","/images/red-trash-delete-icon.svg")
-                            });
-
-                            $(info.el).find("#svg-delete-event").hide(); 
-
-                            },
-                        
-                        eventClick: function(info){
+                        eventClick: function (info) {
 
                             //if food item, redirect to food item
-                            if(info.event.extendedProps.itemType == "FOOD ITEM"){
+                            if (info.event.extendedProps.itemType == "FOOD ITEM") {
 
                                 window.location.href = "/FoodItems/Details/" + info.event.extendedProps.itemId;
                             }
-                            else if(info.event.extendedProps.itemType == "MEAL")
-                            {
+                            else if (info.event.extendedProps.itemType == "MEAL") {
 
                                 window.location.href = "/MealBuilder/MealDetails/" + info.event.extendedProps.itemId;;
                             }
@@ -298,21 +350,21 @@
 
                                 window.location.href = "/FoodItems/Details/" + info.event.extendedProps.foodItemID;
 
-                            //if meal, redirect to meal
-                            //TODO NOT IMPLEMENTED
+                                //if meal, redirect to meal
+                                //TODO NOT IMPLEMENTED
                             }
                         },
-                        eventMouseEnter:function(info){
+                        eventMouseEnter: function (info) {
 
                             //find remove button and make it visible
                             $(info.el).find('#svg-delete-event').show();
                         },
-                        eventMouseLeave:function(info){
+                        eventMouseLeave: function (info) {
 
                             //find remove button and make it visible
                             $(info.el).find('#svg-delete-event').hide();
                         },
-                        eventDrop: function(info) {
+                        eventDrop: function (info) {
 
                             $.ajax({
                                 url: '/calendar/UpdateEvent',
@@ -326,35 +378,33 @@
                                 }),
                                 type: "POST",
                                 contentType: 'application/json; charset=utf-8',
-                                success: function(json) {
+                                success: function (json) {
                                     console.log("Update Event returned");
                                 },
-                                failure: function(json) {
+                                failure: function (json) {
                                     console.log("Update Event failed.");
                                 }
 
                             });
 
                         },
-                        eventReceive: function(info) {
+                        eventReceive: function (info) {
 
-                            var mealId,foodItemId;
+                            var mealId, foodItemId;
 
                             var sitemId = info.event.extendedProps.itemId
-                            var foodItem = window.availableItems.find(x =>x .itemId == sitemId);
+                            var foodItem = window.availableItems.find(x => x.itemId == sitemId);
 
-                            if(foodItem.itemType == "FOOD ITEM")
-                            {
+                            if (foodItem.itemType == "FOOD ITEM") {
                                 foodItemId = foodItem.itemId;
                                 mealId = null;
-                                
-                                       
+
+
                             }
-                            else if(foodItem.itemType == "MEAL")
-                            {
+                            else if (foodItem.itemType == "MEAL") {
                                 mealId = foodItem.itemId;
                                 foodItemId = null;
-                                
+
                             }
 
                             $.ajax({
@@ -370,12 +420,12 @@
                                 //contentType: 'application/x-www-form-urlencoded',
                                 contentType: 'application/json; charset=utf-8',
                                 //contentType:'json',
-                                success: function(json) {
+                                success: function (json) {
                                     console.log("SaveNewEvent returned");
-                                    info.event.setExtendedProp( "eventID", json )
-                                    
+                                    info.event.setExtendedProp("eventID", json)
+
                                 },
-                                failure: function(json) {
+                                failure: function (json) {
                                     console.log("SaveNewEvent failed.");
                                 }
                             });
@@ -383,30 +433,30 @@
                         customButtons: {
                             custom1: {
                                 text: 'Clear Month',
-                                click: function(whatisthis) {
+                                click: function (whatisthis) {
 
                                     var curMonth = theCalendar.getDate().getMonth();
 
 
-                                        //call ajax to remove all events in the current month
-                                        $.ajax({
-                                            url: '/calendar/ClearMonth',
-                                            data: JSON.stringify({
-                                                Month: curMonth
+                                    //call ajax to remove all events in the current month
+                                    $.ajax({
+                                        url: '/calendar/ClearMonth',
+                                        data: JSON.stringify({
+                                            Month: curMonth
 
-                                            }),
-                                            type: "POST",
-                                            contentType: 'application/json; charset=utf-8',
-                                            success: function(json) {
-                                                console.log("Clear month returned");
-                                                theCalendar.getEventSources()[0].refetch();
+                                        }),
+                                        type: "POST",
+                                        contentType: 'application/json; charset=utf-8',
+                                        success: function (json) {
+                                            console.log("Clear month returned");
+                                            theCalendar.getEventSources()[0].refetch();
 
-                                            },
-                                            failure: function(json) {
-                                                console.log("Clear month failed")
-                                            }
+                                        },
+                                        failure: function (json) {
+                                            console.log("Clear month failed")
+                                        }
 
-                                        });
+                                    });
 
 
                                     //reload calendar from db
@@ -420,7 +470,7 @@
 
                     });
 
-                //DOC SAVE               
+                //DOC SAVE
                 //calendar.on('dateClick',
                 //    function(info) {
                 //        alert(info.dateStr);
@@ -441,13 +491,14 @@
         });
 
 
+
     </script>
 
 }
 
 
 @section Selenium
-{
+    {
     <div class="e2e-page-calendar-action-index"></div>
 
 }
