@@ -1,4 +1,4 @@
-﻿@model MyKitchen.Controllers.SearchArgs
+﻿@model MyKitchen.Controllers.SearchModel
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -165,7 +165,7 @@ $.ajax({
         var itemContainer = $("#itemContainer");
 
         // Iterate through the data array
-        $.each(data, function (i, v) {
+        $.each(data.items, function (i, v) {
             // Push the item to the availableItems array
             window.availableItems.push(v);
 

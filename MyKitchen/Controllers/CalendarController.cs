@@ -26,10 +26,10 @@ namespace MyKitchen.Controllers
 
         public IActionResult Index()
         {
-            return View(new SearchArgs());
+            return View(new SearchModel());
         }
 
-        public IActionResult SearchForItems([FromForm]SearchArgs searchArgs)
+        public IActionResult SearchForItems([FromForm]SearchModel searchArgs)
         {
             if (!String.IsNullOrEmpty(Request.Form["action"]))
             {
@@ -127,20 +127,20 @@ namespace MyKitchen.Controllers
         //Gets Available Items for the current User.
         public JsonResult GetAvailableItems()
         {
-            var searchArgs = new SearchArgs();
+            var searchModel = new SearchModel();
 
             var items = ctx.vwsUserMealsAndFoodItems.Where(x => x.AppUserId == CurrentUser.User.Id);
 
             //paging
-            var skipItems = (searchArgs.PageIndex - 1) * searchArgs.PageSize;
+            var skipItems = (searchModel.PageIndex - 1) * searchModel.PageSize;
             items = items
                 .Skip(skipItems)
-                .Take(searchArgs.PageSize);
+                .Take(searchModel.PageSize);
 
 
-            var rtn = items.ToList();
+            searchModel.Items = items.ToList();
 
-            return new JsonResult(rtn);
+            return new JsonResult(searchModel);
         }
 
         [HttpPost]
@@ -198,7 +198,7 @@ namespace MyKitchen.Controllers
 
     }
 
-    public class SearchArgs
+    public class SearchModel
     {
         public string SearchText { get; set; }
         public string CbShowMealsOnly { get; set; }
@@ -206,19 +206,18 @@ namespace MyKitchen.Controllers
         public int PageIndex { get; set; } = 1;
         public int PageSize { get; set; } = 3;
         public int TotalPages { get; set; } = 10;
-
         public bool ShowNextButton()
         {
             return PageIndex < TotalPages;
         }
-
         public bool ShowPreviousButton()
         {
             return PageIndex > 1;
         }
 
-
         public int ModelTest { get; set; }
+
+        public List<vwsUserMealsAndFoodItem> Items { get; set; }
 
     }
 
