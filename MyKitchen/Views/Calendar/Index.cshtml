@@ -43,7 +43,9 @@
     <input type="hidden" name="action" value="" />
 </form>
 
-
+@{
+    await Html.RenderPartialAsync("_MealSearch");
+}
 
 <div style="clear: both;"></div>
 <div id="calendar">
@@ -62,7 +64,8 @@
     @*<script src="/lib/superagent/superagent.js"></script>*@
 
     <script type="text/javascript">
-
+    
+        
 
         function setAction(actionName) {
             // Set the value of the hidden input field based on the clicked button
@@ -492,6 +495,7 @@
 
 
 
+    
     </script>
 
 }
