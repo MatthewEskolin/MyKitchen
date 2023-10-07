@@ -4,6 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style type="text/css">
+    .button-container
+    {
+        display:flex;
+    }
+</style>
 
 <form id="fmSearchItems" name="searchForm" method="post" asp-action="SearchForItems">
     <div class="search-bar">
@@ -25,21 +31,17 @@
 <div class="button-container">
     <!-- Wrap each input with a div and give them unique IDs or classes -->
     <div id="previousButtonDiv">
-        <input type="submit" value="Previous" onclick="setAction('previous')" />
+        <input id="inPrevious" type="submit" value="Previous" onclick="setAction('previous')" />
     </div>
-
-    <div id="submitButtonDiv">
-        <input type="submit" name="" />
-    </div>
-
     <div id="nextButtonDiv">
-        <input type="submit" value="Next" onclick="setAction('next')" />
+        <input id="inNext" type="submit" value="Next" onclick="setAction('next')" />
     </div>
 </div>
     </div>
 
     <input type="hidden" id="idPageSize" name="pageSize" value="@Model.PageSize" />
     <input type="hidden" id="idPageIndex" name="pageIndex" value="@Model.PageIndex" />
+    <input type="hidden" id="idTotalPages" name="pageIndex" value="@Model.TotalPages" />
     <input type="hidden" name="action" value="" />
 </form>
 
@@ -62,47 +64,7 @@
 
     <script type="text/javascript">
     
-        
-
-        function setAction(actionName) {
-            // Set the value of the hidden input field based on the clicked button
-            document.querySelector('input[name="action"]').value = actionName;
-
-            if (actionName == "next") {
-                var $elem = $("#idPageIndex");
-
-                var pageIndex = Number($("#idPageIndex").val());
-                var newValue = pageIndex + 1;
-
-                $elem.val(newValue);
-
-            }
-            if (actionName == "previous") {
-                var $elem = $("#idPageIndex");
-
-                var pageIndex = Number($("#idPageIndex").val());
-                var newValue = pageIndex - 1;
-
-                $elem.val(newValue);
-
-            }
-
-        }
-
-        function toggleDivVisibility(divId) {
-            var div = document.getElementById(divId);
-            if (div.style.display === "none") {
-                div.style.display = "block";
-            } else {
-                div.style.display = "none";
-            }
-        }
-
-
-        //event fetching function
-        //import { req } from 'superagent';
-
-
+        var theCalendar = null;
         var eventSources = [
             {
                 url: "/calendar/GetEventsFeed",
@@ -115,91 +77,35 @@
             }
         ];
 
-        var theCalendar = null;
-
-
+        
         $(document).ready(function () {
             var events = [];
 
             GenerateCalendar(eventSources);
 
-            ////Get Events - calls GenerateCalendar
-            //$.ajax({
-            //    type: "GET",
-            //    url: "/calendar/GetEvents",
-            //    success: function(data) {
-            //        //return;
-            //        $.each(data,
-            //            function(i, v) {
+            var form = $("#fmSearchItems");
+            var formData = form.serialize();
 
-            //                var newEvent = {
-            //                    title: v.subject,
-            //                    description: v.Description,
-            //                    start: v.start, //moment(v.Start),
-            //                    end: v.end != null ? v.end : null,
-            //                    color: v.ThemeColor,
-            //                    allDay: v.IsFullDay,
-            //                    eventID: v.eventID
-            //                }
-            //                events.push(newEvent);
 
-            //            });
-            //        //GenerateCalendar(events);
 
-            //    },
-            //    error: function(error) {
-            //        alert('failed' + error);
-            //    }
-            //});
 
             //Get Available Food Items & Meals
-// Perform an AJAX GET request to fetch available items
-$.ajax({
-    type: "GET",
-    url: "/calendar/GetAvailableItems",
-    success: function (data) {
-        // Initialize the availableItems array
-        window.availableItems = [];
+            $.ajax({
+                type: "POST",
+                url: "/calendar/SearchForItems",
+                data: formData,
+                success: function (data) {
+                    ResultsReceived(data);
+                },
+                error: function (error) {
+                    // Handle errors gracefully
+                    alert('Failed: ' + error.statusText);
+                }
+                });
 
-        // Cache the itemContainer element for better performance
-        var itemContainer = $("#itemContainer");
-
-        // Iterate through the data array
-        $.each(data.items, function (i, v) {
-            // Push the item to the availableItems array
-            window.availableItems.push(v);
-
-            // Escape single quotes in the item name
-            var escapedItemName = v.itemName.replace(/'/g, "&#39;");
-
-            // Create the dataEvent object as a JavaScript object
-            var dataEvent = {
-                itemId: v.itemId,
-                title: escapedItemName,
-                itemType: v.itemType
-            };
-
-            // Determine the CSS class based on item type
-            var itemClass = v.itemType === "MEAL" ? "draggableitem-meal" : "draggableitem-foodItem";
-
-            // Create the div element and append it to the itemContainer
-            var $newDiv = $("<div>", {
-                class: "draggableitem " + itemClass,
-                "data-event": JSON.stringify(dataEvent),
-                text: v.itemName
-            });
-            itemContainer.append($newDiv);
-        });
-    },
-    error: function (error) {
-        // Handle errors gracefully
-        alert('Failed: ' + error.statusText);
-    }
-    });
-
-            // Set up Search Ajax Call
+            //Add Search Event Handler 
             $("#fmSearchItems").submit(function (event) {
-                // Serialize form data
+                
                 var formData = $(this).serialize();
 
                 $.ajax({
@@ -207,37 +113,64 @@ $.ajax({
                     url: "/calendar/SearchForItems",
                     data: formData
                 }).done(function (data) {
-                    // Replace existing draggable options with the search results
-                    var itemContainer = $("#itemContainer");
-                    window.availableItems = [];
-
-                    // Use jQuery's empty() method for better performance
-                    itemContainer.empty();
-
-                    // Iterate through the data array
-                    $.each(data, function (i, v) {
-                        // Push the item to the availableItems array
-                        window.availableItems.push(v);
-
-                        // Escape single quotes in the item name
-                        var escapedItemName = v.itemName.replace(/'/g, "&#39;");
-                        var dataEvent = JSON.stringify({
-                            itemId: v.itemId,
-                            title: escapedItemName,
-                            itemType: v.itemType
-                        });
-
-                        // Determine the CSS class based on item type
-                        var itemClass = v.itemType === "MEAL" ? "draggableitem-meal" : "draggableitem-foodItem";
-
-                        // Create the div element and append it to the itemContainer
-                        itemContainer.append(`<div class="draggableitem ${itemClass}" data-event='${dataEvent}'>${escapedItemName}</div>`);
-                    });
+                    ResultsReceived(data);
                 });
-
-
+                
+                //do not do a normal form submit - ajax call replaces normal http post
                 event.preventDefault();
             });
+            
+            function ResultsReceived(data)
+            {
+                // Initialize the availableItems array
+                window.availableItems = [];
+                
+                
+
+                // Cache the itemContainer element for better performance
+                var itemContainer = $("#itemContainer");
+                $(itemContainer).empty();
+                
+
+                
+                //save page model results to hidden fields
+                $("#idPageSize").val(data.pageSize);
+                $("#idPageIndex").val(data.pageIndex);
+                $("#idTotalPages").val(data.totalPages);
+                
+
+
+                NextButtonDisplay() 
+                ShowPreviousDisplay() 
+
+                // Iterate through the data array
+                $.each(data.items, function (i, v) {
+                    // Push the item to the availableItems array
+                    window.availableItems.push(v);
+
+                    // Escape single quotes in the item name
+                    var escapedItemName = v.itemName.replace(/'/g, "&#39;");
+
+                    // Create the dataEvent object as a JavaScript object
+                    var dataEvent = {
+                        itemId: v.itemId,
+                        title: escapedItemName,
+                        itemType: v.itemType
+                    };
+
+                    // Determine the CSS class based on item type
+                    var itemClass = v.itemType === "MEAL" ? "draggableitem-meal" : "draggableitem-foodItem";
+
+                    // Create the div element and append it to the itemContainer
+                    var $newDiv = $("<div>", {
+                        class: "draggableitem " + itemClass,
+                        "data-event": JSON.stringify(dataEvent),
+                        text: v.itemName
+                    });
+                    itemContainer.append($newDiv);
+                });
+            }
+
 
             //Create Calendar
             function GenerateCalendar(eventSources) {
@@ -250,27 +183,14 @@ $.ajax({
                     {
                         plugins: ['dayGrid', 'interaction'],
                         eventSources: eventSources,
-                        //events: events,
                         editable: true,
                         droppable: true,
                         fixedWeekCount: false,
                         height: 600,
                         displayEventTime: false,
-                        //header: {
-                        //    //TODO need to include location of the custom button see below
-                        //    left: 'dayGridMonth,timeGridWeek,timeGridDay custom1',
-                        //    center: 'title',
-                        //    right: 'custom2 prevYear,prev,next,nextYear'
-                        //},
                         footer: {
                             left: 'custom1'
                         },
-
-                        //DOC SAVE
-                        //dateClick: function() {
-                        //    alert('a day has been clicked!');
-                        //}
-
                         eventRender: function (info) {
 
                             $(info.el).find('.fc-content').append("<img style='width:28px;height:28px;float:right;' id='svg-delete-event' src='/images/red-trash-delete-icon.svg' />");
@@ -288,13 +208,10 @@ $.ajax({
 
                                 //clicking delete should only trigger the click event for the trash can icon here, and should not trigger the click event for the entire event which would bring user to details view.
                                 event.stopPropagation();
-
                                 //remove event from calendar
                                 info.event.remove();
 
                                 //also remove from backend stroage
-
-
                                 $.ajax({
                                     url: '/calendar/RemoveEvent/',
                                     data: JSON.stringify({
@@ -317,7 +234,6 @@ $.ajax({
 
                             });
 
-        @* .hide(); *@
 
 
                                 $(info.el).find("#svg-delete-event").mouseover(function () {
@@ -470,13 +386,6 @@ $.ajax({
 
                     });
 
-                //DOC SAVE
-                //calendar.on('dateClick',
-                //    function(info) {
-                //        alert(info.dateStr);
-                //    });
-
-
                 theCalendar.render();
 
                 new Draggable(draggableEL,
@@ -490,9 +399,64 @@ $.ajax({
             }
         });
 
+        //Utilities
+        function setAction(actionName) {
+            // Set the value of the hidden input field based on the clicked button
+            document.querySelector('input[name="action"]').value = actionName;
+
+            if (actionName == "next") {
+                var $elem = $("#idPageIndex");
+
+                var pageIndex = Number($("#idPageIndex").val());
+                var newValue = pageIndex + 1;
+
+                $elem.val(newValue);
+
+            }
+            if (actionName == "previous") {
+                var $elem = $("#idPageIndex");
+
+                var pageIndex = Number($("#idPageIndex").val());
+                var newValue = pageIndex - 1;
+
+                $elem.val(newValue);
+
+            }
+
+        }
+
+        function SetVisible(visible, id)
+        {
+            if(visible)
+            {
+                $('#' + id).show();
+            }
+            else
+            {
+                $('#' + id).hide();
+            }
+        }
 
 
-    
+        function NextButtonDisplay()
+        {
+            var pageIndex = $("#idPageIndex").val();
+            var totalPages = $("#idTotalPages").val();
+
+            var show =  pageIndex < totalPages;
+            SetVisible("nextButtonDiv",show)
+            
+        }
+        function ShowPreviousDisplay()
+        {
+            var pageIndex = $("#idPageIndex").val();
+            var totalPages = $("#idTotalPages").val();
+
+            var show = pageIndex > 1;
+            SetVisible("previousButtonDiv",show);
+        }
+        
+
     </script>
 
 }

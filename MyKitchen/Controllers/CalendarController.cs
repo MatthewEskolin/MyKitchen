@@ -80,9 +80,9 @@ namespace MyKitchen.Controllers
                 .Take(searchArgs.PageSize);
 
 
-            var rtn = items.ToList();
+            searchArgs.Items = items.ToList();
 
-            return new JsonResult(rtn);
+            return new JsonResult(searchArgs);
         }
 
 
@@ -118,6 +118,7 @@ namespace MyKitchen.Controllers
             return new JsonResult(events);
         }
 
+        [UsedImplicitly]
         public JsonResult GetEventsFeed()
         {
             var events = ctx.Events.ToList().Select(FullCalendarEvent.FromEvent);
@@ -125,23 +126,23 @@ namespace MyKitchen.Controllers
         }
 
         //Gets Available Items for the current User.
-        public JsonResult GetAvailableItems()
-        {
-            var searchModel = new SearchModel();
+        //public JsonResult SearhForItems()
+        //{
+        //    var searchModel = new SearchModel();
 
-            var items = ctx.vwsUserMealsAndFoodItems.Where(x => x.AppUserId == CurrentUser.User.Id);
+        //    var items = ctx.vwsUserMealsAndFoodItems.Where(x => x.AppUserId == CurrentUser.User.Id);
 
-            //paging
-            var skipItems = (searchModel.PageIndex - 1) * searchModel.PageSize;
-            items = items
-                .Skip(skipItems)
-                .Take(searchModel.PageSize);
+        //    //paging
+        //    var skipItems = (searchModel.PageIndex - 1) * searchModel.PageSize;
+        //    items = items
+        //        .Skip(skipItems)
+        //        .Take(searchModel.PageSize);
 
 
-            searchModel.Items = items.ToList();
+        //    searchModel.Items = items.ToList();
 
-            return new JsonResult(searchModel);
-        }
+        //    return new JsonResult(searchModel);
+        //}
 
         [HttpPost]
         public JsonResult SaveNewEvent([FromBody] Events event1)
