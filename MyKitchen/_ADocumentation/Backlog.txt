@@ -1,1 +1,2 @@
-Need ability to add daily TASKS and integrate them with any.do! 
+-Need ability to add daily TASKS and integrate them with any.do! 
+-Need to improve the visual quality of the dragable items on the calendar - I'm thinking of giving them all a white backround with a circular icon representing the type

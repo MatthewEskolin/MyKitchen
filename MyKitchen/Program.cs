@@ -29,7 +29,7 @@ public class Program
         }
         else
         {
-            //TODO Test this and see where it redirects! could be very helpful whey debuggin prod errors
+            //TODO Test this and see where it redirects! could be very helpful whey debugging prod errors
             _app.UseExceptionHandler("/Error");
             _app.UseHttpsRedirection();
         }

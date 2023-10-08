@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyKitchen.Data;
 using MyKitchen.Data.Calendar;
-using MyKitchen.Models.BL;
 
 namespace MyKitchen.Controllers
 {
-    //Food items and meals to be added to the calendar. Each user has their own calendar. 
 
-   [Authorize]
+    [Authorize]
     public partial class CalendarController : Controller
     {
-        public UserInfo CurrentUser { get; }
+        private UserInfo CurrentUser { get; }
         private ApplicationDbContext ctx { get; set; }
-        public int PageSize = 10;
 
         public CalendarController(ApplicationDbContext context,UserInfo user)
         {
@@ -31,25 +26,27 @@ namespace MyKitchen.Controllers
 
         public IActionResult SearchForItems([FromForm]SearchArgs searchArgs)
         {
-            if (!String.IsNullOrEmpty(Request.Form["action"]))
-            {
-                var action = Request.Form["action"][0];
+            #region commented
+            //if (!String.IsNullOrEmpty(Request.Form["action"]))
+            //{
+            //    var action = Request.Form["action"][0];
 
-                switch (action)
-                {
-                    case "next":
-                        //calculate new searchargs
-                        //searchArgs.PageIndex++;
-                        break;
+            //    switch (action)
+            //    {
+            //        case "next":
+            //            //calculate new searchargs
+            //            //searchArgs.PageIndex++;
+            //            break;
 
-                    case "previous":
-                        //calculate new searchargs
-                        //searchArgs.PageIndex--;
-                        break;
+            //        case "previous":
+            //            //calculate new searchargs
+            //            //searchArgs.PageIndex--;
+            //            break;
 
-                    default: throw new Exception("Invalid Form Submit");
-                }
-            };
+            //        default: throw new Exception("Invalid Form Submit");
+            //    }
+            //};
+            #endregion
 
             var items = ctx.vwsUserMealsAndFoodItems.AsQueryable();
 
@@ -86,32 +83,6 @@ namespace MyKitchen.Controllers
         }
 
 
-        //public IActionResult SearchForItems([FromForm] string searchText, [FromForm] string cbShowMealsOnly, [FromForm] string cbShowQueuedonly)
-        //{
-
-        //    //if showing meals only, want to exclude the Food Items from the search result;
-        //    var items = ctx.vwsUserMealsAndFoodItems.Where(x => x.AppUserId == CurrentUser.User.Id && x.ItemName.Contains(searchText));
-
-        //    if (cbShowMealsOnly == "on")
-        //    {
-        //        items = items.Where(x => x.ItemType == "MEAL");
-        //    }
-
-        //    if (cbShowQueuedonly == "on")
-        //    {
-        //        //items = items.Where(x => x.)
-        //        throw new NotImplementedException(
-        //            "Where does the on  and off come from? can we consolidate these parameters into a single searchargs class?");
-
-        //    }
-
-
-        //    return new JsonResult(items.ToList());
-        //}
-
-
-
-        //Gets all events in the database - not filtered by user - this shouldn't be used to view a users events.
         public JsonResult GetEvents()
         {
             var events = ctx.Events.ToList();
@@ -197,8 +168,7 @@ namespace MyKitchen.Controllers
 
 
     }
-
-    public class SearchArgs
+    public class SearchModel
     {
         public string SearchText { get; set; }
         public string CbShowMealsOnly { get; set; }
@@ -206,12 +176,10 @@ namespace MyKitchen.Controllers
         public int PageIndex { get; set; } = 1;
         public int PageSize { get; set; } = 3;
         public int TotalPages { get; set; } = 10;
-
         public bool ShowNextButton()
         {
             return PageIndex < TotalPages;
         }
-
         public bool ShowPreviousButton()
         {
             return PageIndex > 1;

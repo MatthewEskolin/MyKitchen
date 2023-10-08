@@ -65,6 +65,13 @@ body {
     padding: 3px;
 }
 
+.draggableitem2
+{
+    cursor:pointer;
+    display: inline-flex;
+
+}
+
 .draggableitem.draggableitem-meal{
 
   background:orange;
@@ -78,8 +85,15 @@ body {
 
 }
 
+.draggable-container.draggableitem-meal
+{
+    border:1px solid orange;
+}
 
-
+.draggable-container.draggableitem-foodItem
+{
+    border:1px solid blue;
+}
 
 
 

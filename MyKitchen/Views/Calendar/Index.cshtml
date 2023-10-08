@@ -4,38 +4,89 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style type="text/css">
+    .button-container
+    {
+        display:flex;
+    }
+    .search-bar
+    {
+        border:1px solid blue;
+    }
+    
+    <!-- styles for draggable -->
+    .ditem-container 
+    {
+        display: inline-flex !important; /* Use flexbox to align child divs horizontally */
+    }
+
+    .square {
+        width: 25px; /* Adjust the width of the square as needed */
+        height: 25px;; /* Square dimensions */
+        background-color: #3498db; /* Background color for the square */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .text-rectangle {
+        padding: 10px; /* Add padding to the text rectangle */
+        background-color: #e74c3c; /* Background color for the text rectangle */
+        color: #fff; /* Text color for the text rectangle */
+    }
+
+    .square img {
+        max-width: 100%; /* Ensure the image doesn't exceed the square dimensions */
+        max-height: 100%; /* Ensure the image doesn't exceed the square dimensions */
+    }
+
+</style>
 
 <form id="fmSearchItems" name="searchForm" method="post" asp-action="SearchForItems">
     <div class="search-bar">
-        <input class="input-text" type="text" name="searchText" placeholder="Search">
+        <input class="input-text form-control p-2" type="text" name="searchText" placeholder="Search">
         <i class="icon fa fa-search" style="cursor:pointer;" onclick="$('#fmSearchItems').submit()"></i>
-        Show Meals Only? <input type="checkbox" name="CbShowMealsOnly" value="1" />
-        Show Queued Only <input type="checkbox" name="CbShowQueuedOnly" value="1" />
+        Show Meals Only? <input type="checkbox" class="form-control" name="CbShowMealsOnly" value="1" />
+        Show Queued Only <input type="checkbox" class="form-control" name="CbShowQueuedOnly" value="1" />
     </div>
 
     <h1 id="h1draggable" class="draggable-event"></h1>
+    <br/>
     <div id="itemContainer"> </div>
+
+    TEST DIV START
+    <div class="draggableitem2">
+        <div class="square">
+            <img src="your-icon.jpg" alt="Icon">
+        </div>
+        <div class="text-rectangle">
+            Yum ! Potatoes
+        </div>
+    </div>
+@*    <div class="draggableitem draggableitem-meal">
+
+
+    </div>
+    var $newDiv = $("<div>", {
+    class: "draggableitem " + itemClass,
+    "data-event": JSON.stringify(dataEvent),
+    text: v.itemName
+    });
+
+*@    
+    TEST DIV END
 
     <!-- Pagination -->
     <div class="pagination">
-@*        @if (Model.PageIndex > 1) { } @*    @for (int i = 1; i <= Model.TotalPages; i++) { } *@    @if (Model.PageIndex < Model.TotalPages) { }
-@**@
-
-<!-- Flex container for horizontal alignment -->
-<div class="button-container">
-    <!-- Wrap each input with a div and give them unique IDs or classes -->
-    <div id="previousButtonDiv">
-        <input type="submit" value="Previous" onclick="setAction('previous')" />
-    </div>
-
-    <div id="submitButtonDiv">
-        <input type="submit" name="" />
-    </div>
-
-    <div id="nextButtonDiv">
-        <input type="submit" value="Next" onclick="setAction('next')" />
-    </div>
-</div>
+        <div class="button-container">
+            <!-- Wrap each input with a div and give them unique IDs or classes -->
+            <div id="previousButtonDiv">
+                <input id="inPrevious" type="submit" value="Previous" onclick="setAction('previous')" />
+            </div>
+            <div id="nextButtonDiv">
+                <input id="inNext" type="submit" value="Next" onclick="setAction('next')" />
+            </div>
+        </div>
     </div>
 
     <input type="hidden" id="idPageSize" name="pageSize" value="@Model.PageSize" />
@@ -237,6 +288,18 @@
 
 
 
+                    // Create the div element and append it to the itemContainer
+                    var $newDiv = $("<div>", {
+                        class: "draggableitem " + itemClass,
+                        "data-event": JSON.stringify(dataEvent),
+                        text: v.itemName
+                    });
+                    
+                    //craft the div with icon                    
+
+                    
+
+                    itemContainer.append($newDiv);
                 });
 
                 event.preventDefault();
