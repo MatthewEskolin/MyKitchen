@@ -3,7 +3,7 @@
     "MyKitchen": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:5000/",
+      "launchUrl": "https://localhost:5001/Calendar/Index",
       "logging": {
         "moduleLoad": false
       },

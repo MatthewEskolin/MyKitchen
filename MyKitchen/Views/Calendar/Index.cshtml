@@ -23,16 +23,18 @@
     .square {
         width: 25px; /* Adjust the width of the square as needed */
         height: 25px;; /* Square dimensions */
-        background-color: #3498db; /* Background color for the square */
+/*        background-color: orange; /* Background color for the square */
         display: flex;
         justify-content: center;
         align-items: center;
+        border:1px solid orange;
     }
 
     .text-rectangle {
-        padding: 10px; /* Add padding to the text rectangle */
-        background-color: #e74c3c; /* Background color for the text rectangle */
-        color: #fff; /* Text color for the text rectangle */
+        padding: 0px; /* Add padding to the text rectangle */
+/*        background-color: orange; /* Background color for the text rectangle */
+        color: black; /* Text color for the text rectangle */
+        border:1px solid orange;
     }
 
     .square img {
@@ -40,42 +42,50 @@
         max-height: 100%; /* Ensure the image doesn't exceed the square dimensions */
     }
 
+    /* Add custom styling for the search form container */
+    .search-form-container {
+        background-color: #f5f5f5; /* Background color */
+        border: 1px solid #ddd; /* Border */
+        padding: 20px; /* Padding */
+        border-radius: 5px; /* Rounded corners */
+    }
+
 </style>
 
 <form id="fmSearchItems" name="searchForm" method="post" asp-action="SearchForItems">
-    <div class="search-bar">
-        <input class="input-text form-control p-2" type="text" name="searchText" placeholder="Search">
-        <i class="icon fa fa-search" style="cursor:pointer;" onclick="$('#fmSearchItems').submit()"></i>
-        Show Meals Only? <input type="checkbox" class="form-control" name="CbShowMealsOnly" value="1" />
-        Show Queued Only <input type="checkbox" class="form-control" name="CbShowQueuedOnly" value="1" />
+    
+    <div class="search-form-container">
+        <div class="input-group mb-3 search-bar">
+            <input class="input-text form-control col-12" type="text" name="searchText" placeholder="Search..." aria-label="Search" aria-described="search-button"/>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="search-button">
+                    <i class="icon fa fa-search" style="cursor:pointer;" onclick="$('#fmSearchItems').submit()"></i>
+                </button>
+            </div>
+        </div>
+        <div class="form-check form-check-inline">
+            <input id="inmealsonly" type="checkbox" class="form-check-input" name="CbShowMealsOnly" value="1" />
+            <label class="form-check-label" for="inmealsonly">Meals Only</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input id="inqueued" type="checkbox" class="form-check-input" name="CbShowQueuedOnly" value="1" />
+            <label class="form-check-label" for="inqueued">Queued Only</label>
+        </div>
     </div>
 
-    <h1 id="h1draggable" class="draggable-event"></h1>
-    <br/>
     <div id="itemContainer"> </div>
 
     TEST DIV START
     <div id="itemContainer2">
         <div class="draggableitem2">
             <div class="square">
-                <img src="your-icon.jpg" alt="Icon">
+                <img src="/images/tang48.png" alt="Icon">
             </div>
             <div class="text-rectangle">
                 Yum ! Potatoes
             </div>
         </div>
     </div>
-@*    <div class="draggableitem draggableitem-meal">
-
-
-    </div>
-    var $newDiv = $("<div>", {
-    class: "draggableitem " + itemClass,
-    "data-event": JSON.stringify(dataEvent),
-    text: v.itemName
-    });
-
-*@    
     TEST DIV END
 
     <!-- Pagination -->
@@ -96,7 +106,6 @@
     <input type="hidden" id="idTotalPages" name="pageIndex" value="@Model.TotalPages" />
     <input type="hidden" name="action" value="" />
 </form>
-
 
 <div style="clear: both;"></div>
 <div id="calendar">
