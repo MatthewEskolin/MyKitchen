@@ -55,12 +55,14 @@
     <div id="itemContainer"> </div>
 
     TEST DIV START
-    <div class="draggableitem2">
-        <div class="square">
-            <img src="your-icon.jpg" alt="Icon">
-        </div>
-        <div class="text-rectangle">
-            Yum ! Potatoes
+    <div id="itemContainer2">
+        <div class="draggableitem2">
+            <div class="square">
+                <img src="your-icon.jpg" alt="Icon">
+            </div>
+            <div class="text-rectangle">
+                Yum ! Potatoes
+            </div>
         </div>
     </div>
 @*    <div class="draggableitem draggableitem-meal">
@@ -136,11 +138,8 @@
             var form = $("#fmSearchItems");
             var formData = form.serialize();
 
-
-
-
-            //Get Available Food Items & Meals
-            $.ajax({
+        //Get Available Food Items & Meals
+        $.ajax({
                 type: "POST",
                 url: "/calendar/SearchForItems",
                 data: formData,
@@ -153,8 +152,8 @@
                 }
                 });
 
-            //Add Search Event Handler 
-            $("#fmSearchItems").submit(function (event) {
+        //Add Search Event Handler 
+        $("#fmSearchItems").submit(function (event) {
                 
                 var formData = $(this).serialize();
 
@@ -169,41 +168,32 @@
                 //do not do a normal form submit - ajax call replaces normal http post
                 event.preventDefault();
             });
-            
-            function ResultsReceived(data)
+           
+        });            
+
+        function ResultsReceived(data)
             {
                 // Initialize the availableItems array
                 window.availableItems = [];
                 
-                
-
                 // Cache the itemContainer element for better performance
                 var itemContainer = $("#itemContainer");
                 $(itemContainer).empty();
-                
-
                 
                 //save page model results to hidden fields
                 $("#idPageSize").val(data.pageSize);
                 $("#idPageIndex").val(data.pageIndex);
                 $("#idTotalPages").val(data.totalPages);
                 
-
-
                 NextButtonDisplay() 
                 ShowPreviousDisplay() 
 
-                        });
-
-
-
-
-                    // Create the div element and append it to the itemContainer
-                    var $newDiv = $("<div>", {
-                        class: "draggableitem " + itemClass,
-                        "data-event": JSON.stringify(dataEvent),
-                        text: v.itemName
-                    });
+                    //// Create the div element and append it to the itemContainer
+                    //var $newDiv = $("<div>", {
+                    //    class: "draggableitem " + itemClass,
+                    //    "data-event": JSON.stringify(dataEvent),
+                    //    text: v.itemName
+                    //});
                     
                     //craft the div with icon                    
                 // Iterate through the data array
@@ -234,12 +224,12 @@
                 });
             }
 
-
-            //Create Calendar
-            function GenerateCalendar(eventSources) {
+        //Create Calendar
+        function GenerateCalendar(eventSources) {
 
                 var calendarEl = document.getElementById('calendar');
                 var draggableEL = document.getElementById('itemContainer');
+                var draggableEL2 = document.getElementById('itemContainer2');
                 var Draggable = FullCalendarInteraction.Draggable;
 
                 theCalendar = new FullCalendar.Calendar(calendarEl,
@@ -458,9 +448,16 @@
 
                     });
 
+            new Draggable(draggableEL2,
+                {
+                    itemSelector: '.draggableitem2',
+                    longPressDelay: 200
+                });
+                    
+                
+
 
             }
-
         //Utilities
         function setAction(actionName) {
             // Set the value of the hidden input field based on the clicked button
@@ -499,7 +496,6 @@
             }
         }
 
-
         function NextButtonDisplay()
         {
             var pageIndex = $("#idPageIndex").val();
@@ -509,6 +505,7 @@
             SetVisible("nextButtonDiv",show)
             
         }
+
         function ShowPreviousDisplay()
         {
             var pageIndex = $("#idPageIndex").val();
@@ -517,7 +514,6 @@
             var show = pageIndex > 1;
             SetVisible("previousButtonDiv",show);
         }
-        
 
     </script>
 
