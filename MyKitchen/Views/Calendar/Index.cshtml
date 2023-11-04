@@ -19,6 +19,12 @@
     {
         display: inline-flex !important; /* Use flexbox to align child divs horizontally */
     }
+    
+    .draggableitem-2
+    {
+        padding:4px;
+    }
+
 
     .square {
         width: 25px; /* Adjust the width of the square as needed */
@@ -49,6 +55,29 @@
         padding: 20px; /* Padding */
         border-radius: 5px; /* Rounded corners */
     }
+
+    .page-number input {
+        background: none;
+        border: none;
+        color: blue; /* You can change the color to match your design */
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    /* Style the selected page number differently */
+    .page-number.selected input {
+        color: red; /* Change the color to highlight the selected page */
+        text-decoration: none; /* Remove underline from the selected page */
+        font-weight: bold; /* You can use a different style, e.g., bold */
+    }
+    
+    .page-number input.selected {
+        color: red; /* Change the color to highlight the selected page */
+        text-decoration: none; /* Remove underline from the selected page */
+        font-weight: bold; /* You can use a different style, e.g., bold */
+
+    }
+
 
 </style>
 
@@ -87,19 +116,6 @@
 
     <div id="itemContainer"> </div>
 
-    TEST DIV START
-@*    <div id="itemContainer2">
-        <div class="draggableitem2">
-            <div class="square">
-                <img src="/images/tang48.png" alt="Icon">
-            </div>
-            <div class="text-rectangle">
-                Yum ! Potatoes
-            </div>
-        </div>
-    </div>*@
-    TEST DIV END
-
     <!-- Pagination -->
     <div class="pagination">
         <div class="button-container">
@@ -107,6 +123,13 @@
             <div id="previousButtonDiv">
                 <input id="inPrevious" type="submit" value="Previous" onclick="setAction('previous')" />
             </div>
+            <!-- Generate numbered page inputs -->
+            @for (int i = 1; i <= @Model.TotalPages; i++)
+            {
+                <div class="page-number">
+                    <input id="pageNumber_@i" type="submit" value="@i" onclick="setAction('goToPage', @i)" />
+                </div>
+            }
             <div id="nextButtonDiv">
                 <input id="inNext" type="submit" value="Next" onclick="setAction('next')" />
             </div>
@@ -135,7 +158,7 @@
     <script src="/lib/fullcalendar/interaction/main.min.js"></script>
     @*<script src="/lib/superagent/superagent.js"></script>*@
 
-    <script type="text/javascript">
+<script type="text/javascript">
     
         var theCalendar = null;
         var eventSources = [
@@ -244,13 +267,10 @@
 
                     var $draggable = $(".draggableitem2:first").clone();
 
-                    clone.find(".text-rectangle").text(v.itemName);
-                    clone.find(".text-rectangle").text(v.itemName);
+                    $draggable.find(".text-rectangle").text(v.itemName);
 
                     // Append the clone to the container
                     itemContainer.append($draggable);
-
-
 
                     //itemContainer.append($newDiv);
                 });
@@ -261,7 +281,7 @@
 
                 var calendarEl = document.getElementById('calendar');
                 var draggableEL = document.getElementById('itemContainer');
-                var draggableEL2 = document.getElementById('itemContainer2');
+                //var draggableEL2 = document.getElementById('itemContainer2');
                 var Draggable = FullCalendarInteraction.Draggable;
 
                 theCalendar = new FullCalendar.Calendar(calendarEl,
@@ -475,23 +495,33 @@
 
                 new Draggable(draggableEL,
                     {
-                        itemSelector: '.draggableitem',
+                        itemSelector: '.draggableitem2',
                         longPressDelay: 200
 
                     });
 
-            new Draggable(draggableEL2,
-                {
-                    itemSelector: '.draggableitem2',
-                    longPressDelay: 200
-                });
+            //new Draggable(draggableEL2,
+            //    {
+            //        itemSelector: '.draggableitem2',
+            //        longPressDelay: 200
+            //    });
                     
                 
 
 
             }
         //Utilities
-        function setAction(actionName) {
+        
+        function getPageIndex()
+        {
+            return $("#idPageIndex").val();
+        }
+
+        function setAction(actionName,goToPage) {
+            
+
+            
+
             // Set the value of the hidden input field based on the clicked button
             document.querySelector('input[name="action"]').value = actionName;
 
@@ -513,8 +543,28 @@
                 $elem.val(newValue);
 
             }
+            if(actionName == "goToPage")
+            {
+                var $elem = $("#idPageIndex");
+                var pageIndex = Number($("#idPageIndex").val());
+                var newValue = Number(goToPage) - 1;
+
+                $elem.val(newValue);
+            }
+            
+            updatePageLinks(getPageIndex());
 
         }
+        
+        function updatePageLinks(goToPage)
+        {
+            //clear selected
+            $(".page-number > input").removeClass("selected");
+
+            var $selectedPageNumber = $("#pageNumber_" + goToPage);
+            $selectedPageNumber.addClass("selected");
+        }
+
 
         function SetVisible(visible, id)
         {
