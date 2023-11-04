@@ -1,3 +1,4 @@
 09/28/2023 - convert to txt development log
 10/8/2023 - misc calendar stuff - can restyle the items. I don't like the ornage and blue backgrounds
 10/8/2023 - simultaneously - can we fix the queued/show meals only searches
+11/04/2023 - study blank line cleanup in resharper

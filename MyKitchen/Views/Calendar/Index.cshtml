@@ -52,6 +52,18 @@
 
 </style>
 
+<!-- tempate for draggables -->
+<div style="display:none;">
+        <div class="draggableitem2">
+            <div class="square">
+                <img src="/images/tang48.png" alt="Icon">
+            </div>
+            <div class="text-rectangle">
+                Yum ! Potatoes
+            </div>
+        </div>
+</div>
+
 <form id="fmSearchItems" name="searchForm" method="post" asp-action="SearchForItems">
     
     <div class="search-form-container">
@@ -76,7 +88,7 @@
     <div id="itemContainer"> </div>
 
     TEST DIV START
-    <div id="itemContainer2">
+@*    <div id="itemContainer2">
         <div class="draggableitem2">
             <div class="square">
                 <img src="/images/tang48.png" alt="Icon">
@@ -85,7 +97,7 @@
                 Yum ! Potatoes
             </div>
         </div>
-    </div>
+    </div>*@
     TEST DIV END
 
     <!-- Pagination -->
@@ -224,12 +236,23 @@
                     var itemClass = v.itemType === "MEAL" ? "draggableitem-meal" : "draggableitem-foodItem";
 
                     // Create the div element and append it to the itemContainer
-                    var $newDiv = $("<div>", {
-                        class: "draggableitem " + itemClass,
-                        "data-event": JSON.stringify(dataEvent),
-                        text: v.itemName
-                    });
-                    itemContainer.append($newDiv);
+                    //var $newDiv = $("<div>", {
+                    //    class: "draggableitem " + itemClass,
+                    //    "data-event": JSON.stringify(dataEvent),
+                    //    text: v.itemName
+                    //});
+
+                    var $draggable = $(".draggableitem2:first").clone();
+
+                    clone.find(".text-rectangle").text(v.itemName);
+                    clone.find(".text-rectangle").text(v.itemName);
+
+                    // Append the clone to the container
+                    itemContainer.append($draggable);
+
+
+
+                    //itemContainer.append($newDiv);
                 });
             }
 
