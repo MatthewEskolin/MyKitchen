@@ -232,14 +232,6 @@
                 NextButtonDisplay() 
                 ShowPreviousDisplay() 
 
-                    //// Create the div element and append it to the itemContainer
-                    //var $newDiv = $("<div>", {
-                    //    class: "draggableitem " + itemClass,
-                    //    "data-event": JSON.stringify(dataEvent),
-                    //    text: v.itemName
-                    //});
-                    
-                    //craft the div with icon                    
                 // Iterate through the data array
                 $.each(data.items, function (i, v) {
                     // Push the item to the availableItems array
@@ -264,10 +256,12 @@
                     //    "data-event": JSON.stringify(dataEvent),
                     //    text: v.itemName
                     //});
-
+                    
                     var $draggable = $(".draggableitem2:first").clone();
 
                     $draggable.find(".text-rectangle").text(v.itemName);
+                    $draggable.attr("data-event", JSON.stringify(dataEvent));
+
 
                     // Append the clone to the container
                     itemContainer.append($draggable);
@@ -355,6 +349,17 @@
                             $(info.el).find("#svg-delete-event").hide();
 
                         },
+
+                        eventContent:function(arg){
+
+                        var customData = arg.event.extendedProps.customData;
+                        return {
+                            html: `<div class="custom-event">${arg.timeText} - ${arg.event.title} - ${customData}</div>`,
+                        };
+
+                            },
+
+
 
                         eventClick: function (info) {
 
