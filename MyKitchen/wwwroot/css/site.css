@@ -74,6 +74,12 @@ body {
 
 }
 
+.custom-event
+{
+    cursor:pointer;
+    display: inline-flex;
+}
+
 .draggableitem.draggableitem-meal{
 
   background:orange;
