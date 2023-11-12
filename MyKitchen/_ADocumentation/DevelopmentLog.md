@@ -35,12 +35,11 @@ next continue to work on settings and getting the  red box to appear around the 
 ## 08/21/2022
 Can we get the settings to save appropriately to the DB? - need to keep working on this!
 
-# 08/22/2022 - whenw e return get the db  connection working for the user settings please!
-
-# 08/27/2022 - fix prod
+## 08/22/2022
+when we return get the db  connection working for the user settings please!
 
 # 09/01/2022 
-- create a shopping list witht he ability to export to amazon list  api the purpose of this is to make finding what we need at the grocery store more efficient.
+create a shopping list witht he ability to export to amazon list  api the purpose of this is to make finding what we need at the grocery store more efficient.
 
 # 09/09/2022
 revisit prod and clean up some of our data? create badges on github?
@@ -151,19 +150,18 @@ https://learn.microsoft.com/en-us/nuget/nuget-org/publish-a-package
 # 05/10/2023 
 Checkin
 
-
-
-
-
 # 05/20/2023
 Research Nuget
 
 # 5/19/2023
 Test Email Send - try running locally
+
 # 06/24/2023
 Trying to setup local envirnoment
+
 # 7.16.2023
 Consolidate / Cleanup / Fix Bugs / Remove Unused Code
 
 # 07/17/2023
 Need ability to add daily TASKS and integrate them with any.do! 
+
