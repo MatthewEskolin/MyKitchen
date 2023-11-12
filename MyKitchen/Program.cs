@@ -1,4 +1,8 @@
 ﻿
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
+using Azure.Identity;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace MyKitchen;
 
 [UsedImplicitly]
@@ -16,6 +20,7 @@ public class Program
 
         ConfigureApp();
         SeedDataBase();
+
         await _app.RunAsync();
     }
 
@@ -81,7 +86,7 @@ public class Program
 
 
 
-        AddKeyVault();
+        AddKeyVault2();
 
         if (_env.IsDevelopment())
         {
@@ -145,11 +150,17 @@ public class Program
         _builder.Services.AddExceptionless(_builder.Configuration["Exceptionless:ApiKey"].TraceErrorIfNullOrEmpty("Exceptionless.ApiKey"));
 
         //Logging
-        _builder.Logging.AddProvider(new CustomDebugLoggerProvider());
+        _builder.Logging.ClearProviders();
+        //_builder.Logging.AddProvider(new CustomDebugLoggerProvider());
 
         WebApplication app = _builder.Build();
 
         app.Logger.LogInformation("App is built, logging now available");
+
+
+
+
+
 
         return app;
 
@@ -159,10 +170,8 @@ public class Program
     {
         _builder.Configuration.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
 
-
         //DEBUG CONNECTION STRING
-        Trace.WriteLine($"ConnectionString={_builder.Configuration.GetConnectionString("DefaultConnection")}");
-
+        Trace.WriteLine($"(Local Config) ConnectionString={_builder.Configuration.GetConnectionString("DefaultConnection")}");
 
     }
 
@@ -233,7 +242,7 @@ public class Program
     {
         _builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
-            Trace.WriteLine($"ConnectionString={_builder.Configuration.GetConnectionString("DefaultConnection")}");
+            Trace.WriteLine($"(ApplicationDbContext) ConnectionString={_builder.Configuration.GetConnectionString("DefaultConnection")}");
             options.UseSqlServer(_builder.Configuration.GetConnectionString("DefaultConnection")!);
         });
 
@@ -251,7 +260,7 @@ public class Program
 
         _builder.Services.AddDbContext<InitializeApplicationDbContext>(options =>
         {
-            Trace.WriteLine($"ConnectionString={_builder.Configuration.GetConnectionString("DefaultConnection")}");
+            Trace.WriteLine($"(InitializeApplicationDbContext) ConnectionString={_builder.Configuration.GetConnectionString("DefaultConnection")}");
             options.UseSqlServer(_builder.Configuration.GetConnectionString("DefaultConnection")!);
         }, ServiceLifetime.Transient);
 
@@ -266,25 +275,36 @@ public class Program
             options.MinimumSameSitePolicy = SameSiteMode.None;
         });
     }
-    private static void AddKeyVault()
+    //private static void AddKeyVault()
+    //{
+    //    var tokenProvider = new AzureServiceTokenProvider();
+
+
+    //    var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(tokenProvider.KeyVaultTokenCallback));
+    //    var keyUri = $"https://{_builder.Configuration["keyVaultName"]}.vault.azure.net/";
+    //    try
+    //    {
+    //        _builder.Configuration.AddAzureKeyVault(keyUri, keyVaultClient, new DefaultKeyVaultSecretManager());
+    //        Trace.WriteLine($"Key Vault Uri: {keyUri} successfully connected..");
+
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        Trace.WriteLine($"key vault failed to connect {ex} ");
+    //        Environment.Exit(0);
+    //    }
+    //}
+
+    private static void AddKeyVault2()
     {
-        var tokenProvider = new AzureServiceTokenProvider();
-
-
-        var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(tokenProvider.KeyVaultTokenCallback));
         var keyUri = $"https://{_builder.Configuration["keyVaultName"]}.vault.azure.net/";
-        try
-        {
-            _builder.Configuration.AddAzureKeyVault(keyUri, keyVaultClient, new DefaultKeyVaultSecretManager());
-            Trace.WriteLine($"Key Vault Uri: {keyUri} successfully connected..");
 
-        }
-        catch (Exception ex)
-        {
-            Trace.WriteLine($"key vault failed to connect {ex} ");
-            Environment.Exit(0);
-        }
+        _builder.Configuration.AddAzureKeyVault(new Uri(keyUri), new DefaultAzureCredential());
+        Trace.WriteLine($"Key Vault Uri: {keyUri} added (is it connected?)");
+
     }
+
+
     private static void InitEnvironment()
     {
         _env = _builder.Environment;

@@ -13,14 +13,21 @@ namespace MyKitchen.Controllers
         private UserInfo CurrentUser { get; }
         private ApplicationDbContext ctx { get; set; }
 
-        public CalendarController(ApplicationDbContext context,UserInfo user)
+        private ILogger<CalendarController> _logger { get; set; }
+
+
+        public CalendarController(ApplicationDbContext context,UserInfo user, ILogger<CalendarController> logger)
         {
+            _logger = logger;
             CurrentUser = user;
             ctx = context;
         }
 
         public IActionResult Index()
         {
+            _logger.LogInformation("CalendarController Index Action");
+            //_logger
+
             return View(new SearchModel());
         }
 
