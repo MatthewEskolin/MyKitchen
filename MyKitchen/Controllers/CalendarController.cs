@@ -31,7 +31,22 @@ namespace MyKitchen.Controllers
             return View(new SearchModel());
         }
 
-        public IActionResult SearchForItems([FromForm]SearchModel searchArgs)
+        //public SearchModel GetDefaultSearchModel()
+        //{
+        //    var items = ctx.vwsUserMealsAndFoodItems.AsQueryable();
+
+        //    var itemCount =   items.Count(x => x.AppUserId == CurrentUser.User.Id);
+
+        //    var searchModel = new SearchModel()
+        //    {
+        //        PageIndex = 1,
+        //        PageSize = 3,
+        //        TotalPages = (int)Math.Ceiling((double)itemCount / 3)
+        //    };
+        //    return searchModel;
+        //}
+
+        public IActionResult SearchForItems([FromForm]SearchModel searchModel)
         {
             #region commented
             //if (!String.IsNullOrEmpty(Request.Form["action"]))
@@ -59,17 +74,17 @@ namespace MyKitchen.Controllers
 
             items = items.Where(x => x.AppUserId == CurrentUser.User.Id);
 
-            if(!String.IsNullOrEmpty(searchArgs.SearchText))
+            if(!String.IsNullOrEmpty(searchModel.SearchText))
             {
-                items = items.Where(x => x.ItemName.Contains(searchArgs.SearchText));
+                items = items.Where(x => x.ItemName.Contains(searchModel.SearchText));
             }
 
-            if(searchArgs.CbShowMealsOnly == "on")
+            if(searchModel.CbShowMealsOnly == "on")
             {
                 items = items.Where(x => x.ItemType == "MEAL");
             }
 
-            if (searchArgs.CbShowQueuedOnly== "on")
+            if (searchModel.CbShowQueuedOnly== "on")
             {
                 //items = items.Where(x => x.)
                 throw new NotImplementedException(
@@ -77,16 +92,21 @@ namespace MyKitchen.Controllers
 
             }
 
+            //get total item count
+            var itemCount = items.Count();
+
             //paging 
-            var skipItems = (searchArgs.PageIndex - 1) * searchArgs.PageSize;
+            var skipItems = (searchModel.PageIndex - 1) * searchModel.PageSize;
             items = items
                 .Skip(skipItems)
-                .Take(searchArgs.PageSize);
+                .Take(searchModel.PageSize);
 
 
-            searchArgs.Items = items.ToList();
+            searchModel.Items = items.ToList();
 
-            return new JsonResult(searchArgs);
+            searchModel.TotalPages = (int)Math.Ceiling((double)itemCount / searchModel.PageSize);
+
+            return new JsonResult(searchModel);
         }
 
 

@@ -82,6 +82,11 @@
         font-weight: bold; /* You can use a different style, e.g., bold */
 
     }
+    
+    .page-number-container {
+        display: flex;
+    }
+
 
 
 </style>
@@ -129,12 +134,16 @@
                 <input id="inPrevious" type="submit" value="Previous" onclick="setAction('previous')" />
             </div>
             <!-- Generate numbered page inputs -->
-            @for (int i = 1; i <= @Model.TotalPages; i++)
+@*            @for (int i = 1; i <= @Model.TotalPages; i++)
             {
                 <div class="page-number">
                     <input id="pageNumber_@i" type="submit" value="@i" onclick="setAction('goToPage', @i)" />
                 </div>
-            }
+            }*@
+            <div class="page-number-container">
+
+
+            </div>
             <div id="nextButtonDiv">
                 <input id="inNext" type="submit" value="Next" onclick="setAction('next')" />
             </div>
@@ -152,76 +161,13 @@
 </div>
 
 
-@*<link rel="stylesheet" type="text/css" href="/lib/fullcalendar/core/main.min.css" />
-<link rel="stylesheet" type="text/css" href="/lib/fullcalendar/daygrid/main.min.css" />*@
 
 @section Scripts
 {
 
-    @*    <script src="/lib/fullcalendar/core/main.min.js"></script>
-    <script src="/lib/fullcalendar/daygrid/main.min.js"></script>
-    <script src="/lib/fullcalendar/interaction/main.min.js"></script>
-    @*<script src="/lib/superagent/superagent.js"></script>
 
-    *@
-
-<script type="text/javascript">
+    <script type="text/javascript">
     
-        //var theCalendar = null;
-        //var eventSources = [
-        //    {
-        //        url: "/calendar/GetEventsFeed",
-        //        method: 'GET',
-        //        failure: function () {
-        //            alert('could not load items');
-        //        },
-        //        color: 'blue',
-        //        textColor: 'black'
-        //    }
-        //];
-
-        
-        //$(document).ready(function () {
-        //    var events = [];
-
-        //    GenerateCalendar(eventSources);
-
-        //    var form = $("#fmSearchItems");
-        //    var formData = form.serialize();
-
-        ////Get Available Food Items & Meals
-        //$.ajax({
-        //        type: "POST",
-        //        url: "/calendar/SearchForItems",
-        //        data: formData,
-        //        success: function (data) {
-        //            ResultsReceived(data);
-        //        },
-        //        error: function (error) {
-        //            // Handle errors gracefully
-        //            alert('Failed: ' + error.statusText);
-        //        }
-        //        });
-
-        ////Add Search Event Handler 
-        //$("#fmSearchItems").submit(function (event) {
-                
-        //        var formData = $(this).serialize();
-
-        //        $.ajax({
-        //            type: "POST",
-        //            url: "/calendar/SearchForItems",
-        //            data: formData
-        //        }).done(function (data) {
-        //            ResultsReceived(data);
-        //        });
-                
-        //        //do not do a normal form submit - ajax call replaces normal http post
-        //        event.preventDefault();
-        //    });
-           
-        //});            
-
         function ResultsReceived(data)
             {
                 // Initialize the availableItems array
@@ -236,8 +182,13 @@
                 $("#idPageIndex").val(data.pageIndex);
                 $("#idTotalPages").val(data.totalPages);
                 
+                GeneratePageNumbers();
+                //highlight selected page
+                updatePageLinks(getPageIndex());
+                
                 NextButtonDisplay() 
                 ShowPreviousDisplay() 
+                
 
                 // Iterate through the data array
                 $.each(data.items, function (i, v) {
@@ -257,13 +208,6 @@
                     // Determine the CSS class based on item type
                     var itemClass = v.itemType === "MEAL" ? "draggableitem-meal" : "draggableitem-foodItem";
 
-                    // Create the div element and append it to the itemContainer
-                    //var $newDiv = $("<div>", {
-                    //    class: "draggableitem " + itemClass,
-                    //    "data-event": JSON.stringify(dataEvent),
-                    //    text: v.itemName
-                    //});
-                    
                     var $draggable = $(".draggableitem2:first").clone();
 
                     $draggable.find(".text-rectangle").text(v.itemName);
@@ -272,8 +216,6 @@
 
                     // Append the clone to the container
                     itemContainer.append($draggable);
-
-                    //itemContainer.append($newDiv);
                 });
             }
 
@@ -315,7 +257,7 @@
             {
                 var $elem = $("#idPageIndex");
                 var pageIndex = Number($("#idPageIndex").val());
-                var newValue = Number(goToPage) - 1;
+                var newValue = Number(goToPage);
 
                 $elem.val(newValue);
             }
@@ -334,7 +276,7 @@
         }
 
 
-        function SetVisible(visible, id)
+        function SetVisible(id,visible)
         {
             if(visible)
             {
@@ -364,6 +306,24 @@
             var show = pageIndex > 1;
             SetVisible("previousButtonDiv",show);
         }
+        
+        function GeneratePageNumbers()
+        {
+            var totalPages = $("#idTotalPages").val();
+            var pageIndex = $("#idPageIndex").val();
+
+            var $pageNumbersContainer = $(".page-number-container");
+            $pageNumbersContainer.empty();
+
+            for (var i = 1; i <= totalPages; i++) {
+
+                var html2 = `<div class="page-number"><input id="pageNumber_${i}" type="submit" value="${i}" onclick="setAction('goToPage', ${i})" /></div>`
+                $pageNum = $(html2);
+
+                $pageNumbersContainer.append($pageNum);
+            }
+        }
+
 
     </script>
 

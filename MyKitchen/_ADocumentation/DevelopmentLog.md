@@ -168,3 +168,5 @@ Need ability to add daily TASKS and integrate them with any.do!
 # 07/18/2023
 Work on general cleanup - can we delete the warm-up functions? are they even running?
 
+# 11/25/2023
+Work on Fixing Paging
