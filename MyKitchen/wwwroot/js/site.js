@@ -78,9 +78,9 @@ $(document).ready(function () {
                 footer: {
                     left: 'custom1'
                 },
-                eventRender: function (info) {
+                eventDidMount: function (info) {
 
-                    $(info.el).find('.fc-content').append("<img style='width:28px;height:28px;float:right;' id='svg-delete-event' src='/images/red-trash-delete-icon.svg' />");
+                    $(info.el).find('.custom-event').append("<img style='width:28px;height:28px;float:right;' id='svg-delete-event' src='/images/red-trash-delete-icon.svg' />");
 
                     if (info.event.extendedProps.mealID != null || info.event.extendedProps.itemType == "MEAL") {
                         info.el.style.backgroundColor = "orange"
@@ -138,77 +138,19 @@ $(document).ready(function () {
 
                 },
 
-                eventContent: function (eventInfo) {
 
-                    //var customData = arg.event.extendedProps.customData;
+                eventContent: function (eventInfo) {
 
                     var eventContent = `<div class="custom-event">
                         <div class="square">
                             <img src="/images/tang48.png" alt="Icon">
                         </div>
                         <div class="text-rectangle">${eventInfo.event.title}
-                        <img style='width:28px;height:28px;float:right;' class='svg-delete-event' src='/images/red-trash-delete-icon.svg' />"
                         </div>
 
                     </div>`
 
-                    var eventElement = $(eventContent);
-                    //var eventContent = eventInfo.event.title;
-
-                    // Customize background color based on conditions
-                    //if (eventInfo.event.extendedProps.mealID != null || eventInfo.event.extendedProps.itemType == "MEAL") {
-                    //    eventElement.style.backgroundColor = "orange";
-                    //    eventElement.style.color = "white";
-                    //} else {
-                    //    eventElement.style.backgroundColor = "blue";
-                    //    eventElement.style.color = "white";
-                    //}
-
-                    // Hide the delete icon initially
-                    $(eventElement).find(".svg-delete-event").hide();
-
-                    // Attach click event to the delete icon
-                    $(eventElement).find(".svg-delete-event").click(function (event) {
-                        // Stop propagation to prevent the event details view
-                        event.stopPropagation();
-
-                        // Remove the event from the calendar
-                        eventInfo.event.remove();
-
-                        // Remove from backend storage
-                        $.ajax({
-                            url: '/calendar/RemoveEvent/',
-                            data: JSON.stringify({
-                                Subject: eventInfo.event.title,
-                                Start: eventInfo.event.start,
-                                IsFullDay: "true",
-                                EventID: eventInfo.event.extendedProps.eventID,
-                            }),
-                            type: "POST",
-                            contentType: 'application/json; charset=utf-8',
-                            success: function (json) {
-                                console.log("Delete Event returned");
-                            },
-                            failure: function (json) {
-                                console.log("Delete Event failed.");
-                            }
-                        });
-                    });
-
-                    // Attach mouseover event
-                    $(eventElement).find(".svg-delete-event").mouseover(function () {
-                        $(this).attr("src", "/images/red-trash-delete-icon-hover.svg");
-                    });
-
-                    // Attach mouseout event
-                    $(eventElement).find(".svg-delete-event").mouseout(function () {
-                        $(this).attr("src", "/images/red-trash-delete-icon.svg");
-                    });
-
-                    return { html: eventElement.html() };
-
-
-
+                    return { html: eventContent };
                 },
 
 
