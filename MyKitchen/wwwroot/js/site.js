@@ -18,8 +18,64 @@ var eventSources = [
 ];
 
 
+function delete_mouseover(imgElement) {
+    $(imgElement).attr("src", "/images/red-trash-delete-icon-hover.svg")
+}
+
+function delete_mouseout(imgElement) {
+    $(imgElement).attr("src", "/images/red-trash-delete.svg")
+}
+
+function delete_event_click(imgElement, event, fullCalendarEvent) {
+
+    //clicking delete should only trigger the click event for the trash can icon here, and should not trigger the click event for the entire event which would bring user to details view.
+    event.stopPropagation();
+
+    //remove event from calendar
+    theCalendar.getEventById(fullCalendarEvent.id).remove();
+
+    //grab eventId from DOM
+    //var eventID = $(info.el).find(".custom-event").data("eventid");
+
+    //get class name that starts with data-event- and extract the number after the dash like this data-event-234
+    var eventID = $(info.el)
+        .find(".custom-event")
+        .attr("class")
+        .split(" ")
+        .find(className => className.startsWith("data-event-"))
+        ?.split("-")[2];
+
+    if (fullCalendarEvent.extendedProps.eventID !== undefined)
+        eventID = fullCalendarEvent.extendedProps.eventID;
+
+    //also remove from backend stroage
+    $.ajax({
+        url: '/calendar/RemoveEvent/',
+        data: JSON.stringify({
+            Subject: fullCalendarEvent.title,
+            Start: fullCalendarEvent.start,
+            IsFullDay: "true",
+            EventID: eventID
+        }),
+        type: "POST",
+        contentType: 'application/json; charset=utf-8',
+        success: function (json) {
+            console.log("Delete Event returned");
+        },
+        failure: function (json) {
+            console.log("Delete Event failed.");
+        }
+
+    });
+
+
+}
+
+
+
 $(document).ready(function () {
     var events = [];
+
 
     GenerateCalendar(eventSources);
 
@@ -58,6 +114,8 @@ $(document).ready(function () {
     });
 
 
+
+
     //Create Calendar
     function GenerateCalendar(eventSources) {
 
@@ -80,7 +138,8 @@ $(document).ready(function () {
                 },
                 eventDidMount: function (info) {
 
-                    $(info.el).find('.custom-event').append("<img style='width:28px;height:28px;float:right;' id='svg-delete-event' src='/images/red-trash-delete-icon.svg' />");
+                    //console.log("eventDidMount: " + info.event.extendedProps.eventID);
+                    //$(info.el).find('.custom-event').append("<img style='width:28px;height:28px;float:right;' id='svg-delete-event' src='/images/red-trash-delete-icon.svg' />");
 
                     if (info.event.extendedProps.mealID != null || info.event.extendedProps.itemType == "MEAL") {
                         info.el.style.backgroundColor = "orange"
@@ -91,61 +150,92 @@ $(document).ready(function () {
                         info.el.style.color = "white";
                     }
 
-                    $(info.el).find("#svg-delete-event").click(function (event) {
+                    //$(info.el).find("#svg-delete-event").click(function (event) {
 
-                        //clicking delete should only trigger the click event for the trash can icon here, and should not trigger the click event for the entire event which would bring user to details view.
-                        event.stopPropagation();
-                        //remove event from calendar
-                        info.event.remove();
+                    //    //clicking delete should only trigger the click event for the trash can icon here, and should not trigger the click event for the entire event which would bring user to details view.
+                    //    event.stopPropagation();
+                    //    //remove event from calendar
+                    //    info.event.remove();
 
-                        //also remove from backend stroage
-                        $.ajax({
-                            url: '/calendar/RemoveEvent/',
-                            data: JSON.stringify({
-                                Subject: info.event.title,
-                                Start: info.event.start,
-                                IsFullDay: "true",
-                                EventID: info.event.extendedProps.eventID,
+                    //    //grab eventId from DOM
+                    //    //var eventID = $(info.el).find(".custom-event").data("eventid");
 
-                            }),
-                            type: "POST",
-                            contentType: 'application/json; charset=utf-8',
-                            success: function (json) {
-                                console.log("Delete Event returned");
-                            },
-                            failure: function (json) {
-                                console.log("Delete Event failed.");
-                            }
+                    //    //get class name that starts with data-event- and extract the number after the dash like this data-event-234
+                    //    var eventID = $(info.el)
+                    //        .find(".custom-event")
+                    //        .attr("class")
+                    //        .split(" ")
+                    //        .find(className => className.startsWith("data-event-"))
+                    //        ?.split("-")[2];
 
-                        });
+                    //    if (info.event.extendedProps.eventID !== undefined)
+                    //    eventID = info.event.extendedProps.eventID;
 
-                    });
+                    //    //also remove from backend stroage
+                    //    $.ajax({
+                    //        url: '/calendar/RemoveEvent/',
+                    //        data: JSON.stringify({
+                    //            Subject: info.event.title,
+                    //            Start: info.event.start,
+                    //            IsFullDay: "true",
+                    //            EventID: eventID
+                    //        }),
+                    //        type: "POST",
+                    //        contentType: 'application/json; charset=utf-8',
+                    //        success: function (json) {
+                    //            console.log("Delete Event returned");
+                    //        },
+                    //        failure: function (json) {
+                    //            console.log("Delete Event failed.");
+                    //        }
+
+                    //    });
+
+                    //});
 
 
 
-                    $(info.el).find("#svg-delete-event").mouseover(function () {
+                    //$(info.el).find("#svg-delete-event").mouseover(function () {
 
-                        $(this).attr("src", "/images/red-trash-delete-icon-hover.svg")
-                    });
+                    //    $(this).attr("src", "/images/red-trash-delete-icon-hover.svg")
+                    //});
 
 
-                    $(info.el).find("#svg-delete-event").mouseout(function () {
+                    //$(info.el).find("#svg-delete-event").mouseout(function () {
 
-                        $(this).attr("src", "/images/red-trash-delete-icon.svg")
-                    });
+                    //    $(this).attr("src", "/images/red-trash-delete-icon.svg")
+                    //});
 
-                    $(info.el).find("#svg-delete-event").hide();
+                    //$(info.el).find("#svg-delete-event").hide();
 
                 },
 
+                eventClassNames: function (info) {
+
+
+                    //add the data
+                    if (info.event.extendedProps.eventID !== undefined) {
+                        var className = "data-event-" + info.event.extendedProps.eventID;
+                        return [className];
+                    }
+                },
 
                 eventContent: function (eventInfo) {
 
-                    var eventContent = `<div class="custom-event">
+                    //if eventID is defined, add as data attribute to custom-event div
+                    var dataEvent = "";
+                    if (typeof eventInfo.event.extendedProps.eventID !== undefined) {
+                        dataEvent = `data-eventid="${eventInfo.event.extendedProps.eventID }"`
+                    }
+
+
+                    var eventContent = `<div class="custom-event" ${dataEvent}>
                         <div class="square">
                             <img src="/images/tang48.png" alt="Icon">
                         </div>
                         <div class="text-rectangle">${eventInfo.event.title}
+                        <img style='display:none;width:28px;height:28px;float:right;' id='svg-delete-event' src='/images/red-trash-delete-icon.svg' onclick='delete_event_click(this,event,${JSON.stringify(eventInfo.event)})' onmouseover='delete_mouseover(this)' onmouseout='delete_mouseout(this)' /> 
+
                         </div>
 
                     </div>`
@@ -156,6 +246,7 @@ $(document).ready(function () {
 
 
                 eventClick: function (info) {
+
 
                     //if food item, redirect to food item
                     if (info.event.extendedProps.itemType == "FOOD ITEM") {
@@ -186,6 +277,8 @@ $(document).ready(function () {
                 },
                 eventDrop: function (info) {
 
+                    console.log("eventdrop:" + info.event.extendedProps.eventID);
+
                     $.ajax({
                         url: '/calendar/UpdateEvent',
                         data: JSON.stringify({
@@ -209,6 +302,10 @@ $(document).ready(function () {
 
                 },
                 eventReceive: function (info) {
+
+                    console.log("eventReceive: " + info.event.extendedProps.eventID);
+
+                    
 
                     var mealId, foodItemId;
 
@@ -242,7 +339,7 @@ $(document).ready(function () {
                         //contentType:'json',
                         success: function (json) {
                             console.log("SaveNewEvent returned");
-                            info.event.setExtendedProp("eventID", json)
+                            //info.event.setExtendedProp("eventID", json)
 
                         },
                         failure: function (json) {
@@ -309,6 +406,10 @@ $(document).ready(function () {
 
 
     }
+
+
+    //Calendar Helper Methods
+
 
 });         
 

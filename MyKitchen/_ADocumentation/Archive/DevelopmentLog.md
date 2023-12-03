@@ -1,4 +1,6 @@
-﻿## 11/14/2020
+﻿### This Log is using old format. Use DevLog.txt for logging from now on
+
+## 11/14/2020
 returning after working on other projects. Reorient and test user accounts.
 
 ## 06/03/2020
