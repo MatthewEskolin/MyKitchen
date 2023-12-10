@@ -4,7 +4,7 @@ import interactionPlugin, { Draggable }  from '@fullcalendar/interaction';
 
 
 //* ADD ALL FULLCALENDAR CODE HERE *//
-var theCalendar = null;
+window.theCalendar = null;
 var eventSources = [
     {
         url: "/calendar/GetEventsFeed",
@@ -18,58 +18,6 @@ var eventSources = [
 ];
 
 
-function delete_mouseover(imgElement) {
-    $(imgElement).attr("src", "/images/red-trash-delete-icon-hover.svg")
-}
-
-function delete_mouseout(imgElement) {
-    $(imgElement).attr("src", "/images/red-trash-delete.svg")
-}
-
-function delete_event_click(imgElement, event, fullCalendarEvent) {
-
-    //clicking delete should only trigger the click event for the trash can icon here, and should not trigger the click event for the entire event which would bring user to details view.
-    event.stopPropagation();
-
-    //remove event from calendar
-    theCalendar.getEventById(fullCalendarEvent.id).remove();
-
-    //grab eventId from DOM
-    //var eventID = $(info.el).find(".custom-event").data("eventid");
-
-    //get class name that starts with data-event- and extract the number after the dash like this data-event-234
-    var eventID = $(info.el)
-        .find(".custom-event")
-        .attr("class")
-        .split(" ")
-        .find(className => className.startsWith("data-event-"))
-        ?.split("-")[2];
-
-    if (fullCalendarEvent.extendedProps.eventID !== undefined)
-        eventID = fullCalendarEvent.extendedProps.eventID;
-
-    //also remove from backend stroage
-    $.ajax({
-        url: '/calendar/RemoveEvent/',
-        data: JSON.stringify({
-            Subject: fullCalendarEvent.title,
-            Start: fullCalendarEvent.start,
-            IsFullDay: "true",
-            EventID: eventID
-        }),
-        type: "POST",
-        contentType: 'application/json; charset=utf-8',
-        success: function (json) {
-            console.log("Delete Event returned");
-        },
-        failure: function (json) {
-            console.log("Delete Event failed.");
-        }
-
-    });
-
-
-}
 
 
 
@@ -124,7 +72,7 @@ $(document).ready(function () {
         //var draggableEL2 = document.getElementById('itemContainer2');
         //var Draggable = interactionPlugin.Draggable;
 
-        theCalendar = new Calendar(calendarEl,
+        window.theCalendar = new Calendar(calendarEl,
             {
                 plugins: [dayGridPlugin, interactionPlugin],
                 eventSources: eventSources,
@@ -149,69 +97,9 @@ $(document).ready(function () {
                         info.el.style.backgroundColor = "blue"
                         info.el.style.color = "white";
                     }
-
-                    //$(info.el).find("#svg-delete-event").click(function (event) {
-
-                    //    //clicking delete should only trigger the click event for the trash can icon here, and should not trigger the click event for the entire event which would bring user to details view.
-                    //    event.stopPropagation();
-                    //    //remove event from calendar
-                    //    info.event.remove();
-
-                    //    //grab eventId from DOM
-                    //    //var eventID = $(info.el).find(".custom-event").data("eventid");
-
-                    //    //get class name that starts with data-event- and extract the number after the dash like this data-event-234
-                    //    var eventID = $(info.el)
-                    //        .find(".custom-event")
-                    //        .attr("class")
-                    //        .split(" ")
-                    //        .find(className => className.startsWith("data-event-"))
-                    //        ?.split("-")[2];
-
-                    //    if (info.event.extendedProps.eventID !== undefined)
-                    //    eventID = info.event.extendedProps.eventID;
-
-                    //    //also remove from backend stroage
-                    //    $.ajax({
-                    //        url: '/calendar/RemoveEvent/',
-                    //        data: JSON.stringify({
-                    //            Subject: info.event.title,
-                    //            Start: info.event.start,
-                    //            IsFullDay: "true",
-                    //            EventID: eventID
-                    //        }),
-                    //        type: "POST",
-                    //        contentType: 'application/json; charset=utf-8',
-                    //        success: function (json) {
-                    //            console.log("Delete Event returned");
-                    //        },
-                    //        failure: function (json) {
-                    //            console.log("Delete Event failed.");
-                    //        }
-
-                    //    });
-
-                    //});
-
-
-
-                    //$(info.el).find("#svg-delete-event").mouseover(function () {
-
-                    //    $(this).attr("src", "/images/red-trash-delete-icon-hover.svg")
-                    //});
-
-
-                    //$(info.el).find("#svg-delete-event").mouseout(function () {
-
-                    //    $(this).attr("src", "/images/red-trash-delete-icon.svg")
-                    //});
-
-                    //$(info.el).find("#svg-delete-event").hide();
-
                 },
 
                 eventClassNames: function (info) {
-
 
                     //add the data
                     if (info.event.extendedProps.eventID !== undefined) {
@@ -352,7 +240,7 @@ $(document).ready(function () {
                         text: 'Clear Month',
                         click: function (whatisthis) {
 
-                            var curMonth = theCalendar.getDate().getMonth();
+                            var curMonth = window.theCalendar.getDate().getMonth();
 
 
                             //call ajax to remove all events in the current month
@@ -366,7 +254,7 @@ $(document).ready(function () {
                                 contentType: 'application/json; charset=utf-8',
                                 success: function (json) {
                                     console.log("Clear month returned");
-                                    theCalendar.getEventSources()[0].refetch();
+                                    window.theCalendar.getEventSources()[0].refetch();
 
                                 },
                                 failure: function (json) {
@@ -387,7 +275,7 @@ $(document).ready(function () {
 
             });
 
-        theCalendar.render();
+        window.theCalendar.render();
 
         new Draggable(draggableEL,
             {

@@ -8,6 +8,8 @@ namespace MyKitchen.Controllers
         public class FullCalendarEvent
         {
             //mirroring fullcalendar object properties
+
+            public string id { get; set; }
             public string  title { get; set; }
             public string description { get; set; }
             public DateTime start { get; set; }
@@ -27,6 +29,7 @@ namespace MyKitchen.Controllers
             {
                 var fullCalendarEvent = new FullCalendarEvent
                 {
+                    id = evt.EventID.ToString(), 
                     title = evt.Subject,
                     description = evt.Description,
                     start = evt.Start,
