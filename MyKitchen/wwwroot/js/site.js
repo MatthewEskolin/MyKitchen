@@ -78,12 +78,48 @@ $(document).ready(function () {
                 eventSources: eventSources,
                 editable: true,
                 droppable: true,
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    right: 'dayGridMonth,dayGridWeek,dayGridDay',
+                    center: 'My Meals'
+                },
                 fixedWeekCount: false,
                 height: 600,
                 displayEventTime: false,
-                footer: {
-                    left: 'custom1'
-                },
+                //footer: {
+                //    left: 'custom1'
+                //},
+                //customButtons: {
+                //    custom1: {
+                //        text: 'Clear Month',
+                //        click: function (whatisthis) {
+
+                //            var curMonth = window.theCalendar.getDate().getMonth();
+
+                //            //call ajax to remove all events in the current month
+                //            $.ajax({
+                //                url: '/calendar/ClearMonth',
+                //                data: JSON.stringify({
+                //                    Month: curMonth
+                //                }),
+                //                type: "POST",
+                //                contentType: 'application/json; charset=utf-8',
+                //                success: function (json) {
+                //                    console.log("Clear month returned");
+                //                    window.theCalendar.getEventSources()[0].refetch();
+
+                //                },
+                //                failure: function (json) {
+                //                    console.log("Clear month failed")
+                //                }
+
+                //            });
+
+                //            alert('clicked custom button does this trigger build? DEBUG TEST!');
+                //        }
+                //    }
+                //},
                 eventDidMount: function (info) {
 
                     //console.log("eventDidMount: " + info.event.extendedProps.eventID);
@@ -98,7 +134,6 @@ $(document).ready(function () {
                         info.el.style.color = "white";
                     }
                 },
-
                 eventClassNames: function (info) {
 
                     //add the data
@@ -107,7 +142,6 @@ $(document).ready(function () {
                         return [className];
                     }
                 },
-
                 eventContent: function (eventInfo) {
 
                     //if eventID is defined, add as data attribute to custom-event div
@@ -130,9 +164,6 @@ $(document).ready(function () {
 
                     return { html: eventContent };
                 },
-
-
-
                 eventClick: function (info) {
 
 
@@ -235,42 +266,6 @@ $(document).ready(function () {
                         }
                     });
                 },
-                customButtons: {
-                    custom1: {
-                        text: 'Clear Month',
-                        click: function (whatisthis) {
-
-                            var curMonth = window.theCalendar.getDate().getMonth();
-
-
-                            //call ajax to remove all events in the current month
-                            $.ajax({
-                                url: '/calendar/ClearMonth',
-                                data: JSON.stringify({
-                                    Month: curMonth
-
-                                }),
-                                type: "POST",
-                                contentType: 'application/json; charset=utf-8',
-                                success: function (json) {
-                                    console.log("Clear month returned");
-                                    window.theCalendar.getEventSources()[0].refetch();
-
-                                },
-                                failure: function (json) {
-                                    console.log("Clear month failed")
-                                }
-
-                            });
-
-
-                            //reload calendar from db
-
-
-                            alert('clicked custom button does this trigger build? DEBUG TEST!');
-                        }
-                    }
-                }
 
 
             });
