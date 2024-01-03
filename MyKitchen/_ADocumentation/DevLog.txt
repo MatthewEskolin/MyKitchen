@@ -4,3 +4,4 @@
 11/04/2023 - study blank line cleanup in resharper
 11/25/2023 - fix paging on calendar
 12/02/2023 - clean up log
+12/31/2023 - check-in and plan next effort
