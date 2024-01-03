@@ -1,3 +1,5 @@
+namespace MyKitchen.Logging;
+
 public class CustomDebugLogger : ILogger
 {
     private readonly string categoryName;
