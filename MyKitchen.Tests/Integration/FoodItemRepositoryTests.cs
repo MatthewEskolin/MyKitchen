@@ -1,14 +1,12 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyKitchen.Data;
 using MyKitchen.Models;
 using Xunit;
 
-namespace MyKitchen.Tests
+namespace MyKitchen.Tests.Integration
 {
     public class FoodItemRepositoryTests
     {
@@ -16,10 +14,6 @@ namespace MyKitchen.Tests
         [Fact]
         public void CanAddFoodItem()
         {
-
-
-
-            //dependencies
             var serviceProvider = new ServiceCollection()
                 .AddLogging()
                 .BuildServiceProvider();
@@ -27,7 +21,6 @@ namespace MyKitchen.Tests
             var factory = serviceProvider.GetService<ILoggerFactory>();
 
             var logger = factory.CreateLogger<EFFoodItemRepository>();
-            //end dependencies
 
              WithTestDatabase.Run((ApplicationDbContext context) => {
 
