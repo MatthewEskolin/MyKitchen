@@ -14,7 +14,10 @@ namespace MyKitchen.Data
 
         }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
+        {
+            //initialize with options
+        }
 
 
         public ApplicationDbContext(){}

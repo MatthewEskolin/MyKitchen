@@ -7,6 +7,7 @@ namespace MyKitchen.Models
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger _logger;
+
         public EFFoodItemRepository(ApplicationDbContext ctx,ILogger<EFFoodItemRepository> logger)
         {
             _context = ctx;
