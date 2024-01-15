@@ -1,6 +1,8 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -74,29 +76,56 @@ namespace MyKitchen.Tests.Integration
         }
 
 
-        [Fact(Skip="In Development")]
-        public void CanAddUserFoodItem()
+        //[Fact(Skip="In Development")]
+        [Fact]
+        public  void CanAddUserFoodItem()
         {
- 
-            //arrange
-                //dependencies
-                    //user 
-            //dependencies
-            var serviceProvider = new ServiceCollection().AddLogging().BuildServiceProvider();
+            Configure();
 
-            var factory = serviceProvider.GetService<ILoggerFactory>();
+            var logger = _factory.CreateLogger<EFFoodItemRepository>();
 
-            var logger = factory.CreateLogger<EFFoodItemRepository>();
+            WithTestDatabase wtd = new WithTestDatabase(_config.GetConnectionString("VIVE"));
 
 
-                   // UserManager<ApplicationUser> userManager
+            wtd.Run( context =>
+            {
+
+                var repo = new EFFoodItemRepository(context, logger);
+
+                var datetime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+
+                var foodItemName = "CanAddFoodItem " + datetime;
+
+                var newFoodItem = new FoodItem()
+                {
+                    FoodItemName = "CanAddFoodItem " + datetime,
+                    FoodDescription = "Test Description"
+                };
 
 
-            //act
+                var user = new ApplicationUser()
+                {
+                    //use ID of a valid test user
+                    Id = "92e49dc3-a9db-4c00-93b0-4c969242c8c1",
+                    UserName = "matteskolin@gmail.com",
+                    Email = "matteskolin@gmail.com"
+                };
 
+                context.Users.Attach(user);
 
-            //assert
-            Assert.True(true);
+                repo.Add(newFoodItem).Wait();
+                repo.AddFoodForUser(user, newFoodItem).Wait();
+
+                //assert
+                var pass = context.FoodItems.Any(x => x.FoodItemName == foodItemName);
+                Assert.True(pass);
+
+                //cleanup
+                var item = context.FoodItems.FirstOrDefault(x => x.FoodItemName == foodItemName);
+                if (item != null) context.FoodItems.Remove(item);
+                context.SaveChanges();
+
+            });
         }
 
 

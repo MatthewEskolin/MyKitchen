@@ -26,14 +26,14 @@ namespace MyKitchen.Models
         }
 
         //Adds an association between a food item and a user.
-        public async Task<int> AddFoodForUser(IUserInfo user, FoodItem foodItem)
+        public async Task<int> AddFoodForUser(ApplicationUser user, FoodItem foodItem)
         {
 
-            var userFoodItem = new MyKitchen.Data.UserFoodItem();
-            userFoodItem.FoodItemID = foodItem.FoodItemID;
-
-            //TODO get rid of this can we use interface
-            userFoodItem.AppUser = user as ApplicationUser;
+            var userFoodItem = new MyKitchen.Data.UserFoodItem
+            {
+                FoodItemID = foodItem.FoodItemID,
+                AppUser = user
+            };
 
             _context.UserFoodItems.Add(userFoodItem);
             return await _context.SaveChangesAsync();
