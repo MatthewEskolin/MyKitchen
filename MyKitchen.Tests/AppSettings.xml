@@ -4,6 +4,6 @@
 	<!--<ConnectionString>Server=UNKNOWN;Database=MyKitchen;Trusted_Connection=True;MultipleActiveResultSets=true</ConnectionString>-->
 
 	<!--Desktop VIVE-->
-	<ConnectionString>Server=VIVE\SQLEXPRESS;Database=MyKitchen;Trusted_Connection=True;MultipleActiveResultSets=true</ConnectionString>
+	<ConnectionString>Server=VIVE\SQLEXPRESS;Database=MyKitchen;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=true</ConnectionString>
 
 </MySettings>

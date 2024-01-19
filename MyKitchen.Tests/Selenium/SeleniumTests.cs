@@ -10,8 +10,6 @@ namespace MyKitchen.Tests.Selenium
 {
     [TestCaseOrderer("MyKitchen.Tests.Utilities.TestPriorityAttribute", "MyKitchen.Tests")]
     [Trait("Category","BrowserAutomation")]
- 
-    
     public class LoginTests: IClassFixture<WebDriverFixture>
     {
         private WebDriverFixture DriverFixture { get; set; }

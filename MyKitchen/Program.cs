@@ -1,7 +1,4 @@
-﻿
-using Azure.Extensions.AspNetCore.Configuration.Secrets;
-using Azure.Identity;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Azure.Identity;
 
 namespace MyKitchen;
 
@@ -53,27 +50,37 @@ public class Program
 
         _app.UseMiddleware<EndpointLoggerMiddleware>();
 
-        _app.UseEndpoints(endPoints =>
-        {
+        _app.MapControllers();
 
-            //for attribute routing
-            endPoints.MapControllers();
+        _app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller}/{action=DisplayCurrentPrediction}/{id?}"
+        );
+        _app.MapControllerRoute(
+            name: "index_default",
+            pattern: "{controller}/{action=Index}");
 
-            endPoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller}/{action=DisplayCurrentPrediction}/{id?}"
-            );
-            endPoints.MapControllerRoute(
-                name: "index_default",
-                pattern: "{controller}/{action=Index}");
+        _app.MapControllerRoute(
+            name: "foodItemDetail",
+            pattern: "{controller=FoodItems}/{action=Details}/{id}"
+        );
 
-            endPoints.MapControllerRoute(
-                name: "foodItemDetail",
-                pattern: "{controller=FoodItems}/{action=Details}/{id}"
-            );
+        _app.MapRazorPages();
 
-            endPoints.MapRazorPages();
-        });
+        //_app.UseEndpoints();
+
+
+
+        //_app.UseEndpoints(endPoints =>
+        //{
+
+        //    //for attribute routing
+        //    //endPoints.MapControllers();
+
+
+
+        //    endPoints.MapRazorPages();
+        //});
 
         _app.Logger.LogInformation("Calling app.RunAsync");
     }
@@ -275,25 +282,6 @@ public class Program
             options.MinimumSameSitePolicy = SameSiteMode.None;
         });
     }
-    //private static void AddKeyVault()
-    //{
-    //    var tokenProvider = new AzureServiceTokenProvider();
-
-
-    //    var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(tokenProvider.KeyVaultTokenCallback));
-    //    var keyUri = $"https://{_builder.Configuration["keyVaultName"]}.vault.azure.net/";
-    //    try
-    //    {
-    //        _builder.Configuration.AddAzureKeyVault(keyUri, keyVaultClient, new DefaultKeyVaultSecretManager());
-    //        Trace.WriteLine($"Key Vault Uri: {keyUri} successfully connected..");
-
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        Trace.WriteLine($"key vault failed to connect {ex} ");
-    //        Environment.Exit(0);
-    //    }
-    //}
 
     private static void AddKeyVault2()
     {
@@ -301,9 +289,7 @@ public class Program
 
         _builder.Configuration.AddAzureKeyVault(new Uri(keyUri), new DefaultAzureCredential());
         Trace.WriteLine($"Key Vault Uri: {keyUri} added (is it connected?)");
-
     }
-
 
     private static void InitEnvironment()
     {

@@ -15,7 +15,7 @@ namespace MyKitchen.Tests.Integration
             }
 
             [Fact]
-            public void RegisterNewUser1()
+            public async void RegisterNewUser1()
             {
                 //append guid so test coan be repeated
                 var guid = Guid.NewGuid().ToString();
@@ -61,7 +61,7 @@ namespace MyKitchen.Tests.Integration
 
                 Assert.True(true);
                 if(_fixture.ApDbContext.Users.Count() < 2){
-                    Assert.True(false, "Inconclusive - need 2 users in DB");
+                    Assert.Fail("Inconclusive - need 2 users in DB");
                 }
 
                 var users = _fixture.ApDbContext.Users.Take(2).ToList();

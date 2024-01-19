@@ -8,9 +8,9 @@ namespace MyKitchen.Data
     {
         private IConfiguration Config;
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration cofnig): base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration config): base(options)
         {
-            this.Config = cofnig;
+            this.Config = config;
 
         }
 

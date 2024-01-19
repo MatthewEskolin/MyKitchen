@@ -13,8 +13,6 @@ namespace MyKitchen.WarmUp
 
         private string BaseUrl { get; set; }
 
-        protected bool IsDevelopment { get; set; }
-
         public AppWarmUp(IConfiguration configuration)
         {
           this.Config = configuration;
@@ -36,7 +34,11 @@ namespace MyKitchen.WarmUp
               InitBrowserlessIoChrome();
           }
 
-          this.BaseUrl = Config.GetValue<string>("Url");
+          var url = Config.GetValue<string>("Url");
+          if (url != null)
+              this.BaseUrl = url;
+          else
+              throw new Exception("Url not found in appsettings.json");
         }
 
         public AppWarmUp()
