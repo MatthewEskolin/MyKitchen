@@ -9,4 +9,6 @@
 01/06/2024 - got first integration test to work, but wondering if there is a way to load user object programtically for testing user calls
 01/09/2024 - Add Test User to Integration Test
 01/15/2024 - Upgrade to .NET 8
+01/21/2024 - Fix async Xunit Tests
+
 

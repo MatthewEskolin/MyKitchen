@@ -20,19 +20,19 @@ namespace MyKitchen.Tests.Integration
                 //append guid so test coan be repeated
                 var guid = Guid.NewGuid().ToString();
                 var newUser = new ApplicationUser(){Email = $"{guid}@test.com",UserName = $"{guid}@test.com"};
-                var result =  _fixture.TestUserManager.CreateAsync(newUser, "aA11111!").GetAwaiter().GetResult();
+                var result = await _fixture.TestUserManager.CreateAsync(newUser, "aA11111!");
 
                 Assert.True(result.Succeeded);
 
             }
 
             [Fact]
-            public void RegisterNewUser2()
+            public async void RegisterNewUser2()
             {
                 //append guid so test coan be repeated
                 var guid = Guid.NewGuid().ToString();
                 var newUser = new ApplicationUser(){Email = $"{guid}@test.com", UserName=$"{guid}@test.com"};
-                var result =  _fixture.TestUserManager.CreateAsync(newUser, "aA11111!").GetAwaiter().GetResult();
+                var result = await _fixture.TestUserManager.CreateAsync(newUser, "aA11111!");
 
                 Assert.True(result.Succeeded);
 
@@ -42,18 +42,18 @@ namespace MyKitchen.Tests.Integration
 
 
             [Fact]
-            public void DeleteUser()
+            public async void DeleteUser()
             {
                 //append guid so test coan be repeated
-                var deleteUser = _fixture.TestUserManager.FindByEmailAsync("mjeskolin@gmail.com").GetAwaiter().GetResult();
-                var result = _fixture.TestUserManager.DeleteAsync(deleteUser).GetAwaiter().GetResult();
+                var deleteUser = await _fixture.TestUserManager.FindByEmailAsync("mjeskolin@gmail.com");
+                var result = await _fixture.TestUserManager.DeleteAsync(deleteUser);
                 Assert.True(result.Succeeded);
             }
 
 
 
             [Fact]
-            public void FoodItemsAreUserIsolated()
+            public async void FoodItemsAreUserIsolated()
             {
 
                 var guid1 = Guid.NewGuid();
@@ -68,8 +68,8 @@ namespace MyKitchen.Tests.Integration
 
                 //get user 1
                 //get user 2
-                var user1 = _fixture.TestUserManager.FindByIdAsync(users[0].Id).GetAwaiter().GetResult();
-                var user2 = _fixture.TestUserManager.FindByIdAsync(users[1].Id).GetAwaiter().GetResult();;
+                var user1 = await _fixture.TestUserManager.FindByIdAsync(users[0].Id);
+                var user2 = await _fixture.TestUserManager.FindByIdAsync(users[1].Id);
 
                 //food item 1
                 //food item 2
@@ -84,12 +84,12 @@ namespace MyKitchen.Tests.Integration
                 };
 
                 //add food item for user 1
-                _fixture.TestFoodItemRepository.Add(foodItem1).GetAwaiter().GetResult();
-                _fixture.TestFoodItemRepository.AddFoodForUser(user1,foodItem1).GetAwaiter().GetResult();
+                await _fixture.TestFoodItemRepository.Add(foodItem1);
+                await _fixture.TestFoodItemRepository.AddFoodForUser(user1, foodItem1);
 
                 //get food items for user 2
-                _fixture.TestFoodItemRepository.Add(foodItem2).GetAwaiter().GetResult();;
-                _fixture.TestFoodItemRepository.AddFoodForUser(user2,foodItem2).GetAwaiter().GetResult();
+                await _fixture.TestFoodItemRepository.Add(foodItem2);
+                await _fixture.TestFoodItemRepository.AddFoodForUser(user2, foodItem2);
 
                 //Assert
                 Assert.True(_fixture.ApDbContext.FoodItems.Any(x => x.FoodItemID == foodItem1.FoodItemID));

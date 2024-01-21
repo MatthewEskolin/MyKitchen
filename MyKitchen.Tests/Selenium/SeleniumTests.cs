@@ -59,7 +59,9 @@ namespace MyKitchen.Tests.Selenium
 
 
             //Verify that the user is successfully logged in and redirected inside the app
+#pragma warning disable xUnit1031
             Task.Delay(3000).Wait();
+#pragma warning restore xUnit1031
 
 
 
