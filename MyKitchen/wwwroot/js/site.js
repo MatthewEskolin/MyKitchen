@@ -19,11 +19,9 @@ var eventSources = [
 
 
 
+$(() => {
 
-
-$(document).ready(function () {
     var events = [];
-
 
     GenerateCalendar(eventSources);
 

@@ -14,21 +14,25 @@
     <Compile Remove="Dependencies\**" />
     <Compile Remove="Migrations\scaffoldprodcontextMigrations\**" />
     <Compile Remove="Pages\Calendar\**" />
+    <Compile Remove="Pages\TestPages\**" />
     <!-- <Compile Remove="Views\Home\**" /> -->
     <Compile Remove="Views\Shared\MvcGrid\**" />
     <Content Remove="Dependencies\**" />
     <Content Remove="Migrations\scaffoldprodcontextMigrations\**" />
     <Content Remove="Pages\Calendar\**" />
+    <Content Remove="Pages\TestPages\**" />
     <!-- <Content Remove="Views\Home\**" /> -->
     <Content Remove="Views\Shared\MvcGrid\**" />
     <EmbeddedResource Remove="Dependencies\**" />
     <EmbeddedResource Remove="Migrations\scaffoldprodcontextMigrations\**" />
     <EmbeddedResource Remove="Pages\Calendar\**" />
+    <EmbeddedResource Remove="Pages\TestPages\**" />
     <!-- <EmbeddedResource Remove="Views\Home\**" /> -->
     <EmbeddedResource Remove="Views\Shared\MvcGrid\**" />
     <None Remove="Dependencies\**" />
     <None Remove="Migrations\scaffoldprodcontextMigrations\**" />
     <None Remove="Pages\Calendar\**" />
+    <None Remove="Pages\TestPages\**" />
     <!-- <None Remove="Views\Home\**" /> -->
     <None Remove="Views\Shared\MvcGrid\**" />
   </ItemGroup>
@@ -130,6 +134,5 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="Models\BL\" />
-    <Folder Include="Pages\TestPages\" />
   </ItemGroup>
 </Project>

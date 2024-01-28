@@ -10,5 +10,7 @@
 01/09/2024 - Add Test User to Integration Test
 01/15/2024 - Upgrade to .NET 8
 01/21/2024 - Fix async Xunit Tests
+01/27/2024 - don't like how we are trying to build a complex UI for the calendar with javascript. Is it possible to use somelike Vue.js on a single page? or maybe focus on other areas
+
 
 
