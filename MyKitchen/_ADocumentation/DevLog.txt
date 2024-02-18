@@ -12,6 +12,6 @@
 01/21/2024 - Fix async Xunit Tests
 01/27/2024 - don't like how we are trying to build a complex UI for the calendar with javascript. Is it possible to use somelike Vue.js on a single page? or maybe focus on other areas
 02/01/2024 - Research full calendar js frameworks
-
+02/16/2024 - Removed warm-up code as I'm not sure it's serving any purpose
 
 

@@ -31,21 +31,6 @@ namespace MyKitchen.Controllers
             return View(new SearchModel());
         }
 
-        //public SearchModel GetDefaultSearchModel()
-        //{
-        //    var items = ctx.vwsUserMealsAndFoodItems.AsQueryable();
-
-        //    var itemCount =   items.Count(x => x.AppUserId == CurrentUser.User.Id);
-
-        //    var searchModel = new SearchModel()
-        //    {
-        //        PageIndex = 1,
-        //        PageSize = 3,
-        //        TotalPages = (int)Math.Ceiling((double)itemCount / 3)
-        //    };
-        //    return searchModel;
-        //}
-
         public IActionResult SearchForItems([FromForm]SearchModel searchModel)
         {
             #region commented
