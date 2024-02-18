@@ -67,21 +67,6 @@ public class Program
 
         _app.MapRazorPages();
 
-        //_app.UseEndpoints();
-
-
-
-        //_app.UseEndpoints(endPoints =>
-        //{
-
-        //    //for attribute routing
-        //    //endPoints.MapControllers();
-
-
-
-        //    endPoints.MapRazorPages();
-        //});
-
         _app.Logger.LogInformation("Calling app.RunAsync");
     }
 
@@ -90,8 +75,6 @@ public class Program
         InitBuilder(args);
 
         InitEnvironment();
-
-
 
         AddKeyVault2();
 
@@ -127,7 +110,6 @@ public class Program
         //Add Singleton Services
         _builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-
         //Add Other Services
         //Add Identity Services
         _builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -137,16 +119,16 @@ public class Program
 
         _builder.Services.AddTransient<IMyKitchenDataService, MyKitchenDataService>();
 
-        //-- Razor Pages
+        //Razor Pages
         AddRazorPages();
 
-        //-- MVC Controllers
+        //MVC Controllers
         _builder.Services.AddControllersWithViews().AddNewtonsoftJson();
 
-        //-- Session Support
+        //Session Support
         AddSession();
 
-        //-- Authentication and social logins
+        //Authentication and social logins
         AddAuthentication();
 
         //Configure Other Options
@@ -158,31 +140,19 @@ public class Program
 
         //Logging
         _builder.Logging.ClearProviders();
-        //_builder.Logging.AddProvider(new CustomDebugLoggerProvider());
+        _builder.Logging.AddProvider(new CustomDebugLoggerProvider(_builder.Configuration));
 
         WebApplication app = _builder.Build();
 
         app.Logger.LogInformation("App is built, logging now available");
 
-
-
-
-
-
         return app;
-
     }
 
     private static void AddLocalConfig()
     {
         _builder.Configuration.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
-
-        //DEBUG CONNECTION STRING
-        Trace.WriteLine($"(Local Config) ConnectionString={_builder.Configuration.GetConnectionString("DefaultConnection")}");
-
     }
-
-
     private static void AddAuthentication()
     {
         var auth = _builder.Services.AddAuthentication();
@@ -210,7 +180,6 @@ public class Program
                 });
         }
     }
-
     private static void AddSession()
     {
         _builder.Services.AddSession(options =>
@@ -220,7 +189,6 @@ public class Program
             options.Cookie.IsEssential = true;
         });
     }
-
     private static void AddRazorPages()
     {
         var rp = _builder.Services.AddRazorPages();
@@ -229,7 +197,6 @@ public class Program
             rp.AddRazorRuntimeCompilation();
         }
     }
-
     private static void ConfigureIdentity()
     {
         _builder.Services.Configure<IdentityOptions>(options =>
@@ -247,9 +214,10 @@ public class Program
     }
     private static void AddDbContext()
     {
+
+        Trace.WriteLine($"DefaultConection=ConnectionString={_builder.Configuration.GetConnectionString("DefaultConnection")}");
         _builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
-            Trace.WriteLine($"(ApplicationDbContext) ConnectionString={_builder.Configuration.GetConnectionString("DefaultConnection")}");
             options.UseSqlServer(_builder.Configuration.GetConnectionString("DefaultConnection")!);
         });
 
@@ -260,10 +228,6 @@ public class Program
             optionsBuilder.UseSqlServer(_builder.Configuration.GetConnectionString("DefaultConnection"));
             return optionsBuilder.Options;
         });
-
-
-        //DEBUG CONNECTION STRING
-        Trace.WriteLine($"ConnectionString={_builder.Configuration.GetConnectionString("DefaultConnection")}");
 
         _builder.Services.AddDbContext<InitializeApplicationDbContext>(options =>
         {
@@ -282,7 +246,6 @@ public class Program
             options.MinimumSameSitePolicy = SameSiteMode.None;
         });
     }
-
     private static void AddKeyVault2()
     {
         var keyUri = $"https://{_builder.Configuration["keyVaultName"]}.vault.azure.net/";
@@ -290,7 +253,6 @@ public class Program
         _builder.Configuration.AddAzureKeyVault(new Uri(keyUri), new DefaultAzureCredential());
         Trace.WriteLine($"Key Vault Uri: {keyUri} added (is it connected?)");
     }
-
     private static void InitEnvironment()
     {
         _env = _builder.Environment;
@@ -300,7 +262,6 @@ public class Program
     {
         _builder = WebApplication.CreateBuilder(args);
     }
-
     private static void SeedDataBase()
     {
         try

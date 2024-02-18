@@ -1,14 +1,19 @@
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
+
 namespace MyKitchen.Logging;
 
 public class CustomDebugLogger : ILogger
 {
-    private readonly string categoryName;
-    private readonly Func<Object,Exception,string> _formatter;
+    private readonly string _categoryName;
+    private readonly Func<object,Exception,string> _formatter;
+    private IConfiguration Configuration { get; } 
 
-    public CustomDebugLogger(string categoryName)
+    public CustomDebugLogger(string categoryName, IConfiguration config)
     {
-        this.categoryName = categoryName;
+        this._categoryName = categoryName;
         _formatter = CustomLogMessageFormatter;
+        Configuration = config;
     }
 
     public IDisposable BeginScope<TState>(TState state)
@@ -19,14 +24,29 @@ public class CustomDebugLogger : ILogger
 
     public bool IsEnabled(LogLevel logLevel)
     {
-        // Customize log level filtering if needed
-        return true;
+
+        //check for log level _categoryName
+        var configuredLogLevel = Configuration.GetValue<string>($"Logging:Debug:LogLevel:{_categoryName}");
+
+        //if not found, use default
+        if (string.IsNullOrEmpty(configuredLogLevel))
+        {
+            configuredLogLevel = Configuration.GetValue<string>($"Logging:Debug:LogLevel:Default");
+        }
+
+        // Parse the configured log level
+        if (Enum.TryParse(configuredLogLevel, out LogLevel configuredLogLevelEnum))
+        {
+            // Check if the log level is enabled based on the configured level
+            return logLevel >= configuredLogLevelEnum;
+        }
+
+        return true; // Log all if configuration is not properly set
     }
 
     private  string CustomLogMessageFormatter<TState>(TState state, Exception exception)
     {
-        string catName = string.Empty;
-        string message = string.Empty;
+        string message;
 
         if(exception != null)
         {
@@ -38,9 +58,9 @@ public class CustomDebugLogger : ILogger
         }
 
         // Customize the log message format or perform additional logic
-        if(!categoryName.Contains("MyKitchen")){
+        if(!_categoryName.Contains("MyKitchen")){
 
-            message = $"[{categoryName}] {message}";
+            message = $"[{_categoryName}] {message}";
 
         }
 
@@ -49,13 +69,17 @@ public class CustomDebugLogger : ILogger
 
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
     {
-        //discard parm
+        //discard this parameter
+        // ReSharper disable once RedundantAssignment
         formatter = null;
 
+        if (!IsEnabled(logLevel))
+        {
+            return;
+        }
         var formattedMessage = _formatter(state, exception);
 
-
         // Write the custom formatted message to the debug output
-        System.Diagnostics.Debug.WriteLine(formattedMessage);
+        Debug.WriteLine(formattedMessage);
     }
 }
