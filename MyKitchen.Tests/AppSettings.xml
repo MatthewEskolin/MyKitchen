@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MySettings>
+	<!--Laptop-->
+	<!--<ConnectionString>Server=UNKNOWN;Database=MyKitchen;Trusted_Connection=True;MultipleActiveResultSets=true</ConnectionString>-->
+
+	<!--Desktop VIVE-->
+	<ConnectionString>Server=VIVE\SQLEXPRESS;Database=MyKitchen;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=true</ConnectionString>
+
+</MySettings>

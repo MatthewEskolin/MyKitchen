@@ -1,0 +1,47 @@
+﻿@model DisplayCurrentPredictionViewModel
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+         ViewData["Title"] = "Food Picker";
+}
+
+@*<a asp-page="/PageRouteTest/MealDetails" asp-page-handler="ShowDetails" asp-route-mealId="23">TEST</a>
+*@
+<form method="post">
+   
+    
+
+    <div class="text-center">
+        <h6>I Should Eat...</h6>
+      
+        <div id="ShowItemContainer">
+        </div>
+        <div>
+            <input type="button" id="btnTryAgain" class="btn-primary wseButton" value="Try Again"/>
+            <button id="btnAccept" class="btn-primary wseButton" asp-controller="WhatShouldIEat" asp-action="FoodAccepted">Let's Eat this</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            $("#btnTryAgain").click(loadNextItem);
+            loadNextItem();
+        });
+
+
+        function loadNextItem() {
+            $('#ShowItemContainer').load("/WhatShouldIEat/ShowItem", function(txt, status, xhr) { });
+        }
+
+    </script>
+    
+
+}
+
+<div class="e2e-login-complete"></div>

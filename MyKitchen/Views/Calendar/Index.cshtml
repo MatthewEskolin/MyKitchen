@@ -1,0 +1,394 @@
+﻿@model MyKitchen.Controllers.SearchModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .button-container
+    {
+        display:flex;
+    }
+    .search-bar
+    {
+        border:1px solid blue;
+    }
+    
+    <!-- styles for draggable -->
+    .ditem-container 
+    {
+        display: inline-flex !important; /* Use flexbox to align child divs horizontally */
+    }
+    
+    .draggableitem-2
+    {
+        padding:4px;
+    }
+    
+    .custom-event {
+        cursor: pointer;
+        display: inline-flex;
+    }
+
+
+    .square {
+        width: 25px; /* Adjust the width of the square as needed */
+        height: 25px;; /* Square dimensions */
+/*        background-color: orange; /* Background color for the square */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border:1px solid orange;
+    }
+
+    .text-rectangle {
+        padding: 0px; /* Add padding to the text rectangle */
+/*        background-color: orange; /* Background color for the text rectangle */
+        color: black; /* Text color for the text rectangle */
+        border:1px solid orange;
+    }
+
+    .square img {
+        max-width: 100%; /* Ensure the image doesn't exceed the square dimensions */
+        max-height: 100%; /* Ensure the image doesn't exceed the square dimensions */
+    }
+
+    /* Add custom styling for the search form container */
+    .search-form-container {
+        background-color: #f5f5f5; /* Background color */
+        border: 1px solid #ddd; /* Border */
+        padding: 20px; /* Padding */
+        border-radius: 5px; /* Rounded corners */
+    }
+
+    .page-number input {
+        background: none;
+        border: none;
+        color: blue; /* You can change the color to match your design */
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    /* Style the selected page number differently */
+    .page-number.selected input {
+        color: red; /* Change the color to highlight the selected page */
+        text-decoration: none; /* Remove underline from the selected page */
+        font-weight: bold; /* You can use a different style, e.g., bold */
+    }
+    
+    .page-number input.selected {
+        color: red; /* Change the color to highlight the selected page */
+        text-decoration: none; /* Remove underline from the selected page */
+        font-weight: bold; /* You can use a different style, e.g., bold */
+
+    }
+    
+    .page-number-container {
+        display: flex;
+    }
+
+
+
+</style>
+
+<!-- tempate for draggables -->
+<div style="display:none;">
+        <div class="draggableitem2">
+            <div class="square">
+                <img src="/images/tang48.png" alt="Icon">
+            </div>
+            <div class="text-rectangle">
+                Yum ! Potatoes
+            </div>
+        </div>
+</div>
+
+<form id="fmSearchItems" name="searchForm" method="post" asp-action="SearchForItems">
+    
+    <div class="search-form-container">
+        <div class="input-group mb-3 search-bar">
+            <input class="input-text form-control col-12" type="text" name="searchText" placeholder="Search..." aria-label="Search" aria-described="search-button"/>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="search-button">
+                    <i class="icon fa fa-search" style="cursor:pointer;" onclick="$('#fmSearchItems').submit()"></i>
+                </button>
+            </div>
+        </div>
+        <div class="form-check form-check-inline">
+            <input id="inmealsonly" type="checkbox" class="form-check-input" name="CbShowMealsOnly" value="1" />
+            <label class="form-check-label" for="inmealsonly">Meals Only</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input id="inqueued" type="checkbox" class="form-check-input" name="CbShowQueuedOnly" value="1" />
+            <label class="form-check-label" for="inqueued">Queued Only</label>
+        </div>
+    </div>
+
+    <div id="itemContainer"> </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <div class="button-container">
+            <!-- Wrap each input with a div and give them unique IDs or classes -->
+            <div id="previousButtonDiv">
+                <input id="inPrevious" type="submit" value="Previous" onclick="setAction('previous')" />
+            </div>
+            <!-- Generate numbered page inputs -->
+@*            @for (int i = 1; i <= @Model.TotalPages; i++)
+            {
+                <div class="page-number">
+                    <input id="pageNumber_@i" type="submit" value="@i" onclick="setAction('goToPage', @i)" />
+                </div>
+            }*@
+            <div class="page-number-container">
+
+
+            </div>
+            <div id="nextButtonDiv">
+                <input id="inNext" type="submit" value="Next" onclick="setAction('next')" />
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" id="idPageSize" name="PageSize" value="@Model.PageSize" />
+    <input type="hidden" id="idPageIndex" name="PageIndex" value="@Model.PageIndex" />
+    <input type="hidden" id="idTotalPages" name="TotalPages" value="@Model.TotalPages" />
+    <input type="hidden" name="action" value="" />
+</form>
+
+<div style="clear: both;"></div>
+<div id="calendar">
+</div>
+
+
+
+@section Scripts
+{
+
+
+    <script type="text/javascript">
+
+
+        function delete_mouseover(imgElement) {
+            $(imgElement).attr("src", "/images/red-trash-delete-icon-hover.svg")
+        }
+
+        function delete_mouseout(imgElement) {
+            $(imgElement).attr("src", "/images/red-trash-delete-icon.svg")
+        }
+
+        function delete_event_click(imgElement, event, fullCalendarEvent) {
+
+            //clicking delete should only trigger the click event for the trash can icon here, and should not trigger the click event for the entire event which would bring user to details view.
+            event.stopPropagation();
+
+            //remove event from calendar
+            window.theCalendar.getEventById(fullCalendarEvent.id).remove();
+
+            //grab eventId from DOM
+            var eventID = fullCalendarEvent.id //$(info.el).find(".custom-event").data("eventid");
+
+            //get class name that starts with data-event- and extract the number after the dash like this data-event-234
+            //var eventID = $(info.el)
+            //    .find(".custom-event")
+            //    .attr("class")
+            //    .split(" ")
+            //    .find(className => className.startsWith("data-event-"))
+            //    ?.split("-")[2];
+
+            if (fullCalendarEvent.extendedProps.eventID !== undefined)
+                eventID = fullCalendarEvent.extendedProps.eventID;
+
+            //also remove from backend stroage
+            $.ajax({
+                url: '/calendar/RemoveEvent/',
+                data: JSON.stringify({
+                    Subject: fullCalendarEvent.title,
+                    Start: fullCalendarEvent.start,
+                    IsFullDay: "true",
+                    EventID: eventID
+                }),
+                type: "POST",
+                contentType: 'application/json; charset=utf-8',
+                success: function (json) {
+                    console.log("Delete Event returned");
+                },
+                failure: function (json) {
+                    console.log("Delete Event failed.");
+                }
+
+            });
+
+
+        }
+
+
+
+        function ResultsReceived(data)
+            {
+                // Initialize the availableItems array
+                window.availableItems = [];
+                
+                // Cache the itemContainer element for better performance
+                var itemContainer = $("#itemContainer");
+                $(itemContainer).empty();
+                
+                //save page model results to hidden fields
+                $("#idPageSize").val(data.pageSize);
+                $("#idPageIndex").val(data.pageIndex);
+                $("#idTotalPages").val(data.totalPages);
+                
+                GeneratePageNumbers();
+                //highlight selected page
+                updatePageLinks(getPageIndex());
+                
+                NextButtonDisplay() 
+                ShowPreviousDisplay() 
+                
+
+                // Iterate through the data array
+                $.each(data.items, function (i, v) {
+                    // Push the item to the availableItems array
+                    window.availableItems.push(v);
+
+                    // Escape single quotes in the item name
+                    var escapedItemName = v.itemName.replace(/'/g, "&#39;");
+
+                    // Create the dataEvent object as a JavaScript object
+                    var dataEvent = {
+                        itemId: v.itemId,
+                        title: escapedItemName,
+                        itemType: v.itemType
+                    };
+
+                    // Determine the CSS class based on item type
+                    var itemClass = v.itemType === "MEAL" ? "draggableitem-meal" : "draggableitem-foodItem";
+
+                    var $draggable = $(".draggableitem2:first").clone();
+
+                    $draggable.find(".text-rectangle").text(v.itemName);
+                    $draggable.attr("data-event", JSON.stringify(dataEvent));
+
+
+                    // Append the clone to the container
+                    itemContainer.append($draggable);
+                });
+            }
+
+
+        //Utilities
+        
+        function getPageIndex()
+        {
+            return $("#idPageIndex").val();
+        }
+
+        function setAction(actionName,goToPage) {
+            
+
+            
+
+            // Set the value of the hidden input field based on the clicked button
+            document.querySelector('input[name="action"]').value = actionName;
+
+            if (actionName == "next") {
+                var $elem = $("#idPageIndex");
+
+                var pageIndex = Number($("#idPageIndex").val());
+                var newValue = pageIndex + 1;
+
+                $elem.val(newValue);
+
+            }
+            if (actionName == "previous") {
+                var $elem = $("#idPageIndex");
+
+                var pageIndex = Number($("#idPageIndex").val());
+                var newValue = pageIndex - 1;
+
+                $elem.val(newValue);
+
+            }
+            if(actionName == "goToPage")
+            {
+                var $elem = $("#idPageIndex");
+                var pageIndex = Number($("#idPageIndex").val());
+                var newValue = Number(goToPage);
+
+                $elem.val(newValue);
+            }
+            
+            updatePageLinks(getPageIndex());
+
+        }
+        
+        function updatePageLinks(goToPage)
+        {
+            //clear selected
+            $(".page-number > input").removeClass("selected");
+
+            var $selectedPageNumber = $("#pageNumber_" + goToPage);
+            $selectedPageNumber.addClass("selected");
+        }
+
+
+        function SetVisible(id,visible)
+        {
+            if(visible)
+            {
+                $('#' + id).show();
+            }
+            else
+            {
+                $('#' + id).hide();
+            }
+        }
+
+        function NextButtonDisplay()
+        {
+            var pageIndex = $("#idPageIndex").val();
+            var totalPages = $("#idTotalPages").val();
+
+            var show =  pageIndex < totalPages;
+            SetVisible("nextButtonDiv",show)
+            
+        }
+
+        function ShowPreviousDisplay()
+        {
+            var pageIndex = $("#idPageIndex").val();
+            var totalPages = $("#idTotalPages").val();
+
+            var show = pageIndex > 1;
+            SetVisible("previousButtonDiv",show);
+        }
+        
+        function GeneratePageNumbers()
+        {
+            var totalPages = $("#idTotalPages").val();
+            var pageIndex = $("#idPageIndex").val();
+
+            var $pageNumbersContainer = $(".page-number-container");
+            $pageNumbersContainer.empty();
+
+            for (var i = 1; i <= totalPages; i++) {
+
+                var html2 = `<div class="page-number"><input id="pageNumber_${i}" type="submit" value="${i}" onclick="setAction('goToPage', ${i})" /></div>`
+                $pageNum = $(html2);
+
+                $pageNumbersContainer.append($pageNum);
+            }
+        }
+
+
+    </script>
+
+}
+
+
+@section Selenium
+    {
+    <div class="e2e-page-calendar-action-index"></div>
+
+}
+

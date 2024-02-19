@@ -1,0 +1,7 @@
+@using MyKitchen.Models
+@model List<string>;
+
+@foreach(var img in Model)
+{
+<img class="foodImage" src="@img" />
+}

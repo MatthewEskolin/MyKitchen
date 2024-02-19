@@ -1,0 +1,90 @@
+﻿@model MealBuilderIndexViewModel
+
+@{
+    ViewData["Title"] = "Meals";
+}
+
+<h1>Meals</h1>
+<p> <a asp-action="Create">Create New Meal</a> </p>
+
+
+<form id="fmSearchItems" name="fmSearchMeals" method="post" asp-action="SearchMeals">
+<div class="search-bar">
+  <input class="input-text" type="text" name="DashboardSearchArgs.MealName" placeholder="Search">
+  <i class="icon fa fa-search" onclick="document.fmSearchMeals.submit()" style="cursor:pointer;"></i>
+ 
+  
+ Show Queued Only  @*<input id="ShowQueuedOnly" name="ShowQueuedOnly" type="checkbox" value="true"> *@
+                    @Html.CheckBoxFor(x => x.DashboardSearchArgs.ShowQueuedOnly)  
+
+@*  <div class="d-inline" style="margin-left: 10px;">Show Queued Only <input type="checkbox" id="ShowQueuedOnly" name="ShowQueuedOnly" checked /></div>*@
+@*  BOX 2 start
+  @Html.CheckBoxFor(x => x.ShowQueuedOnly);
+  BOX 2 end 
+*@ 
+  
+
+</div>
+</form>
+
+@await Html.PartialAsync("_MealList")
+
+@section Scripts {
+
+    <script>
+        function SetFavorite(img,mealId){
+
+            var imgElement = $(img);
+            var isFavoriteBool = $(img).data("isfavorite").toLowerCase();
+            //Reverse of isFavorite
+            var isFavBit =  isFavoriteBool == 'true' ? 0 : 1;
+
+            console.log(isFavBit);
+            console.log(isFavoriteBool);
+
+
+            @* //Toggle favorite from 0 to 1 or 1 to 0
+            if(isFavorite == true) { isFav = 0; } else { isFav = 1; } *@
+
+            $.ajax({ 
+                type:"POST",
+                url:`/MealBuilder/SetFavorite/${mealId}/${isFavBit}`,
+                success:function(data){
+
+                    //toggle image source to reflect new state
+                    if(isFavBit == 0)
+                    {
+                        imgElement.data("isfavorite","False");
+
+                        imgElement.addClass("bg-nofav");
+                        imgElement.removeClass("bg-fav");
+                        
+                    }
+                    else
+                    {
+                        imgElement.data("isfavorite","True");
+
+                        imgElement.addClass("bg-fav");
+                        imgElement.removeClass("bg-nofav");
+                    }
+
+
+                },
+                error:function(error){
+                    console.log(error);
+                }
+
+            });
+        }
+
+    
+    </script>
+}
+
+
+@section Selenium
+{
+    <div class="e2e-page-mealbuilder-action-index"></div>
+    
+}
+

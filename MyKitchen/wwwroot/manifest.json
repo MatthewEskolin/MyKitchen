@@ -1,0 +1,19 @@
+{
+  "name": "Let's Eat",
+  "short_name": "Let's Eat",
+  "description": "This App helps you decide what to eat",
+  "theme_color": "blue",
+  "icons": [
+    {
+      "src": "/icons/android-chrome-192x192.png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icons/android-chrome-512x512.png",
+      "sizes": "512x512"
+    }
+  ],
+  "display": "minimal-ui",
+  "start_url": "/"
+}
+

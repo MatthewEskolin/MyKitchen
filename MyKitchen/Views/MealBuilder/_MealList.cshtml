@@ -1,0 +1,106 @@
+﻿@using MyKitchen.Data
+@model MealBuilderIndexViewModel
+@inject MyKitchen.Models.BL.UserInfo AppUser
+
+<style type="text/css">
+    span.queued {
+
+        border: 1px solid darkgreen;
+        background-color: darkgreen;
+        color: white;
+
+    }
+</style>
+
+<form method="GET" asp-action="Index">
+<div page-model="@Model.MealListPagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary"
+     page-class-selected="btn-primary" class="btn-group pull-left m-1">
+</div>
+
+<input type="hidden" text="@Model.CurrentSort" name="currentSort">
+<table class="table table-light">
+    <thead>
+    <th scope="col"></th>
+    <th scope="col">Name</th>
+    <th scope="col">Food Items</th>
+    <th scope="col">Satiety Profile</th>
+    <th scope="col">Edit</th>
+    <th scope="col"><a asp-action="Index" asp-route-toggleSort="true" asp-route-newSort='@Model.SortState["IsFavorite"]'>Favorite</a></th>
+    <th scope="col"></th> <!-- commands: queue;-->
+    </thead>
+    <tbody>
+    @foreach(var item in Model.Meals)
+    {
+        <tr>
+            <td>
+                <img src="@GetMealImage()" style="width: 70px;"/>
+            </td>
+            <td>
+                @item.MealName @Html.Raw(getQueuedDisplay(item))
+                
+            </td>
+            <td>
+                @foreach(var foodItem in item.MealFoodItems){
+                    <ul>
+                    @foodItem.FoodItems.FoodItemName  
+                    </ul>
+                }
+            </td>
+            <td>
+                Tasty
+            </td>
+            <td>
+                <a style="display: none;" asp-action="SelectFoodItemsForMeal" asp-route-mealId="@item.MealID">Select</a>
+                <a asp-action="MealDetails" asp-route-mealId="@item.MealID">Select</a>
+
+            </td>
+            <td>
+                
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-isfavorite="@item.IsFavorite" class="@GetFavoritesClass(item.IsFavorite) favImage" onclick="SetFavorite(this,@item.MealID)" /> 
+            </td> 
+            <td>
+                <div><a asp-action="AddToQueue" asp-route-mealId="@item.MealID">Add to Queue</a></div>
+                <div><a asp-action="RemoveFromQueue" asp-route-mealId="@item.MealID">Remove from Queue</a></div>
+            </td>
+        </tr> }
+    </tbody>
+</table>
+
+<div page-model="@Model.MealListPagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary"
+     page-class-selected="btn-primary" class="btn-group pull-left m-1">
+</div>
+
+
+</form>
+
+@functions{
+    public string GetFavoritesClass(bool isFavorite) 
+    {
+        return isFavorite ? "bg-fav" : "bg-nofav";
+    }
+
+    public string GetMealImage()
+    {
+        var defaultImage = @"/images/plate-with-orange-pattern.svg";
+
+        if (!String.IsNullOrEmpty(AppUser.User.MealImage))
+        {
+            var customImage = $"/images/{this.AppUser.User.MealImage}";
+            return customImage;
+        }
+
+        return defaultImage;
+
+    }
+
+
+    private string getQueuedDisplay(Meal meal)
+    {
+        return meal.IsQueued ? 
+                "<span class=\"queued\">[Queued]</span>" : 
+                 string.Empty;
+    }
+
+}

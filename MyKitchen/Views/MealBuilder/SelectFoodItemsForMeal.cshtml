@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Routing
+@model  MyKitchen.Models.Meals.MealBuilderSelectFoodItemsViewModel
+
+@ViewBag.Message
+
+<style type='text/css'>
+/* The asp-validation-summary tag helper will always show content, even when validation has no errors, unless this style hides the content. */
+.validation-summary-valid { display:none;}
+</style>
+
+<div asp-validation-summary="All">
+    <span style="color:red;">Please correct the following errors</span>
+</div>
+
+
+@{
+
+    var routeParams = new RouteValueDictionary{{ "mealId", @Model.TheMeal.MealID}};
+}
+
+<div page-model="@Model.PagingInfo" page-action="SelectFoodItemsForMeal" page-classes-enabled="true" page-route-parameters="routeParams"
+     page-class="btn" page-class-normal="btn-secondary"
+     page-class-selected="btn-primary" class="btn-group pull-left m-1">
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().FoodItemName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().FoodDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().Cost)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.FoodItems) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FoodItemName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FoodDescription)
+            </td>
+            <td>
+                <a asp-action="AddToMeal" asp-route-currentPage="@Model.PagingInfo.CurrentPage" asp-route-mealId="@Model.TheMeal.MealID" asp-route-id="@item.FoodItemID">Add To Meal</a> |
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<a asp-action="MealDetails" asp-route-mealId="@Model.TheMeal.MealID">Back To Meal</a>
+

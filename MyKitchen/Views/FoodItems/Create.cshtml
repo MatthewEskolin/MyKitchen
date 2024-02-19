@@ -1,0 +1,50 @@
+﻿@model MyKitchen.Models.FoodItems.FoodItemCreateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<h4>Add New Food</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FoodItem.FoodItemName" class="control-label"></label>
+                <input asp-for="FoodItem.FoodItemName" class="form-control" />
+                <span asp-validation-for="FoodItem.FoodItemName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FoodItem.FoodDescription" class="control-label"></label>
+                <input asp-for="FoodItem.FoodDescription" class="form-control" />
+                <span asp-validation-for="FoodItem.FoodDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FoodItem.Cost" class="control-label"></label>
+                <input asp-for="FoodItem.Cost" class="form-control" />
+                <span asp-validation-for="FoodItem.Cost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FoodItem.FoodGroupID" class="control-label"></label><br />
+                <select asp-for="FoodItem.FoodGroupID" asp-items="@(new SelectList(Model.FoodGroups, "FoodGroupID", "Name"))">
+                    <option value="">Select</option>
+                </select>
+
+
+            </div>            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

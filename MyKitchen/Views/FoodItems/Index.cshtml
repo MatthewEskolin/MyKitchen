@@ -1,0 +1,67 @@
+﻿@model MyKitchen.Models.FoodItems.FoodItemIndexViewModel
+
+
+@{
+    ViewData["Title"] = "Things I Like To Eat";
+}
+
+<h1>Things I Like to Eat</h1>
+
+<p>
+    <a asp-action="Create">Add Food</a>
+</p>
+
+
+
+<div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary"
+     page-class-selected="btn-primary" class="btn-group pull-left m-1">
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().FoodItemName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().FoodDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().Cost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodItems.FirstOrDefault().FoodGroupID)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.FoodItems) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FoodItemName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FoodDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelitem => item.FoodGroup.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.FoodItemID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.FoodItemID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.FoodItemID">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@section Selenium
+{
+    <div class="e2e-page-fooditems-action-index"></div>
+}

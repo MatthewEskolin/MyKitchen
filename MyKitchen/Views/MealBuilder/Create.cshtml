@@ -1,0 +1,20 @@
+﻿@model MyKitchen.Models.Meals.MealBuilderCreateViewModel
+
+@{
+    ViewData["Title"] = "New Meal";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>New Meal</h4>
+
+<form asp-action="SaveNewMeal">
+    <div class="form-group">
+        <label asp-for="Meal.MealName" class="control-label"></label>
+        <input asp-for="Meal.MealName" class="form-control" columns="30" style="width: 300px;" maxlength="100"/>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save New Meal" class="btn btn-primary"/>
+    </div>
+
+</form>
+

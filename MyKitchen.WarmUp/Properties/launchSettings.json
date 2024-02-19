@@ -1,0 +1,12 @@
+{
+  "profiles": {
+      "Development.MyKitchen.WarmUp": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ENVIRONMENT": "Development"
+
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+09/28/2023 - convert to txt development log
+10/08/2023 - misc calendar stuff - can restyle the items. I don't like the ornage and blue backgrounds
+10/08/2023 - simultaneously - can we fix the queued/show meals only searches
+11/04/2023 - study blank line cleanup in resharper
+11/25/2023 - fix paging on calendar
+12/02/2023 - clean up log
+12/31/2023 - check-in and plan next effort
+01/03/2023 - would like to get an integration test to work
+01/06/2024 - got first integration test to work, but wondering if there is a way to load user object programtically for testing user calls
+01/09/2024 - Add Test User to Integration Test
+01/15/2024 - Upgrade to .NET 8
+01/21/2024 - Fix async Xunit Tests
+01/27/2024 - don't like how we are trying to build a complex UI for the calendar with javascript. Is it possible to use somelike Vue.js on a single page? or maybe focus on other areas
+02/01/2024 - Research full calendar js frameworks
+02/16/2024 - Removed warm-up code as I'm not sure it's serving any purpose
+02/19/2024 - Continue Cleanup
+

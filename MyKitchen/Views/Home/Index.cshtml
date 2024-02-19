@@ -1,0 +1,84 @@
+﻿@model MyKitchen.Models.Home.HomeIndexVM
+<div>Quick Add new Food</div>
+
+<form asp-action="SaveNewFood" method="post">
+
+    <p>
+        <label asp-for="NewFoodItem.Cost">Food Cost:</label>
+        <input asp-for="NewFoodItem.Cost" />
+    </p>
+    <p>
+        <label asp-for="NewFoodItem.FoodDescription">Description:</label>
+        <input asp-for="NewFoodItem.FoodDescription" />
+    </p>
+    <p>
+        <label asp-for="NewFoodItem.FoodItemName">Name:</label>
+        <input asp-for="NewFoodItem.FoodItemName" />
+    </p>
+
+    <button type="submit">Save New Food</button>
+</form>
+
+
+@* @Html.AjaxGrid(Url.Action("IndexGrid"), new { id = "my-ajax-grid" }) *@
+
+
+@*@(Html.Grid(Model.FoodItemList)
+      .Build(columns =>
+      {
+          columns.Add(model => model.FoodItemID).Titled("ID");
+          columns.Add(model => model.Cost).Titled("Cost");
+          columns.Add(model => model.FoodItemName).Titled("Food");
+          columns.Add(model => model.FoddDescription).Titled("Description");
+
+
+      }).Empty("No Foods Found").Filterable().Sortable().Pageable())*@
+
+
+@{
+    ViewData["Title"] = "My Kitchen";
+
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Eat</h1>
+    <p>What are some of your favorite things to eat?</p>
+
+
+    <a asp-action="NewGroceryTrip">Plan new Grocery Trip</a>
+</div>
+<div style="display:none" class="alert-danger">
+    Alert Danger!
+    <br /><br />
+    <p>
+        Request Time: @DateTime.Now.ToString("HH:mm:ss")
+    </p>
+
+    @ViewBag.BagItem1;
+    <br /> <br />
+
+</div>
+
+
+
+
+
+
+@section Scripts {
+
+
+    <script type="test/javascript" src="~/js/mvc-grid.js"></script>
+    <script type="text/javascript">
+
+
+        document.addEventListener('rowclick', function (e) {
+                console.log('data: ', e.detail.data);
+                console.log('grid: ', e.detail.grid);
+                console.log('original event: ', e.detail.originalEvent);
+
+                
+
+        });
+
+    </script>
+}

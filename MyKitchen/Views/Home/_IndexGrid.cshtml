@@ -1,0 +1,30 @@
+﻿@model IEnumerable<MyKitchen.Data.FoodItem>
+
+
+
+
+
+@* 
+
+@(Html.Grid(Model)
+      .Build(columns =>
+      {
+          columns.Add(model => Html.ActionLink("Select", "SelectFoodItem", "Home", new { id = model.FoodItemID }, new { @class = "link-button" }));
+          columns.Add(model => model.FoodItemID).Titled("ID");
+          columns.Add(model => model.Cost).Titled("Cost");
+          columns.Add(model => model.FoodItemName).Titled("Food");
+          columns.Add(model => model.FoddDescription).Titled("Description");
+
+
+
+          //$"<button data-id=\"{model.FoodItemID}\">Select</button>").Encoded(false);
+
+
+
+      }).Empty("No Foods Found").Filterable().Sortable().Pageable()) *@
+@{
+    ViewData["Title"] = "My Kitchen";
+
+}
+
+

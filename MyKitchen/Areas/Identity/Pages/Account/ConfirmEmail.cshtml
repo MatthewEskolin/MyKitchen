@@ -1,0 +1,16 @@
+@page
+@using MyKitchen
+@using MyKitchen.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *,MyKitchen
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Confirm email";
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+@if(@Model.Success){
+
+    <a asp-controller="WhatShouldIEat">Click Here To Continue to site</a>
+}
