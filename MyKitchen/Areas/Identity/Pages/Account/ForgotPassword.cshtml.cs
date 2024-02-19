@@ -69,11 +69,6 @@ namespace MyKitchen.Areas.Identity.Pages.Account
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
 
-                    await _emailSender.SendEmailAsync(
-                    Input.Email,
-                    "Reset - content removed",
-                    $"content removed");
-
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
 
