@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MyKitchen.Data;
 
-namespace MyKitchen.Pages
+namespace MyKitchen.Services
 {
     public interface IGroceryListService
     {

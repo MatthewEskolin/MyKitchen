@@ -1,10 +1,9 @@
 namespace MyKitchen;
 
-public class LogTester
+public static class LogTester
 {
     public static void TestLog(ILogger logger)
     {
-
         //TEST the Default Logging Configuration
         logger.LogTrace("Trace Test");
         logger.LogInformation("Information Test");
