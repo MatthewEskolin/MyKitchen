@@ -39,7 +39,7 @@ public class MyKitchenDataService : IMyKitchenDataService
 
     }
 
-    public async Task TestSQLConnectivity()
+    public async Task TestSqlConnectivity()
     {
         _Logger.LogInformation($"Testing SQL Connectivity to {_ctx.Database.GetConnectionString()}");
 
