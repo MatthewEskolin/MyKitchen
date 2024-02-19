@@ -1,14 +1,8 @@
 using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using MyKitchen.Data;
-using Microsoft.Extensions.Configuration;
 
 namespace MyKitchen.Services
 {

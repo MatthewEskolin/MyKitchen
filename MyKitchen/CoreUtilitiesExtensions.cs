@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace MyKitchen
 {
@@ -19,6 +17,3 @@ namespace MyKitchen
         }
     }
 }
-
-
-//test setup vs 2022 new pc

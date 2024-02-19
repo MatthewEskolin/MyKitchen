@@ -14,7 +14,7 @@ namespace MyApp.Namespace
         }
         public async Task OnGetAsync()
         {
-            await _ds.TestSQLConnectivity();
+            await _ds.TestSqlConnectivity();
         }
     }
 }
