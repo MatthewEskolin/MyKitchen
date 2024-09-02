@@ -1,0 +1,97 @@
+﻿@page "/Meals/list"
+@inject HttpClient _http;
+@using System.Diagnostics
+@using System.Net
+@using MealMentor.Shared.DTO
+
+<h3>List</h3>
+
+@* Create Grid of Meals*@
+
+@* Style with blue and white theme *@
+@* <style type="text/css">
+    .table {
+        width: 100%;
+        margin-bottom: 1rem;
+        color: #212529;
+        background-color: #e9ecef;
+        border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .table thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table tbody+tbody {
+        border-top: 2px solid #dee2e6;
+    }
+
+</style> *@
+
+
+@if (meals != null)
+{
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Meal Name</th>
+                    <th>Meal Description</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var meal in meals)
+            {
+@*                             <tr @onclick="() => EditMeal(meal.mealID)" class="meal-row">
+                          <td>@meal.mealID</td>
+                          <td>@meal.name</td>
+                          <td>@meal.description</td>
+                          <td></td>
+                          <td></td>
+                        </tr> *@
+
+            }
+            </tbody>
+        </table>
+}
+
+@code {
+
+    private List<MealDTO> meals = new List<MealDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        Debug.Assert(_http != null);
+
+        var result = new List<MealDTO>();
+        try
+        {
+            meals = await _http.GetFromJsonAsync<List<MealDTO>>("api/getmeals") ?? result;
+        }
+        catch (Exception e)
+        {
+            var x = e.Message;
+            throw;
+        }
+
+    }
+
+    protected override void OnParametersSet()
+    {
+
+
+    }
+
+
+}
