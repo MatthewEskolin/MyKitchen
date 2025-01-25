@@ -1,4 +1,5 @@
 ﻿using Azure.Identity;
+using MealMentor.Shared.Services;
 
 namespace MyKitchen;
 
@@ -97,7 +98,7 @@ public class Program
 
         _builder.Services.AddTransient<IMealRepository, EfMealRepository>();
 
-        _builder.Services.AddTransient<IEmailSender, EmailSender>();
+        _builder.Services.AddTransient<IEmailSender, IdentityEmailSender>();
 
         _builder.Services.AddTransient<CalendarService>();
 
@@ -275,6 +276,21 @@ public class Program
         {
             _app.Logger.LogError(ex, "An error occurred while seeding the database.");
         }
+    }
+}
+
+internal class IdentityEmailSender: IEmailSender
+{
+    private readonly EmailSender _emailSender;
+
+    public IdentityEmailSender(EmailSender emailSender)
+    {
+        _emailSender = emailSender;
+    }
+
+    public Task SendEmailAsync(string email, string subject, string message)
+    {
+        return _emailSender.SendEmailAsync(email, subject, message);
     }
 }
 

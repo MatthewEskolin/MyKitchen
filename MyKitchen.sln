@@ -29,6 +29,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MealMentor.Core", "MealMent
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MealMentor.Shared", "MealMentor.Shared\MealMentor.Shared.csproj", "{362C4765-E785-4C17-BEA6-D0507399F5BA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{9670F92B-7CF4-45DC-BFF9-88F30D1C00FC}"
+	ProjectSection(SolutionItems) = preProject
+		Tasks.txt = Tasks.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +76,7 @@ Global
 		{CE8C2234-7244-488E-BD3B-5D430773A968} = {2F2B6A75-43B6-4232-A60B-0DF9C080218A}
 		{D924F0DC-8FF3-4A15-803A-2FF44C393429} = {2F2B6A75-43B6-4232-A60B-0DF9C080218A}
 		{98A23980-14FE-460F-8C61-C22339848925} = {59E2B25D-06BD-4829-AD6A-3C6499ADD450}
+		{9670F92B-7CF4-45DC-BFF9-88F30D1C00FC} = {59E2B25D-06BD-4829-AD6A-3C6499ADD450}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9587987-2ABE-4B82-BF8A-4AFAA4809C60}

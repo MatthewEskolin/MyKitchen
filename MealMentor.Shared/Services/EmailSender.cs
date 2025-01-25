@@ -1,15 +1,11 @@
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.Extensions.Options;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using MyKitchen;
-using Microsoft.Extensions.Configuration;
 
-namespace MyKitchen.Services
+namespace MealMentor.Shared.Services
 {
-    public class EmailSender : IEmailSender
+    public class EmailSender 
     {
             
         public IConfiguration Configuration { get; }
@@ -19,25 +15,20 @@ namespace MyKitchen.Services
             Configuration = configuration;
         }
 
-        // public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor,IConfiguration configuration)
-        // {
-        //     Options = optionsAccessor.Value;
-        // }
-
-        public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
             var key = Configuration["Sendgrid:ApiKey"];
-            // return Execute(Options.SendGridKey, subject, message, email);
+
+            if (key == null) throw new System.Exception("Sendgrid ApiKey not found");
+
             return Execute(key, subject, message, email);
         }
 
         public Task Execute(string apiKey, string subject, string message, string email)
         {
             var client = new SendGridClient(apiKey);
-
-
+            
             var msg = new SendGridMessage()
             {
                 From = new EmailAddress("mattheweskolin@blueprogrammer.com", "Kitchen Assistant"),
@@ -56,6 +47,7 @@ namespace MyKitchen.Services
 
       
     }
+
 
 }
 

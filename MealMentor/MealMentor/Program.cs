@@ -7,10 +7,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using MealMentor.Core.Data;
+using MealMentor.Shared.Services;
+using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var keyUri = $"https://{builder.Configuration["keyVaultName"]}.vault.azure.net/";
+
+builder.Configuration.AddAzureKeyVault(new Uri(keyUri), new DefaultAzureCredential());
+
+Trace.WriteLine($"Key Vault Uri: {keyUri} added (is it connected?)");
+
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
@@ -18,6 +25,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenticationStateProvider>();
+builder.Services.AddTransient<EmailSender>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(options =>

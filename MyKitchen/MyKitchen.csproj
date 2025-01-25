@@ -132,4 +132,7 @@
     <Folder Include="Migrations\" />
     <Folder Include="Models\BL\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MealMentor.Shared\MealMentor.Shared.csproj" />
+  </ItemGroup>
 </Project>
