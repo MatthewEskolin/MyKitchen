@@ -1,0 +1,82 @@
+﻿@page "/Meals/list"
+
+@rendermode InteractiveWebAssembly
+@inject NavigationManager _navigationManager;
+@using Radzen.Blazor
+
+<h3>Meals</h3>
+
+
+
+
+@if (mealsLoaded)
+{
+    <RadzenDataGrid  Data="@_meals" TItem="MealDTO" RowSelect="EditMealRad" CssClass="radzen-grid">
+        <HeaderTemplate>
+            <div class="radzen-grid-footer">
+                <RadzenButton Click=@(async ()=> await AddNewMeal()) Text="Add New Meal" ButtonStyle="ButtonStyle.Primary" />
+            </div>
+        </HeaderTemplate>
+        <Columns>
+            <RadzenDataGridColumn TItem="MealDTO" Property="MealID" Title="Meal ID"/>
+            <RadzenDataGridColumn TItem="MealDTO" Property="MealID" Title="Meal ID"/>
+            <RadzenDataGridColumn TItem="MealDTO" Property="Name" Title="Meal Name"/>
+            <RadzenDataGridColumn TItem="MealDTO" Property="Comments" Title="Meal Description"/>
+        </Columns>
+        <FooterTemplate>
+            <div class="radzen-grid-footer">
+                <!-- Empty Footer-->
+            </div>
+        </FooterTemplate>
+    </RadzenDataGrid>
+}
+else
+{
+    @:Loading...
+}
+
+@code {
+
+    private List<MealDTO> _meals = [];
+
+    public bool mealsLoaded;
+
+    [Inject]
+    private MealMentorAPIClient Client { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        _meals = await Client.GetMeals();
+
+        if (_meals.Count == 0)
+        {
+            _meals = [new MealDTO { Name = "Test Meal", IsFavorite = true, MealID = 0 }];
+        }
+
+        mealsLoaded = true;
+
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await Task.CompletedTask;
+    }
+
+    private async Task EditMealRad(MealDTO meal)
+    {
+        //navigate to details
+        _navigationManager.NavigateTo($"Meals/details/{meal.MealID.Value}");
+        await Task.CompletedTask;
+    }
+
+    private async Task AddNewMeal()
+    {
+        //navigate to "/Meals/create"
+        _navigationManager.NavigateTo("/Meals/MealCreate");
+        await Task.CompletedTask;
+    }
+
+
+}

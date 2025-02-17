@@ -9,12 +9,22 @@ namespace MealMentor.Shared.DTO
 {
     public class MealDTO
     {
-        public required int mealID { get; set; }
-        public required string name { get; set; }
+        public int? MealID { get; set; }
+
+        [Required]
+        public required string Name { get; set; }
         public string? Comments { get; set; }
         public bool IsFavorite { get; set; }
         public bool IsQueued { get; set; }
         public string? Recipe { get; set; }
 
+        public List<MealFoodItemDTO> MealFoodItems { get; set; } = new();
+
+    }
+
+    public class MealFoodItemDTO
+    {
+        public string Name { get; set; }
+        public int MealFoodItemId { get; set; }
     }
 }

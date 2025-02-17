@@ -4,6 +4,9 @@
 
 01/12/2025 I'd like to deploy the Blazor version of the site 
 01/24/2025 I'd like to see real functionality working - like really working, make real progress
+01/25/2025 [OnReturn] check the create meal form and see if it works with our registered mealmenotrclapiclient service!
+02/17/2024 - Detail Details Details - What's working in WASM - Medium
+
 
 
 BackLog

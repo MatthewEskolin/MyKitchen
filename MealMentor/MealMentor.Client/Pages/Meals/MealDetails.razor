@@ -1,0 +1,213 @@
+﻿@page "/Meals/details/{MealId:int}"
+@using MealMentor.Client.State
+@inject MealMentorAPIClient Client 
+@inject NavigationManager Navigation
+@inject NotificationState NotificationService
+
+    @if (_meal == null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        <div class="container">
+            @if (_editMealMode)
+            {
+                <div class="page-header">
+                    <div class="float-left">
+                        <EditForm Model="@_meal" OnValidSubmit="@SaveMealName">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+                            <input @bind="_meal.Name" type="text" class="form-control" />
+                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-secondary" @onclick="CancelEditMealName">Cancel</button>
+                        </EditForm>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            }
+            else
+            {
+                <div class="page-header">
+                    <div class="float-left">
+                        <h2>@_meal.Name</h2>
+                    </div>
+                    <div class="float-left">
+                        <button class="btn btn-link" @onclick="EditMealName">
+                            <img class="editImage" src="images/editpencil_120034.png" />
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            }
+
+            <hr />
+            <button class="btn btn-primary" @onclick="AddToQueue">Queue</button>
+            <button class="btn btn-danger" @onclick="DeleteMeal">Delete Meal</button>
+
+            <EditForm Model="@_meal" OnValidSubmit="@UpdateMeal">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="form-group">
+                    <label for="recipe">Recipe</label>
+                    <textarea id="recipe" @bind="_meal.Recipe" class="form-control w-75" rows="12"></textarea>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-secondary" @onclick="NavigateBack">Back</button>
+                </div>
+            </EditForm>
+
+            <h5>Upload Images</h5>
+
+            <InputFile OnChange="UploadFiles" multiple />
+
+            <div id="_ImageList">
+                @foreach (var image in _mealImages)
+                {
+                    <img src="@image.ImagePath" alt="Image" />
+                }
+            </div>
+        </div>
+    }
+
+    @code {
+
+        [Parameter] public int MealId { get; set; }
+
+        private MealDTO? _meal;
+
+        private List<MealImageDTO>? _mealImages;
+
+        private bool _editMealMode;
+
+        protected override async Task OnInitializedAsync()
+        {
+            NotificationService.ShowPendingMessages();
+    
+            await LoadMealDetails();
+        }
+
+        private async Task LoadMealDetails()
+        {
+            var mealResult = await Client.GetMeal(MealId);
+
+            if (mealResult != null)
+            {
+                _meal = mealResult;
+            }
+            else
+            {
+                NotificationService.Notify(NotificationSeverity.Error, "Error", "Failed to load meal details");
+            }
+
+            var imageResult = await Client.GetImages(MealId);
+
+            if (imageResult != null)
+            {
+                _mealImages = imageResult;
+            }
+            else
+            {
+                NotificationService.Notify(NotificationSeverity.Error, "Error", "Failed to load meal images");
+            }
+
+        }
+
+        private void EditMealName()
+        {
+            _editMealMode = true;
+        }
+
+        private void CancelEditMealName()
+        {
+            _editMealMode = false;
+        }
+
+        private async Task SaveMealName()
+        {
+            if (_meal.MealID == null)
+            {
+                throw new InvalidOperationException("Missing MealID");
+            }
+
+            var result = await Client.UpdateMealName(_meal.MealID.Value, _meal.Name);
+
+            if (result)
+            {
+                _editMealMode = false;
+            }
+        }
+
+        private async Task UpdateMeal()
+        {
+            var response = await Client.UpdateMeal(_meal);
+
+        }
+
+        private void NavigateToAddFoodItems()
+        {
+            Navigation.NavigateTo($"/Meals/{_meal.MealID}/add-food");
+        }
+
+        private void NavigateToAddMoreFood()
+        {
+            Navigation.NavigateTo($"/Meals/{_meal.MealID}/add-more-food");
+        }
+
+        private void AddToQueue()
+        {
+            // Implement Add to Queue logic
+        }
+
+        private async Task DeleteMeal()
+        {
+            if (_meal.MealID == null)
+            {
+                throw new InvalidOperationException("Missing MealID");
+            }
+
+            var response = await Client.DeleteMeal(_meal.MealID.Value);
+
+            if (response)
+            {
+                Navigation.NavigateTo("/Meals/list");
+            }
+        }
+
+        private async Task DeleteFoodItemFromMeal(int mealFoodItemId)
+        {
+            await Task.CompletedTask;
+            // if (_meal.MealID == null)
+            // {
+            //     throw new InvalidOperationException("Missing MealID");
+            // }
+
+            // var response = await Client.DeleteFoodItems(mealId,mealFoodItemId);
+            // if (response)
+            // {
+            //     await LoadMealDetails();
+            // }
+        }
+
+        private void NavigateBack()
+        {
+            Navigation.NavigateTo("/Meals/list");
+        }
+
+        private async Task UploadFiles(InputFileChangeEventArgs e)
+        {
+            foreach (var file in e.GetMultipleFiles())
+            {
+                var content = new MultipartFormDataContent();
+                content.Add(new StreamContent(file.OpenReadStream()), "files", file.Name);
+                content.Add(new StringContent(_meal.MealID.ToString()), "MealID");
+
+                var response = await Client.UploadFile(content);//Http.PostAsync("/MealBuilder/UploadFile", content);
+                if (response)
+                {
+                    _mealImages = await Client.GetImages(_meal.MealID.Value);
+                }
+            }
+        }
+    }

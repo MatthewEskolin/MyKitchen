@@ -9,6 +9,8 @@ using System.Diagnostics;
 using MealMentor.Core.Data;
 using MealMentor.Shared.Services;
 using Azure.Identity;
+using MealMentor.Client.API;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +58,19 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+
+builder.Services.AddHttpClient<MealMentorAPIClient>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost");
+});
+
+
+
+
+// Register Radzen services
+// Register Radzen services
+builder.Services.AddRadzenComponents();
 
 var uri = builder.Configuration["IIS Express:inspectUri"];
 

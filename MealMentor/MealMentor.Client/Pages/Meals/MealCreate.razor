@@ -1,0 +1,49 @@
+﻿@page "/Meals/MealCreate"
+@using MealMentor.Client.State
+
+@inject MealMentorAPIClient Client
+@inject NotificationState NotificationService
+@inject NavigationManager Navigation
+
+
+<h4>New Meal</h4>
+
+<EditForm Model="@_model" OnValidSubmit="@SaveNewMeal">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group mb-3 col-3">
+        <label for="mealName">Name</label>
+        <InputText id="mealName" class="form-control" @bind-Value="_model.Name" maxlength="100" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</EditForm>
+
+@code {
+
+    private MealDTO _model = new()
+    {
+        Name = string.Empty
+    };
+
+    private async Task SaveNewMeal()
+    {
+
+        MealDTO? response = await Client.CreateMeal(_model);
+
+        //show a success message
+        if (response != null)
+        {
+            NotificationService.NotifyAfterNavigate(NotificationSeverity.Success, "Success", "Meal created successfully");
+
+            Navigation.NavigateTo($"/Meals/details/{response.MealID}");
+        }
+        else
+        {
+            NotificationService.Notify(NotificationSeverity.Error, "Error", "Failed to create meal");
+        }
+
+    }
+}
