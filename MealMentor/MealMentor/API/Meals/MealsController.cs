@@ -21,7 +21,7 @@ namespace MealMentor.API.Meals
         [HttpGet]
         public ActionResult<IEnumerable<MealDTO>> Get()
         {
-            List<Meal> meals = _dbContext.Meals.ToList();
+            List<MealEntity> meals = _dbContext.Meals.ToList();
             var mealDtos = meals.Select(m => new MealDTO
             {
                 MealID = m.MealID,
@@ -39,7 +39,7 @@ namespace MealMentor.API.Meals
         [HttpPost]
         public ActionResult<MealDTO> CreateMeal(MealDTO meal)
         {
-            var newMeal = new Meal
+            var newMeal = new MealEntity
             {
                 MealName = meal.Name,
                 Comments = meal.Comments,

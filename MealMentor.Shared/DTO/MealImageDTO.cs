@@ -2,5 +2,5 @@
 
 public class MealImageDTO
 {
-    public string ImagePath { get; set; }
+    public required string ImagePath { get; init; }
 }

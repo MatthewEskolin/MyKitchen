@@ -18,13 +18,5 @@ namespace MealMentor.Shared.DTO
         public bool IsQueued { get; set; }
         public string? Recipe { get; set; }
 
-        public List<MealFoodItemDTO> MealFoodItems { get; set; } = new();
-
-    }
-
-    public class MealFoodItemDTO
-    {
-        public string Name { get; set; }
-        public int MealFoodItemId { get; set; }
     }
 }

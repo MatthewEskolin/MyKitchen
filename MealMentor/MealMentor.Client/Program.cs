@@ -1,6 +1,6 @@
 using MealMentor.Client;
-using MealMentor.Client.API;
 using MealMentor.Client.State;
+using MealMentor.Shared.API;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Radzen;

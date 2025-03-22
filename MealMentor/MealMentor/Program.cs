@@ -9,7 +9,7 @@ using System.Diagnostics;
 using MealMentor.Core.Data;
 using MealMentor.Shared.Services;
 using Azure.Identity;
-using MealMentor.Client.API;
+using MealMentor.Shared.API;
 using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);

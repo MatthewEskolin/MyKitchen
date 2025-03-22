@@ -1,20 +1,12 @@
-using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
 namespace MealMentor.Shared.Services
 {
-    public class EmailSender 
+    public class EmailSender(IConfiguration configuration)
     {
-            
-        public IConfiguration Configuration { get; }
-
-        public EmailSender(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
+        private IConfiguration Configuration { get; } = configuration;
 
         public Task SendEmailAsync(string email, string subject, string message)
         {

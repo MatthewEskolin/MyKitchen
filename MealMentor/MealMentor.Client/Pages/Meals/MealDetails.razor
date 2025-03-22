@@ -1,74 +1,90 @@
 ﻿@page "/Meals/details/{MealId:int}"
 @using MealMentor.Client.State
+@using MealMentor.Shared.API
 @inject MealMentorAPIClient Client 
 @inject NavigationManager Navigation
 @inject NotificationState NotificationService
 
-    @if (_meal == null)
-    {
-        <p>Loading...</p>
+
+<style type="text/css">
+    .editImage {
+        height: 35px;
+        width: 35px;
     }
-    else
-    {
-        <div class="container">
-            @if (_editMealMode)
-            {
-                <div class="page-header">
-                    <div class="float-left">
-                        <EditForm Model="@_meal" OnValidSubmit="@SaveMealName">
-                            <DataAnnotationsValidator />
-                            <ValidationSummary />
-                            <input @bind="_meal.Name" type="text" class="form-control" />
-                            <button type="submit" class="btn btn-success">Save</button>
-                            <button type="button" class="btn btn-secondary" @onclick="CancelEditMealName">Cancel</button>
-                        </EditForm>
-                    </div>
-                    <div class="clearfix"></div>
+</style>
+@if (_meal == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="container mt-5">
+        @if (_editMealMode)
+        {
+            <div class="page-header mb-4">
+                <div class="float-left">
+                    <EditForm Model="@_meal" OnValidSubmit="@SaveMealName">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="input-group mb-3">
+                            <input @bind="_meal.Name" type="text" class="form-control" placeholder="Meal Name" />
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-success">Save</button>
+                                <button type="button" class="btn btn-secondary ml-2" @onclick="CancelEditMealName">Cancel</button>
+                            </div>
+                        </div>
+                    </EditForm>
                 </div>
-            }
-            else
-            {
-                <div class="page-header">
-                    <div class="float-left">
-                        <h2>@_meal.Name</h2>
-                    </div>
-                    <div class="float-left">
-                        <button class="btn btn-link" @onclick="EditMealName">
-                            <img class="editImage" src="images/editpencil_120034.png" />
-                        </button>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            }
-
-            <hr />
-            <button class="btn btn-primary" @onclick="AddToQueue">Queue</button>
-            <button class="btn btn-danger" @onclick="DeleteMeal">Delete Meal</button>
-
-            <EditForm Model="@_meal" OnValidSubmit="@UpdateMeal">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
-                <div class="form-group">
-                    <label for="recipe">Recipe</label>
-                    <textarea id="recipe" @bind="_meal.Recipe" class="form-control w-75" rows="12"></textarea>
-                </div>
-                <div>
-                    <button type="submit" class="btn btn-success">Save</button>
-                    <button type="button" class="btn btn-secondary" @onclick="NavigateBack">Back</button>
-                </div>
-            </EditForm>
-
-            <h5>Upload Images</h5>
-
-            <InputFile OnChange="UploadFiles" multiple />
-
-            <div id="_ImageList">
-                @foreach (var image in _mealImages)
-                {
-                    <img src="@image.ImagePath" alt="Image" />
-                }
+                <div class="clearfix"></div>
             </div>
+        }
+        else
+        {
+            <div class="page-header mb-4">
+                <div class="float-left">
+                    <h2 class="text-primary">@_meal.Name</h2>
+                </div>
+                <div class="float-left ml-3">
+                    <button class="btn btn-link p-0" @onclick="EditMealName">
+                        <img class="editImage" src="images/editpencil_120034.png" />
+                    </button>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        }
+
+        <hr />
+        <div class="mb-4">
+            <button class="btn btn-primary mr-2" @onclick="AddToQueue">Queue</button>
+            <button class="btn btn-danger" @onclick="DeleteMeal">Delete Meal</button>
         </div>
+
+        <EditForm Model="@_meal" OnValidSubmit="@UpdateMeal">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group">
+                <label for="recipe" class="font-weight-bold">Recipe</label>
+                <textarea id="recipe" @bind="_meal.Recipe" class="form-control w-75" rows="12" placeholder="Enter the recipe here..."></textarea>
+            </div>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-success mr-2">Save</button>
+                <button type="button" class="btn btn-secondary" @onclick="NavigateBack">Back</button>
+            </div>
+        </EditForm>
+
+        <h5 class="mt-5">Upload Images</h5>
+
+        <InputFile OnChange="UploadFiles" multiple class="mb-3" />
+
+        <div id="_ImageList" class="d-flex flex-wrap">
+            @foreach (var image in _mealImages)
+            {
+                <div class="m-2">
+                    <img src="@image.ImagePath" alt="Image" class="img-thumbnail" style="max-width: 150px;" />
+                </div>
+            }
+        </div>
+    </div>
     }
 
     @code {
@@ -143,16 +159,6 @@
         {
             var response = await Client.UpdateMeal(_meal);
 
-        }
-
-        private void NavigateToAddFoodItems()
-        {
-            Navigation.NavigateTo($"/Meals/{_meal.MealID}/add-food");
-        }
-
-        private void NavigateToAddMoreFood()
-        {
-            Navigation.NavigateTo($"/Meals/{_meal.MealID}/add-more-food");
         }
 
         private void AddToQueue()
