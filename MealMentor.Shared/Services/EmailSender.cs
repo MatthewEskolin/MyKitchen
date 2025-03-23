@@ -8,16 +8,16 @@ namespace MealMentor.Shared.Services
     {
         private IConfiguration Configuration { get; } = configuration;
 
-        public Task SendEmailAsync(string email, string subject, string message)
+        public Task<Response> SendEmailAsync(string email, string subject, string message)
         {
             var key = Configuration["Sendgrid:ApiKey"];
 
-            if (key == null) throw new System.Exception("Sendgrid ApiKey not found");
+            if (key == null) throw new Exception("Sendgrid ApiKey not found");
 
             return Execute(key, subject, message, email);
         }
 
-        public Task Execute(string apiKey, string subject, string message, string email)
+        public Task<Response> Execute(string apiKey, string subject, string message, string email)
         {
             var client = new SendGridClient(apiKey);
             

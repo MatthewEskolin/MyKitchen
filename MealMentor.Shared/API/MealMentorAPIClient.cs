@@ -60,7 +60,7 @@ namespace MealMentor.Shared.API
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<List<MealDTO>> GetMeals()
+        public async Task<List<MealDTO>?> GetMeals()
         {
             var result = await httpClient.GetFromJsonAsync<List<MealDTO>>($"api/getmeals");
             return result;
