@@ -18,6 +18,12 @@ var keyUri = $"https://{builder.Configuration["keyVaultName"]}.vault.azure.net/"
 
 builder.Configuration.AddAzureKeyVault(new Uri(keyUri), new DefaultAzureCredential());
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddJsonFile($"appsettings.local.json", true, false);
+}
+
+
 Trace.WriteLine($"Key Vault Uri: {keyUri} added (is it connected?)");
 
 builder.Services.AddRazorComponents()
@@ -38,14 +44,15 @@ builder.Services.AddAuthentication(options =>
     .AddIdentityCookies();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+Trace.WriteLine($"DefaultConection=ConnectionString={builder.Configuration.GetConnectionString("DefaultConnection")}");
+
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-
-Trace.WriteLine($"DefaultConection=ConnectionString={builder.Configuration.GetConnectionString("MEALMENTOR_CONN")}");
 builder.Services.AddDbContext<MealMentorDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MEALMENTOR_CONN")!);
+    options.UseSqlServer(connectionString);
 });
 
 builder.Services.AddControllers();

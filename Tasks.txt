@@ -1,18 +1,17 @@
-(1) Create a seperate deployment pipeline specifically for MealMentor, that will feature Blazor!
-	 -This may access the same database as MyKitchen, and that is ok, it's a different interface
-(?) Utilize E-mails to remind me of upcoming meals
-
 01/12/2025 I'd like to deploy the Blazor version of the site 
 01/24/2025 I'd like to see real functionality working - like really working, make real progress
 01/25/2025 [OnReturn] check the create meal form and see if it works with our registered mealmenotrclapiclient service!
-02/17/2024 - Detail Details Details - What's working in WASM - Medium
+02/17/2025 - Detail Details Details - What's working in WASM - Medium
+04/20/2025 - We need to find a way to identify what user we when calling the api
+
 
 
 
 BackLog
 -Create Feature Parity with MyKitchen and move to separate repository
 -Create UI Test Cases
-
+- Create a seperate deployment pipeline specifically for MealMentor, that will feature Blazor! This may access the same database as MyKitchen, and that is ok, it's a different interface
+- Utilize E-mails to remind me of upcoming meals
 
 
 

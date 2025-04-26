@@ -3,6 +3,7 @@ using MealMentor.Shared.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 
 namespace MealMentor.API.Meals
@@ -21,6 +22,10 @@ namespace MealMentor.API.Meals
         [HttpGet]
         public ActionResult<IEnumerable<MealDTO>> Get()
         {
+            //TEMP -> CHECK FOR USER ID
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
             List<MealEntity> meals = _dbContext.Meals.ToList();
             var mealDtos = meals.Select(m => new MealDTO
             {
