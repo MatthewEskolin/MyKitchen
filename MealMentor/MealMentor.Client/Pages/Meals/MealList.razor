@@ -8,31 +8,40 @@
 <h3>Meals</h3>
 
 
+<AuthorizeView>
+    <Authorized>
 
+    @if (mealsLoaded)
+    {
+        <RadzenDataGrid Data="@_meals" TItem="MealDTO" RowSelect="EditMealRad" CssClass="radzen-grid">
+            <HeaderTemplate>
+                <div class="radzen-grid-footer">
+                    <RadzenButton Click=@(async () => await AddNewMeal()) Text="Add New Meal" ButtonStyle="ButtonStyle.Primary"/>
+                </div>
+            </HeaderTemplate>
+            <Columns>
+                <RadzenDataGridColumn TItem="MealDTO" Property="Name" Title="Meal Name"/>
+                <RadzenDataGridColumn TItem="MealDTO" Property="Comments" Title="Meal Description"/>
+            </Columns>
+            <FooterTemplate>
+                <div class="radzen-grid-footer">
+                    <!-- Empty Footer-->
+                </div>
+            </FooterTemplate>
+        </RadzenDataGrid>
+    }
+    else
+    {
+        @:Loading...
+    }
+    
+    </Authorized>
+    <NotAuthorized>
+        To add Meals, you need to be logged in, or create an account. 
+        <RadzenButton Click=@(() => _navigationManager.NavigateTo("/Account/Register",true)) Text="Register" ButtonStyle="ButtonStyle.Primary" />
+    </NotAuthorized>
+    </AuthorizeView>
 
-@if (mealsLoaded)
-{
-    <RadzenDataGrid  Data="@_meals" TItem="MealDTO" RowSelect="EditMealRad" CssClass="radzen-grid">
-        <HeaderTemplate>
-            <div class="radzen-grid-footer">
-                <RadzenButton Click=@(async ()=> await AddNewMeal()) Text="Add New Meal" ButtonStyle="ButtonStyle.Primary" />
-            </div>
-        </HeaderTemplate>
-        <Columns>
-            <RadzenDataGridColumn TItem="MealDTO" Property="Name" Title="Meal Name"/>
-            <RadzenDataGridColumn TItem="MealDTO" Property="Comments" Title="Meal Description"/>
-        </Columns>
-        <FooterTemplate>
-            <div class="radzen-grid-footer">
-                <!-- Empty Footer-->
-            </div>
-        </FooterTemplate>
-    </RadzenDataGrid>
-}
-else
-{
-    @:Loading...
-}
 
 @code {
 
@@ -47,11 +56,10 @@ else
     protected override async Task OnInitializedAsync()
     {
 
-        _meals = await Client.GetMeals();
-
-        if (_meals.Count == 0)
+        var meals = await Client.GetMeals();
+        if (meals != null)
         {
-            _meals = [new MealDTO { Name = "Test Meal", IsFavorite = true, MealID = 0 }];
+            _meals = meals;
         }
 
         mealsLoaded = true;
