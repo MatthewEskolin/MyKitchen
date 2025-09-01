@@ -15,11 +15,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MealMentor.Core\MealMentor.Core.csproj" />
     <ProjectReference Include="..\MealMentor.Shared\MealMentor.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.local.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

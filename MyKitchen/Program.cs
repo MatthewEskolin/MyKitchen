@@ -279,20 +279,15 @@ public class Program
     }
 }
 
-internal class IdentityEmailSender: IEmailSender
+internal class IdentityEmailSender(EmailSender emailSender) : IEmailSender
 {
-    private readonly EmailSender _emailSender;
-
-    public IdentityEmailSender(EmailSender emailSender)
-    {
-        _emailSender = emailSender;
-    }
-
     public Task SendEmailAsync(string email, string subject, string message)
     {
-        return _emailSender.SendEmailAsync(email, subject, message);
+        return emailSender.SendEmailAsync(email, subject, message);
     }
 }
+
+
 
 
 

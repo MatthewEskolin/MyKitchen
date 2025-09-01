@@ -1,31 +1,27 @@
-﻿using MealMentor.Shared.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using SendGrid.Helpers.Mail;
-using SendGrid;
+﻿using Microsoft.AspNetCore.Mvc;
+using MealMentor.Core.Services;
 
 namespace MealMentor.API.Email
-{
+{   
+    /// <summary>
+    /// Provides endpoints for sending emails using the Registered email service.
+    /// </summary>
+    /// <remarks>This controller is designed to handle email-related operations, such as sending test emails.
+    /// It uses the <see cref="SendGridEmailSender"/> service to send emails.</remarks>
     [ApiController]
     [Route("api/[controller]")]
-    public class EmailHub:ControllerBase
+    public class EmailHub(IEmailService es) : ControllerBase
     {
-
-        public EmailSender EmailSender { get; set; }
-
-        public EmailHub(EmailSender es)
-        {
-            this.EmailSender = es;
-        }
+        private IEmailService EmailService { get; set; } = es;
 
         [HttpPost("SendTestEmail")]
         public async Task<IActionResult> SendTestEmail()
         {
-                var subject = "This is an E-mail sent using SendGridClient";
-                var to = "matteskolin@gmail.com";
-                var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
+                var subject = $"MealMentor.Api.Email Test";
+                var to = "matthew.eskolin@outlook.com";
+                var htmlContent = $"<strong>Service Name: {EmailService.GetServiceName()}";
 
-                await EmailSender.SendEmailAsync(to, htmlContent, subject);
+                await EmailService.SendEmailAsync(to, htmlContent, subject);
 
                 return Ok("Success");
         }

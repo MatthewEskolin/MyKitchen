@@ -12,4 +12,20 @@
 
         }
     }
+
+    public static class ExceptionUtilities
+    {
+        //throw exception if null
+        public static string ExceptionIfNullOrEmpty(this string str, string name)
+        {
+            if (!string.IsNullOrEmpty(str)) return str;
+
+            throw new Exception($"Required Configuration Missing: {str} {name}");
+
+            return string.Empty;
+
+        }
+
+    }
+
 }

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MealMentor.Console.Tests": {
+      "commandName": "Project",
+      "commandLineArgs": "dev"
+    }
+  }
+}

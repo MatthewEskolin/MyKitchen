@@ -1,32 +1,45 @@
-﻿using System.Diagnostics.Tracing;
-using Azure.Identity;
+﻿using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
-using MealMentor.Shared.Services;
+using MealMentor.Core.Services;
 using Microsoft.Extensions.Configuration;
 
 namespace MealMentor.Console.Tests
 {
-    internal class Program
+    internal static class Program
     {
+        public static string env_arg = string.Empty;
+
         static async Task Main(string[] args)
         {
-            await EmailTest();
+            if (args[0] == "dev") ;
+            {
+                env_arg = args[0];
+            }
+            
+            var config = await GetConfig();
+
+            var emailSender  = new MailGunEmailSender(config);
+            await emailSender.SendEmailAsync("matthew.eskolin@outlook.com", "This is a test email sent using MailGun", "<strong>and easy to do anywhere, even with C#</strong>");
+            System.Console.WriteLine("Email sent successfully.");
         }
 
-        //E-mail Test
-        private static async Task EmailTest()
-        {
-            var config = getConfig();
-            var emailSender = new EmailSender((IConfiguration)config);
-            await new SendGridTest(emailSender).SendTestEmail();
-            System.Console.WriteLine("Email Sent?");
-        }
 
-        private static object getConfig()
+        private static async Task<IConfiguration> GetConfig()
         {
+            await Task.Yield();
+
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+
+            //check if aspnetcore_development is development environment variable is set
+            if(env_arg == "dev")
+            {
+                configurationBuilder.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
+
+            }
+
 
             var configuration = configurationBuilder.Build();
 
@@ -36,12 +49,12 @@ namespace MealMentor.Console.Tests
             var client = new SecretClient(new Uri(keyUri), new DefaultAzureCredential());
 
             // Retrieve a secret from the Key Vault
-            KeyVaultSecret secret = client.GetSecret("Sendgrid--ApiKey");
-            if (secret.Value == null) throw new Exception("Sendgrid ApiKey not found");
+            KeyVaultSecret secret = await client.GetSecretAsync("Mailgun--ApiKey");
+            if (secret.Value == null) throw new Exception("MailGun ApiKey not found");
 
             configurationBuilder.AddInMemoryCollection(new[]
             {
-                new KeyValuePair<string, string>("Sendgrid:ApiKey", secret.Value)
+                new KeyValuePair<string, string>("MailGun:ApiKey", secret.Value)
             }!);
 
             configuration = configurationBuilder.Build();

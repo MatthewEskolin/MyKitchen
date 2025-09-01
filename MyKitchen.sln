@@ -37,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{9670F92B-7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealMentor.Console.Tests", "MealMentor.Console.Tests\MealMentor.Console.Tests.csproj", "{5A0493AF-78BD-4020-A6E3-6E1F0F3D4657}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealMentor.Tests.Integration", "MealMentor.Tests.Integration\MealMentor.Tests.Integration.csproj", "{A2FFA5F1-F559-4EE4-88F2-F0C4ECD46521}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{5A0493AF-78BD-4020-A6E3-6E1F0F3D4657}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A0493AF-78BD-4020-A6E3-6E1F0F3D4657}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A0493AF-78BD-4020-A6E3-6E1F0F3D4657}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2FFA5F1-F559-4EE4-88F2-F0C4ECD46521}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2FFA5F1-F559-4EE4-88F2-F0C4ECD46521}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2FFA5F1-F559-4EE4-88F2-F0C4ECD46521}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2FFA5F1-F559-4EE4-88F2-F0C4ECD46521}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +90,7 @@ Global
 		{D924F0DC-8FF3-4A15-803A-2FF44C393429} = {2F2B6A75-43B6-4232-A60B-0DF9C080218A}
 		{98A23980-14FE-460F-8C61-C22339848925} = {59E2B25D-06BD-4829-AD6A-3C6499ADD450}
 		{9670F92B-7CF4-45DC-BFF9-88F30D1C00FC} = {59E2B25D-06BD-4829-AD6A-3C6499ADD450}
+		{A2FFA5F1-F559-4EE4-88F2-F0C4ECD46521} = {2F2B6A75-43B6-4232-A60B-0DF9C080218A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9587987-2ABE-4B82-BF8A-4AFAA4809C60}

@@ -1,23 +1,16 @@
-using MealMentor.Shared.Services;
+using MealMentor.Core.Services;
 
 namespace MealMentor.Console.Tests
 {
-    public class SendGridTest
+    public class MailGunTest(MailGunEmailSender emailSender)
     {
-        private readonly EmailSender _emailSender;
-
-        public SendGridTest(EmailSender emailSender)
-        {
-            _emailSender = emailSender;
-        }
-
         public async Task SendTestEmail()
         {
             var subject = "This is a test email sent using SendGridClient";
             var to = "matteskolin@gmail.com";
             var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
 
-            await _emailSender.SendEmailAsync(to, subject, htmlContent);
+            await emailSender.SendEmailAsync(to, subject, htmlContent);
         }
     }
 }

@@ -5,11 +5,17 @@
 
 
 BackLog
+- Move MyKitchen components to a seperate repo
 - Create Feature Parity with MyKitchen and move to separate repository
 - Create UI Test Cases
 - Create a seperate deployment pipeline specifically for MealMentor, that will feature Blazor! 
 - Utilize E-mails to remind me of upcoming meals
 - AI Features
+- Host in Entra for users instead? B2C?
+- Build PlayRight
+
+
+
 
 
 05/25/2025

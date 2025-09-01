@@ -1,0 +1,14 @@
+1: Registration
+	- Email Verification
+	- Password Reset
+	- User Profile
+
+2: Azure App Service
+	- Exceptionless Integration
+
+3: Medium Link (Write an article)
+
+4: Services
+	- Powerful Serilog Usage!
+	- Exceptionless Integration!
+
